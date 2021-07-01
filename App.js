@@ -1,15 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { BottomNavigator } from "./src/navigation/";
+import { BottomNavigator } from 'navigation/BottomNavigator.js';
 import { Provider } from "react-redux";
+import { NavigationContainer } from '@react-navigation/native';
 
 export default function App() {
   return (
-    <Provider>
-      <BottomNavigator/>
+    <NavigationContainer>
+       <BottomNavigator/>
     <StatusBar style="auto" />
-    </Provider>
+    
+    </NavigationContainer>
+     
     
   );
 }
