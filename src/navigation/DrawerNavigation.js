@@ -17,12 +17,12 @@ const MessageStack = createStackNavigator();
 export const ProductStackScreen = () => {
   return(
     <ProductStack.Navigator
-     screenOptions={{
-             headerShown: true,
-             gestureEnabled: true,
-             cardOverlayEnabled: true,
-             headerStyle: { backgroundColor: 'tomato' }
-         }}>
+    screenOptions={{
+        headerShown:true,
+        gestureEnabled:true,
+        headerStyle: { backgroundColor: colors.grey },
+        headerTitleStyle:{color:'white'}
+    }}>
     <ProductStack.Screen name="Choose Item" component={ItemOptionsScreen}/>
     <ProductStack.Screen name="Add Product" component={addItemForm}/>
     <ProductStack.Screen name="Add Service" component={addServiceForm}/>
@@ -37,7 +37,7 @@ export const HomeStackScreen = () => {
         screenOptions={{
                 headerShown:true,
                 gestureEnabled:true,
-                headerStyle: { backgroundColor: colors.light_grey },
+                headerStyle: { backgroundColor: colors.grey },
                 headerTitleStyle:{color:'white'}
             }}
         >
@@ -58,7 +58,14 @@ export const ItemStackScreen = () => {
 
 export const ProfileStackScreen = () => {
     return(
-        <ProfileStack.Navigator>
+        <ProfileStack.Navigator
+        screenOptions={{
+            headerShown:true,
+            gestureEnabled:true,
+            headerStyle: { backgroundColor: colors.grey },
+            headerTitleStyle:{color:'white'}
+        }}
+        >
             <ProfileStack.Screen name="Profile" component={ProfileScreen}/>
         </ProfileStack.Navigator>
     )
@@ -67,8 +74,11 @@ export const ProfileStackScreen = () => {
 export const MessageStackScreen = () => {
     return(
         <MessageStack.Navigator
-        screenOptions = {{
-            
+        screenOptions={{
+            headerShown:true,
+            gestureEnabled:true,
+            headerStyle: { backgroundColor: colors.grey },
+            headerTitleStyle:{color:'white'}
         }}
         >
             <MessageStack.Screen name="Inbox" component={MessageScreen}/>
