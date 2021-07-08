@@ -1,20 +1,30 @@
 import React from 'react';
 import { createBottomTabNavigator, BottomTabBar } from '@react-navigation/bottom-tabs';
-import { HomeScreen } from '../screens/HomeScreen';
-import { ItemFormScreen } from '../screens/ItemFormScreen';
+
 import {View,Image,TouchableOpacity} from 'react-native';
 import {icons} from "../utils/icons";
 import {colors} from "../utils/colors";
 import { MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
+import { createStore } from "redux";
+import { itemReducer } from "../reducers/items";
+import { Provider } from 'react-redux';
+import { HomeStackScreen, MessageStackScreen, ProductStackScreen, ProfileStackScreen } from './DrawerNavigation';
 
+const storeItem = createStore(itemReducer);
 const Tab = createBottomTabNavigator();
 
 export const BottomNavigator = ()=>{
   return (
+    <Provider store={storeItem}>
     <Tab.Navigator
     initialRouteName="Home"
     tabBarOptions={{
       activeTintColor: colors.black,
+      style:{
+        borderTopWidth: 0,
+        backgroundColor: "transparent",
+        elevation:0,
+      }
     }}
     screenOptions={({ route }) => ({
       tabBarIcon: ({ focused }) => {
@@ -45,7 +55,7 @@ export const BottomNavigator = ()=>{
     >
       <Tab.Screen 
       name="Home" 
-      component={HomeScreen}
+      component={HomeStackScreen}
       
       options={{
         tabBarLabel: 'Home',
@@ -53,26 +63,27 @@ export const BottomNavigator = ()=>{
       />
       <Tab.Screen 
       name="Add" 
-      component={ItemFormScreen}
+      component={ProductStackScreen}
       options={{
         tabBarLabel: 'Add Item',
       }}
       />
       <Tab.Screen 
       name="Profile" 
-      component={ItemFormScreen}
+      component={ProfileStackScreen}
       options={{
         tabBarLabel: 'Profile',
       }}
       />
       <Tab.Screen 
       name="Message" 
-      component={ItemFormScreen}
+      component={MessageStackScreen}
       options={{
         tabBarLabel: 'Message',
       }}
       />
     </Tab.Navigator>
+    </Provider>
   );
 }
 
