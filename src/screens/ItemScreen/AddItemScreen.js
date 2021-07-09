@@ -14,7 +14,7 @@ export const addItemForm = (props) => {
             <CustomTextInput placeholder="Product Title" editable={true}></CustomTextInput>
             <View>
                 <CameraButton
-               
+                  
                 />
                 <View/>
             </View>

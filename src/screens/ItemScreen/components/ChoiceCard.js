@@ -9,10 +9,10 @@ import{
 import { colors } from "../../../utils/colors"
 
 
-export const ChoiceCard = ({title,icon}) => {
+export const ChoiceCard = ({title,icon,props,name}) => {
 
     return(
-        <TouchableOpacity style={styles.card}> 
+        <TouchableOpacity style={styles.card} onPress={()=>{props.navigation.navigate({name})}}> 
             <Text style={styles.text}>{title}</Text>
             <AntDesign style={styles.icon} name={icon} size={60}></AntDesign>
         </TouchableOpacity>

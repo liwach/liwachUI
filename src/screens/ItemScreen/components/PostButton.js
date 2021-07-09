@@ -9,10 +9,10 @@ from "react-native"
 import { colors } from "../../../utils/colors"
 
 
-export const PostButton = ({name}) => {
+export const PostButton = ({name,props}) => {
 
     return(
-        <TouchableOpacity style={styles.nextButton}>
+        <TouchableOpacity style={styles.nextButton} onPress={()=>{props.navigation.navigate("Add Product")}}>
            <Text style={styles.TextContainer}>{name}</Text> 
         </TouchableOpacity>
     )

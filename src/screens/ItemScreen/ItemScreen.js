@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import {View, Text, StyleSheet} from "react-native"
 import { Button } from "react-native-paper"
 import { colors } from "../../utils/colors"
@@ -8,15 +8,17 @@ import { PostButton } from "./components/PostButton"
 
 export const ItemOptionsScreen = (props) => {
 
+    const isSelected = useState("item");
+
     return(
         <View style={styles.TopContainer}>
             <Text style={styles.TextContainer}>CHOOSE YOUR ITEM</Text>
             <View style={styles.CardContainer}>
                 
-                <ChoiceCard title={"Item"} icon={"profile"} onPress={()=>{props.navigation.navigate("Add Product")}}>Add Product</ChoiceCard>
-                <ChoiceCard title={"Service"} icon={"user"} onPress={()=>{props.navigation.navigate("Add Service")}}>Add Services</ChoiceCard>
+                <ChoiceCard  title={"Item"} icon={"profile"} name={"Add Product"} props={props}>Add Product</ChoiceCard>
+                <ChoiceCard title={"Service"} icon={"user"} name={"Add Service"} props={props} onPress={()=>{props.navigation.navigate("Add Service")}}>Add Services</ChoiceCard>
             </View>
-            <PostButton name={"Next"}></PostButton>
+            {/* <PostButton name={"Next"} props={props}></PostButton> */}
         </View>
         
     )

@@ -13,45 +13,65 @@ import { colors } from '../../../utils/colors';
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import { _pickImage } from "../../../utils/tools";
 import { ActionSheetAndroid } from 'react-native-cross-actionsheet'
-import { launchCamera } from 'react-native-image-picker';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { launchCameraAsync, launchImageLibraryAsync } from 'expo-image-picker';
 
 export const CameraButton = (
-    user,
-    imageUri,
-    setImageUri,
-    setFilename,
-    setType,
-    setUploadButton,
+    
 ) => {
     //const { showActionSheetWithOptions } = useActionSheet();
-    const options = {
-        title: 'Load Photo',
-        customButtons: [
-          { name: 'button_id_1', title: 'CustomButton 1' },
-          { name: 'button_id_2', title: 'CustomButton 2' }
-        ],
-        storageOptions: {
-          skipBackup: true,
-          path: 'images',
-        },
-      };
+    //const [imageSource, setImageSource] = useState(null);
+
+  const selectImage =  (type) => {
+    let options = {
+     
+      maxWidth: 300,
+      maxHeight: 550,
+      quality: 1,
+      videoQuality: 'low',
+      durationLimit: 30, //Video max duration in seconds
+      saveToPhotos: true,
+    };
+ 
+      launchCamera(options, (response) => {
+        console.log('Response = ', response);
+
+        if (response.didCancel) {
+          alert('User cancelled camera picker');
+          return;
+        } else if (response.errorCode == 'camera_unavailable') {
+          alert('Camera not available on device');
+          return;
+        } else if (response.errorCode == 'permission') {
+          alert('Permission not satisfied');
+          return;
+        } else if (response.errorCode == 'others') {
+          alert(response.errorMessage);
+          return;
+        }
+        console.log('base64 -> ', response.base64);
+        console.log('uri -> ', response.uri);
+        console.log('width -> ', response.width);
+        console.log('height -> ', response.height);
+        console.log('fileSize -> ', response.fileSize);
+        console.log('type -> ', response.type);
+        console.log('fileName -> ', response.fileName);
+        setFilePath(response);
+      });
+    
+  }
+  
     const onPressHandler = () =>{
-       
-        launchCamera(options, (response) => {
-              if (response.error) {
-                console.log('LaunchCamera Error: ', response.error);
-              }
-              else {
-                console.log("Success");
-              }
-            });
+        launchCamera(
+
+        )
         }
     return(
         <View>
-             <TouchableOpacity style={styles.cameraContainer}  onPress={onPressHandler}>
+             <TouchableOpacity style={styles.cameraContainer}  onPress={selectImage('photo')}>
             <FontAwesome name="camera" size={15} color="white" />
         </TouchableOpacity>
-        <Image source={imageUri }
+        <Image
            />
         </View>
        
