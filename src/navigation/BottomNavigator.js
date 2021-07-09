@@ -36,7 +36,7 @@ export const BottomNavigator = ()=>{
           iconName = 'plus';
         }
         else if (route.name === 'Profile') {
-          iconName = 'profile';
+          iconName = 'idcard';
         }
         else if (route.name === 'Message') {
           iconName = 'mail';

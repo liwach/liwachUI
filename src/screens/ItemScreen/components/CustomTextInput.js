@@ -9,7 +9,10 @@ import { TextInput } from "react-native-paper"
 
 export const CustomTextInput = (
     {
-        placeholder
+        placeholder,
+        icon,
+        multiline,
+        editable,
     }) => {
     return(
         <View>
@@ -17,6 +20,9 @@ export const CustomTextInput = (
             mode='outlined'
             placeholder={placeholder}
             style={styles.textInput}
+            multiline={multiline}
+            editable={editable}
+            blurOnSubmit={true}
             ></TextInput>
         </View>
     )
@@ -28,6 +34,7 @@ const styles = StyleSheet.create({
         width: '90%',
         margin: 10,
         alignSelf: 'center',
+       
     }
 
 })

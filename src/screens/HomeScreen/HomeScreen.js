@@ -6,8 +6,8 @@ export const HomeScreen = (props) => {
 
     return(
         <View>
-            <Text>Hello this is home screen</Text>
-            <Button onPress={()=>{props.navigation.navigate("Detail Screen")}}>View</Button>
+           
+            <Button onPress={()=>{props.navigation.navigate("Detail Screen")}}>View Item</Button>
         </View>
     )
 }
