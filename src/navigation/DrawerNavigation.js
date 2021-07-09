@@ -31,7 +31,12 @@ export const ProductStackScreen = () => {
         headerTitleStyle:{color:'white' , alignSelf:'center'}
     }}>
     <ProductStack.Screen name="Choose Item" component={ItemOptionsScreen} />
-    <ProductStack.Screen name="Add Product" component={addItemForm}/>
+    <ProductStack.Screen 
+    options={{
+        headerTitleStyle:{alignSelf:'center', marginRight:30,color:colors.white},
+        
+    }} 
+    name="Add Product" component={addItemForm}/>
     <ProductStack.Screen name="Add Service" component={addServiceForm}/>
     </ProductStack.Navigator>
   )

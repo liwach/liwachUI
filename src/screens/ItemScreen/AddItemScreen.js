@@ -8,20 +8,13 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {CameraButton} from "./components/UploadButton"
 
 export const addItemForm = (props) => {
-    const [imageUri, setImageUri] = React.useState("");
-    const [filename, setFilename] = React.useState("");
-    const [type, setType] = React.useState("");
-    const [uploadButton, setUploadButton] = React.useState(true);
+  
     return(
         <View style={styles.container}>
             <CustomTextInput placeholder="Product Title" editable={true}></CustomTextInput>
             <View>
                 <CameraButton
-                imageUri={imageUri}
-                setImageUri={setImageUri}
-                setType={setType}
-                setFilename={setFilename}
-                setUploadButton={setUploadButton}
+               
                 />
                 <View/>
             </View>
