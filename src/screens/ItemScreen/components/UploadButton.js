@@ -13,66 +13,53 @@ import { colors } from '../../../utils/colors';
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import { _pickImage } from "../../../utils/tools";
 import { ActionSheetAndroid } from 'react-native-cross-actionsheet'
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import { launchCameraAsync, launchImageLibraryAsync } from 'expo-image-picker';
-
+//import { launchCameraAsync, launchImageLibrary } from 'react-native-image-picker';
+//import { launchCameraAsync, launchImageLibraryAsync, } from 'expo-image-picker';
+import * as ImagePicker from 'expo-image-picker';
 export const CameraButton = (
     
 ) => {
-    //const { showActionSheetWithOptions } = useActionSheet();
-    //const [imageSource, setImageSource] = useState(null);
+    const [selectedImage, setSelectedImage] = React.useState(null);
+    const onPressHandler = async () =>{
 
-  const selectImage =  (type) => {
-    let options = {
-     
-      maxWidth: 300,
-      maxHeight: 550,
-      quality: 1,
-      videoQuality: 'low',
-      durationLimit: 30, //Video max duration in seconds
-      saveToPhotos: true,
-    };
- 
-      launchCamera(options, (response) => {
-        console.log('Response = ', response);
-
-        if (response.didCancel) {
-          alert('User cancelled camera picker');
-          return;
-        } else if (response.errorCode == 'camera_unavailable') {
-          alert('Camera not available on device');
-          return;
-        } else if (response.errorCode == 'permission') {
-          alert('Permission not satisfied');
-          return;
-        } else if (response.errorCode == 'others') {
-          alert(response.errorMessage);
-          return;
-        }
-        console.log('base64 -> ', response.base64);
-        console.log('uri -> ', response.uri);
-        console.log('width -> ', response.width);
-        console.log('height -> ', response.height);
-        console.log('fileSize -> ', response.fileSize);
-        console.log('type -> ', response.type);
-        console.log('fileName -> ', response.fileName);
-        setFilePath(response);
-      });
+        
+        let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
     
-  }
-  
-    const onPressHandler = () =>{
-        launchCamera(
-
-        )
+        if (permissionResult.granted === false) {
+          alert("Permission to access camera roll is required!");
+          return;
         }
+    
+        let pickerResult = await ImagePicker.launchImageLibraryAsync();
+        console.log(pickerResult);
+        setSelectedImage({ localUri: pickerResult.uri });
+      
+        }
+
+        if (selectedImage !== null) {
+          return (
+            <View style={styles.container}>
+              <TouchableOpacity style={styles.cameraContainer}  onPress={onPressHandler}>
+
+              <FontAwesome name="camera" size={15} color="white" />
+              </TouchableOpacity>
+              <Image
+                source={{ uri: selectedImage.localUri }}
+                style={styles.thumbnail}
+              />
+
+            </View>
+           
+          );
+        }
+  
     return(
         <View>
-             <TouchableOpacity style={styles.cameraContainer}  onPress={selectImage('photo')}>
+             <TouchableOpacity style={styles.cameraContainer}  onPress={onPressHandler}>
+            
             <FontAwesome name="camera" size={15} color="white" />
         </TouchableOpacity>
-        <Image
-           />
+        
         </View>
        
     )
@@ -87,7 +74,20 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: colors.black,
-        marginLeft: 20,
+        margin: 10,
+        marginLeft:20,
       },
+      thumbnail: {
+        width: 50,
+        height: 50,
+        resizeMode: "contain",
+        margin: 10,
+        borderRadius: 15,
+      },
+      container:{
+        height:80,
+        width:150,
+        flexDirection:'row',
+      }
 })
 
