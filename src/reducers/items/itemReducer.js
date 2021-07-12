@@ -29,12 +29,15 @@ import {
           isLoading: false,
         };
       case ADD_ITEM:
-        const newItem = action.item;
+        console.log("Hi")
+        const newItem = action.payload;
         return {
           ...state,
-          items: action.items,
+          items: state.items.concat(newItem),
           isLoading: false,
         };
+
+      default:
+          return state;
     }
-    return state;
   };

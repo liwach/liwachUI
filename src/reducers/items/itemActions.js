@@ -41,14 +41,15 @@ export const addItem = (
     landmark,
     api,
     type_name,
-  ) => {
-    return async function (dispatch, getState) {
+  ) => async(dispatch, getState) => {
+    
+      console.log("I am in")
       dispatch({
         type: ITEM_LOADING,
       });
       //const user = getState().auth.user; When I finish authentication
       try {
-        const response = await timeoutPromise(
+        const response = await (
           fetch(`${API_URL}/item`, {
             headers: {
               Accept: "application/json",
@@ -78,11 +79,12 @@ export const addItem = (
         const resData = await response.json();
         dispatch({
           type: ADD_ITEM,
-          items:resData.content,
+          payload:resData.content,
         });
       } catch (err) {
         throw error;
       }
+      return dispatch;
     };
-  };
+  
 

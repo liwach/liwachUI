@@ -2,7 +2,7 @@ import React from "react"
 import {
     View,
     Text,
-    StyleSheet
+    StyleSheet,
 } from 'react-native'
 import { TextInput } from "react-native-paper"
 
@@ -13,6 +13,7 @@ export const CustomTextInput = (
         icon,
         multiline,
         editable,
+        input
     }) => {
     return(
         <View>
@@ -23,6 +24,8 @@ export const CustomTextInput = (
             multiline={multiline}
             editable={editable}
             blurOnSubmit={true}
+            {...input}
+            keyboardType="default"
             ></TextInput>
         </View>
     )
