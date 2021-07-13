@@ -75,7 +75,7 @@ export const HomeStackScreen = () => {
             <HomeStack.Screen  name="Detail Screen" component={DetailScreen}/>
             <HomeStack.Screen  name="Single Item"  
              options={({ route, navigation }) => ({
-                title: route.params.title,
+                title: route.params.item.title,
                 headerRight: () =>{
 
                 },
