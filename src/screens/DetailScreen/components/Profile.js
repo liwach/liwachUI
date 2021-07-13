@@ -1,16 +1,25 @@
 import React from 'react'
 import {Image,StyleSheet,View,Text} from "react-native"
 import { colors } from '../../../utils/colors'
+import { AntDesign } from '@expo/vector-icons'
+
 
 export const ProfileDetail = ({user,barter,time}) => {
 
     return(
-        <View style={styles.horizontal}>
+        <View style={[styles.horizontal,styles.container]}>
             <Image style={styles.imageBox} source={require("../../../assets/images/hero.png")}/>
             <View>
                 <Text style={styles.user}>{user}</Text>
-                <Text style={styles.barter}>{barter}</Text>
-                <Text style={styles.time}>{time}</Text>
+                <View style={styles.horizontal}>
+                    <AntDesign name={'swap'} size={13} style={styles.iconDesc}/>
+                    <Text style={styles.barter}>{barter}</Text>
+                </View>
+                <View style={styles.horizontal}>
+                    <AntDesign name={'clockcircleo'} size={13} style={styles.iconDesc}/>
+                    <Text style={styles.time}>{time}</Text>
+                </View>
+               
             </View>
         </View>
     )
@@ -21,11 +30,12 @@ const styles = StyleSheet.create({
 
         container:{
             marginTop:20,
+            marginBottom:30,
         },
         horizontal:{
-            marginTop:20,
+            
             flexDirection:'row',
-            marginBottom:30,
+            
         },
         imageBox:{
             borderRadius:50,
@@ -40,10 +50,21 @@ const styles = StyleSheet.create({
         },
         barter:{
             fontSize:16,
-            color:colors.purple
+            color:colors.purple,
+            marginLeft:10,
         },
         time:{
             fontSize:16,
-            color:colors.purple
+            color:colors.purple,
+            marginLeft:10,
         },
+        icon:{
+            marginTop:7,
+        },
+    
+        iconDesc:{
+            marginTop:4,
+            color:colors.purple
+        }
+    
 })

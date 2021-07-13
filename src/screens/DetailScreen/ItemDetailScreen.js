@@ -16,6 +16,7 @@ export const ItemDetailScreen = ({route, navigation}) => {
     time,
     desc,
     swap} = route.params;
+    
 
     const onPressHandler = () =>{
         alert("Request Sent");
