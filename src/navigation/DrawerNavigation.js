@@ -11,6 +11,7 @@ import { Button, StyleSheet } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { NotificationScreen } from "../screens/NotificationScreen/NotificationScreen";
 import { AccountScreen } from "../screens/AccountScreen/AccountScreen";
+import { ItemDetailScreen } from "../screens/DetailScreen/ItemDetailScreen";
 
 const ProductStack = createStackNavigator();
 const HomeStack = createStackNavigator();
@@ -72,6 +73,7 @@ export const HomeStackScreen = () => {
         >
             <HomeStack.Screen options={{ title: 'Home' }} name="Home" component={HomeScreen}/>
             <HomeStack.Screen  name="Detail Screen" component={DetailScreen}/>
+            <HomeStack.Screen  name="Single Item" component={ItemDetailScreen}/>
             <HomeStack.Screen  name="Edit Item" component={editItemForm}/>
             <HomeStack.Screen  name="AccountScreen" component={AccountScreen}/>
             <HomeStack.Screen  name="NotificationScreen" component={NotificationScreen}/>

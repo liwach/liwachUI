@@ -1,19 +1,21 @@
 import React from 'react'
-import {View, Text, ScrollView, StyleSheet} from 'react-native'
-import { Button } from 'react-native-paper'
+import {View, Text, ScrollView, StyleSheet,Button} from 'react-native'
+
 import {HeroImage} from './component/HeroImage'
 import {CategoryList} from './component/FlatListItem'
 import { Section } from './component/SectionList'
 import { colors } from '../../utils/colors'
-export const HomeScreen = (props) => {
+
+
+export const HomeScreen = ({navigation}) => {
 
     return(
         <ScrollView> 
             <HeroImage/>
             <Text style={styles.text}>Latest Goods</Text>
-            <Section />
+            <Section navigation={navigation}  />
             <Text style={styles.text}>Latest Services</Text>
-            <Section />
+            <Section navigation={navigation} />
         </ScrollView>
     )
 }
