@@ -15,38 +15,69 @@ import { SwapButton } from "./SwapButton";
 
 const DATA = [
   {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
+    id: "17694a0f-3da1-471f-bd96-145571e29d72",
     title: "White Tshirt",
+    category:"Clothes",
+    location:"Addis Ababa, Ethiopia",
+    user:"Delilah",
     description: "Black Jacket, Jeans Jacket",
     source: require("../../../assets/images/hero.png"),
+    barter:"3 barters",
+    time:"3 minutes ago",
+    desc:"Perfect year-round, this set of crewneck undershirts combines lightweight cotton jersey with a slightly relaxed fit that allows for freedom of movement.",
+    swap: "Clothes"
+  },
+ 
+  {
+    id: "27694a0f-3da1-471f-bd96-145571e29d72",
+    title: "White Tshirt",
+    category:"Clothes",
+    location:"Addis Ababa, Ethiopia",
+    user:"Delilah",
+    description: "Black Jacket, Jeans Jacket",
+    source: require("../../../assets/images/hero.png"),
+    barter:"3 barters",
+    time:"3 minutes ago",
+    desc:"Perfect year-round, this set of crewneck undershirts combines lightweight cotton jersey with a slightly relaxed fit that allows for freedom of movement.",
     swap: "Clothes"
   },
   {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
+    id: "37694a0f-3da1-471f-bd96-145571e29d72",
     title: "White Tshirt",
+    category:"Clothes",
+    location:"Addis Ababa, Ethiopia",
+    user:"Delilah",
     description: "Black Jacket, Jeans Jacket",
     source: require("../../../assets/images/hero.png"),
+    barter:"3 barters",
+    time:"3 minutes ago",
+    desc:"Perfect year-round, this set of crewneck undershirts combines lightweight cotton jersey with a slightly relaxed fit that allows for freedom of movement.",
     swap: "Clothes"
   },
   {
-    id: "58694a0f-3da1-471f-bd96-145571e29d72",
+    id: "47694a0f-3da1-471f-bd96-145571e29d72",
     title: "White Tshirt",
+    category:"Clothes",
+    location:"Addis Ababa, Ethiopia",
+    user:"Delilah",
     description: "Black Jacket, Jeans Jacket",
     source: require("../../../assets/images/hero.png"),
-    swap: "Clothes"
-  },
-  {
-    id: "50694a0f-3da1-471f-bd96-145571e29d72",
-    title: "White Tshirt",
-    description: "Black Jacket, Jeans Jacket",
-    source: require("../../../assets/images/hero.png"),
+    barter:"3 barters",
+    time:"3 minutes ago",
+    desc:"Perfect year-round, this set of crewneck undershirts combines lightweight cotton jersey with a slightly relaxed fit that allows for freedom of movement.",
     swap: "Clothes"
   },
   {
     id: "57694a0f-3da1-471f-bd96-145571e29d72",
     title: "White Tshirt",
+    category:"Clothes",
+    location:"Addis Ababa, Ethiopia",
+    user:"Delilah",
     description: "Black Jacket, Jeans Jacket",
     source: require("../../../assets/images/hero.png"),
+    barter:"3 barters",
+    time:"3 minutes ago",
+    desc:"Perfect year-round, this set of crewneck undershirts combines lightweight cotton jersey with a slightly relaxed fit that allows for freedom of movement.",
     swap: "Clothes"
   },
 ];
@@ -87,14 +118,7 @@ export const Section = ({navigation},onPressHandler) => {
             onPress={() => 
               /* 1. Navigate to the Details route with params */
               navigation.navigate('Single Item', {
-                title: "POLO White Tshirt",
-                category:"Clothes",
-                location:"Addis Ababa, Ethiopia",
-                user:"Delilah",
-                barter:"3 barters",
-                time:"3 minutes ago",
-                desc:"Perfect year-round, this set of crewneck undershirts combines lightweight cotton jersey with a slightly relaxed fit that allows for freedom of movement.",
-                swap: "Clothes"
+                item:item
               })}
             
             backgroundColor={{ backgroundColor }}
@@ -106,7 +130,9 @@ export const Section = ({navigation},onPressHandler) => {
       }
 
     return(
-        <SafeAreaView>
+        <SafeAreaView
+      
+        >
             <FlatList
               data={DATA}
               renderItem={renderItem}

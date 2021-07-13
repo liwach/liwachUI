@@ -10,7 +10,10 @@ import { colors } from '../../utils/colors'
 export const HomeScreen = ({navigation}) => {
 
     return(
-        <ScrollView> 
+        <ScrollView
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
+        > 
             <HeroImage/>
             <Text style={styles.text}>Latest Goods</Text>
             <Section navigation={navigation}  />

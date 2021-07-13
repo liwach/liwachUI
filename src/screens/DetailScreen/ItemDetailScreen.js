@@ -8,14 +8,7 @@ import { AntDesign } from '@expo/vector-icons'
 
 
 export const ItemDetailScreen = ({route, navigation}) => {
-    const { title, 
-    category,
-    location,
-    user,
-    barter,
-    time,
-    desc,
-    swap} = route.params;
+    const { item} = route.params;
     
 
     const onPressHandler = () =>{
@@ -23,26 +16,26 @@ export const ItemDetailScreen = ({route, navigation}) => {
     }
     return(
         <View>
-             <Image style={styles.imageBox} source={require("../../assets/images/hero.png")} />
+             <Image style={styles.imageBox} source={item.source} />
              <View>
                  <View style={styles.horizontal}>
-                     <Text style={styles.header}>{title}</Text>
+                     <Text style={styles.header}>{item.title}</Text>
                      <AntDesign name={'enviromento'} size={13} style={styles.icon}/>
-                     <Text style={styles.endText}>{location}</Text>
+                     <Text style={styles.endText}>{item.location}</Text>
                  </View>
-                 <OutlinedButton text={category}/>
+                 <OutlinedButton text={item.category}/>
              </View>
-             <ProfileDetail user={user} barter={barter} time={time}/>
+             <ProfileDetail user={item.user} barter={item.barter} time={item.time}/>
              <View  style={styles.horizontal}>
                  <AntDesign name={'bars'} size={13} style={styles.iconDesc}/>
                  <Text style={{fontSize:16,color:colors.purple}} >Description</Text>
-                 <Text style={styles.desc}>{desc}</Text>
+                 <Text style={styles.desc}>{item.desc}</Text>
              </View>
              <View  style={styles.horizontal}>
                  <AntDesign name={'swap'} size={13} style={styles.iconDesc}/>
                  <Text style={{fontSize:16,color:colors.purple,marginRight:7}} >Swap with</Text>
-                 <OutlinedButton text={swap}/>
-                 <OutlinedButton text={swap}/>
+                 <OutlinedButton text={item.swap}/>
+                 <OutlinedButton text={item.swap}/>
              </View>
              <Button color={colors.white} style={styles.button} onPress={onPressHandler}> Send Request</Button>
              

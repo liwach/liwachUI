@@ -49,6 +49,7 @@ export const CategoryList = () => {
         return(
           <FlatListItem
             item={item}
+            
             onPress={() => setSelectedId(item.id)}
             backgroundColor={{ backgroundColor }}
             textColor={{ color }}
