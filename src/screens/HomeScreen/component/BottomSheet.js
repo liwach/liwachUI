@@ -9,14 +9,16 @@ import { Dropdown } from 'react-native-material-dropdown-v2-fixed';
 
 
 
-const sendRequest = (id)=> {
-    alert(id.id);
-}
+
  
-const SendButton = (id) => {
+
+const SendButton = ({id}) => {
     
+    const sendRequest = ({id})=> {
+        console.log(`Selected value: ${id}`);
+    }
     return(
-        <TouchableOpacity style={[styles.button,styles.horizontal]} onPress={()=>{sendRequest(id)}}>
+        <TouchableOpacity style={[styles.button,styles.horizontal]} onPress={sendRequest({id})}>
             <AntDesign style={styles.iconContainer}  name={'swap'} size={20}/>
             <Text style={{textAlign:'center',fontSize:18}}>Swap</Text>
         </TouchableOpacity>
