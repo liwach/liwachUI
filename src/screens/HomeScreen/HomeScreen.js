@@ -1,14 +1,14 @@
-import React from 'react'
-import {View, Text, ScrollView, StyleSheet,Button} from 'react-native'
+import React,{useRef} from 'react'
+import {View, Text, ScrollView, StyleSheet,Button,TextInput} from 'react-native'
 
 import {HeroImage} from './component/HeroImage'
 import {CategoryList} from './component/FlatListItem'
 import { Section } from './component/SectionList'
 import { colors } from '../../utils/colors'
-
+import RBSheet from "react-native-raw-bottom-sheet";
 
 export const HomeScreen = ({navigation}) => {
-
+    
     return(
         <ScrollView
         showsHorizontalScrollIndicator={false}
@@ -19,6 +19,7 @@ export const HomeScreen = ({navigation}) => {
             <Section navigation={navigation}  />
             <Text style={styles.text}>Latest Services</Text>
             <Section navigation={navigation} />
+            
         </ScrollView>
     )
 }

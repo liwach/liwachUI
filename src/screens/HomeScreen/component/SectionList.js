@@ -89,20 +89,20 @@ const onPressHandler = () => {
 const FlatListItem = ({navigation, item, onPress, backgroundColor, textColor }) => (
 
         
-        <TouchableOpacity onPress={onPress} style={[styles.cardContainer,backgroundColor]}> 
+        <View style={[styles.cardContainer,backgroundColor]}> 
             <Image source={item.source} style={{borderTopRightRadius:20,borderTopLeftRadius:20,width:180}}/>
             <View style={styles.shadow}>
               <View style={styles.horizontalContainer}>
                 <Text style={[ styles.header, textColor]}>{item.title}</Text>
-                <SwapButton/>
+                <SwapButton item={item}/>
+               
               </View>
               <Text style={[styles.title, textColor]}>{item.description}</Text>
               <View style={styles.horizontalContainer}>
-              <Text style={[styles.swap]}>Swap with: </Text>
-              <Text style={[textColor]}>{item.swap}</Text>
+              <Text style={[ styles.header, textColor]} onPress={onPress}>View</Text>
               </View>
             </View>
-        </TouchableOpacity>
+        </View>
     
 )
 
