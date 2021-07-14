@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { StyleSheet } from 'react-native'
-import {View, Text,Image,TouchableOpacity,ScrollView} from 'react-native'
+import {View, Text,Image,TouchableOpacity,ScrollView,ToastAndroid} from 'react-native'
 import { colors } from '../../../utils/colors'
 import { AntDesign } from "@expo/vector-icons"
 import { Dropdown } from 'react-native-material-dropdown-v2-fixed';
-
+import { Root, Popup,Toast } from 'popup-ui'
 
 
 
@@ -12,13 +12,13 @@ import { Dropdown } from 'react-native-material-dropdown-v2-fixed';
 
  
 
-const SendButton = ({id}) => {
+const SendButton = ({id,item}) => {
     
-    const sendRequest = ({id})=> {
-        console.log(`Selected value: ${id}`);
+    const sendRequest = ({id,item})=> {
+        ToastAndroid.show(`Request for ${item.title} sent successfully!`, ToastAndroid.SHORT);
     }
     return(
-        <TouchableOpacity style={[styles.button,styles.horizontal]} onPress={sendRequest({id})}>
+        <TouchableOpacity style={[styles.button,styles.horizontal]} onPress={()=>{sendRequest({id,item})}}>
             <AntDesign style={styles.iconContainer}  name={'swap'} size={20}/>
             <Text style={{textAlign:'center',fontSize:18}}>Swap</Text>
         </TouchableOpacity>
@@ -28,8 +28,10 @@ const SendButton = ({id}) => {
 
 export const SwapBottomSheet = ({item}) => {
     const [id,selectedId] = useState("");
+
     const onChangeHandler = (value) => {
         selectedId(value);
+        
         console.log(`Selected value: ${id}`);
       }
     let data = [
@@ -60,7 +62,7 @@ export const SwapBottomSheet = ({item}) => {
              <Text style={styles.desc}>{item.description}</Text>
              <View style={{height:20}}></View>
             </View>
-            <SendButton id={id}/>
+            <SendButton id={id} item={item}/>
         </View>
         </ScrollView>
     )
