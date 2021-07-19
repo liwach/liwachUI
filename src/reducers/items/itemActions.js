@@ -31,6 +31,47 @@ export const fetchitems = () => {
   };
 };
 
+export const fetchItem = () => {
+ 
+  //  return fetch('http://liwachapi.herokuapp.com/api/item')
+  //  .then((response) => response.json())
+  //  .then((json) => console.log(json))
+  //  .catch((error) => console.error(error))
+  //  .finally(() => console.error("error"));
+
+  fetch('http://liwachapi.herokuapp.com/api/item', 
+  {  method: 'POST', 
+   headers: {   
+      Accept: 'application/json',  
+        'Content-Type': 'application/json'
+        },  body: JSON.stringify({
+            "name": "White tshirt",
+            "description": "Car is machine used to....",
+            "picture": "1626083906_ssh.PNG",
+            "swap_type": [
+              1,
+              3,
+              2,
+              4
+            ],
+            "address": {
+              "country": "Ethiopia",
+              "city": "Addis Ababa",
+              "subcity": "Yeka",
+              "district": "Summit, 4kilo",
+              "landmark": "Firdebet, Next to the parlament, Adwa adebaby",
+              "api": "https://google.maps/dhjsdbshf"
+            },
+            "type_name": "Mobile" 
+          
+         
+          
+          })}).then((response) => response.json())
+          .then((json) => console.log(json))
+          .catch((error) => console.error(`Catch ${error}`)) 
+  
+};
+
 //Remember Delilah, this needs a token afterwards
 export const addItem = (
     picture,
@@ -41,15 +82,14 @@ export const addItem = (
     landmark,
     api,
     type_name,
-  ) => async(dispatch, getState) => {
+  )  => {
     
       console.log("I am in")
-      dispatch({
-        type: ITEM_LOADING,
-      });
+     
       //const user = getState().auth.user; When I finish authentication
       try {
-        const response = await (
+        console.log("I am in try")
+        const response =  (
           fetch(`${API_URL}/item`, {
             headers: {
               Accept: "application/json",
@@ -57,34 +97,44 @@ export const addItem = (
             },
             method: "POST",
             body: JSON.stringify({
-              picture,
-              address: {
-                country: country,
-                city: city,
-                subcity: subcity,
-                district : district,
-                landmark : landmark,
-                api : api,
-              },
-              type_name : type_name,
+              item:{
+                "name": "White tshirt",
+                "description": "Car is machine used to....",
+                "picture": "string",
+                "swap_type": [
+                  1,
+                  3,
+                  2,
+                  4
+                ],
+                "address": {
+                  "country": "Ethiopia",
+                  "city": "Addis Ababa",
+                  "subcity": "Yeka",
+                  "district": "Summit, 4kilo",
+                  "landmark": "Firdebet, Next to the parlament, Adwa adebaby",
+                  "api": "https://google.maps/dhjsdbshf"
+                },
+                "type_name": "Mobile"
+              }
+             
             }),
           })
         );
         if (!response.ok) {
-          dispatch({
-            type: ITEM_FAILURE,
-          });
+          
           throw new Error("Something went wrong!");
         }
-        const resData = await response.json();
-        dispatch({
-          type: ADD_ITEM,
-          payload:resData.content,
-        });
-      } catch (err) {
-        throw error;
-      }
-      return dispatch;
-    };
+        const resData = response.json();
+        console.log(`${resData}`)
+        return resData;
+    }
+
+    catch{
+      console.log("Didn't work")
+    }
+
+  }
   
+
 

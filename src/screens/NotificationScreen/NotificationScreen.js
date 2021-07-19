@@ -1,12 +1,36 @@
 import React from 'react'
 import { View, Text } from 'react-native';
 import { Button } from 'react-native-paper';
+import {NotificationItem} from './components/NotificationItem'
+import { NotificationList } from './components/NotificationList';
 
-export const NotificationScreen = () => {
+
+data = [
+    {
+        id:1,
+        tag:"view products",
+        message:"There are 17 new products in the electronics category!",
+        time:"May 11"
+    },
+    {
+        id:2,
+        tag:"view products",
+        message:"There are 17 new products in the electronics category!",
+        time:"May 11"
+    },
+    {
+        id:3,
+        tag:"view products",
+        message:"There are 17 new products in the electronics category!",
+        time:"May 11"
+    },
+
+
+]
+export const NotificationScreen = ({navigation}) => {
     return(
         <View>
-            <Button>This is Notification Screen</Button>
-            
+            <NotificationList navigation={navigation} data={data}/>
         </View>
     );
 };

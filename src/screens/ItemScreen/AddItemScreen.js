@@ -11,93 +11,137 @@ import {
   ScrollView,
   Alert,
   Dimensions,
+  TextInput, 
+  Text, 
+  Button,
+  Image
+
+  
 } from "react-native";
-import { Button } from 'react-native-paper';
 import { CustomTextInput } from './components/CustomTextInput';
 import { colors } from '../../utils/colors';
 import CustomText from '../../components/UI/CustomText';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {CameraButton} from "./components/UploadButton"
 import { useDispatch, useSelector } from "react-redux";
-
-
+import * as yup from 'yup'
+import { Formik } from 'formik'
+import {launchImageLibrary} from 'react-native-image-picker';
 //Action
-import { addItem } from "../../reducers";
+import { addItem, fetchItem,requestItem,addUser,fetchRequests } from "../../reducers";
 //PropTypes check
 import PropTypes from "prop-types";
 
-const AddItem = (props) => {
-    const { handleSubmit, reset } = props;
-    const dispatch = useDispatch();
-   
-  
-    const submit = (values) => {
-        
-    
+import { Dropdown } from 'react-native-material-dropdown-v2-fixed';
 
-        console.log(values)
-        const addItemThunk = addItem("myhat.jpg", "Ethiopia", "Addis Ababa", "Bole", "Summit", "Firdbet", "https://google.maps/dhjsdbshf", "Mobile");
-        //dispatch(addItemThunk);
-        reset();
-        
-    };
-   
-    return(
-        <View style={styles.container}>
-             <Field
-                name="title"
-                keyboardType="default"
-                label="Product Title"
-                component={CustomTextInput}
-                icon="id-card"
-                autoCapitalize={true}
-              />
-            <View>
-                <CameraButton
-                  
-                />
-                <View/>
-            </View>
-            <Field
-                name="category"
-                keyboardType="default"
-                label="Category"
-                component={CustomTextInput}
-                icon="id-card"
-                autoCapitalize={true}
-                inputMode="text"
-                value="categ"
-              />
-              <Field
-                name="description"
-                keyboardType="default"
-                label="Product Description"
-                component={CustomTextInput}
-                icon="id-card"
-                autoCapitalize={true}
-              />
-               <Field
-                name="location"
-                keyboardType="default"
-                label="Location"
-                component={CustomTextInput}
-                icon="id-card"
-                autoCapitalize={true}
-              />
-               <Field
-                name="swap"
-                keyboardType="default"
-                label="Swap with"
-                component={CustomTextInput}
-                icon="id-card"
-                autoCapitalize={true}
-              />
-            <Button style={styles.postButton} onPress={handleSubmit(submit)}>            
-                <CustomText style={{color:colors.white,}}>Post</CustomText>
-            </Button>
+export const addItemForm = (props) => {
+
+  const [dropdown, setDropdown] = useState(null);
+  const [selected, setSelected] = useState([]);
+
+  const inputStyle = {
+    borderWidth: 1,
+    borderColor: colors.grey,
+    padding: 12,
+    marginBottom: 5,
+  };
+
+ 
+  return (
+    <Formik
+      initialValues={{ 
+        title: '',
+        category: '', 
+        description: '',
+        location: '',
+        swap: '',  
+      }}
+      onSubmit={values => Alert.alert(JSON.stringify(values))}
+      validationSchema={yup.object().shape({
+        title: yup
+          .string()
+          .required('Please, provide your title!'),
+        category: yup
+          .string()
+          .required('Please, provide your category!'),
+        description: yup
+          .string()
+          .required('Please, provide your description!'),
+        location: yup
+          .string()
+          .required('Please, provide your location!'),
+        swap: yup
+          .string()
+          .required('Please, provide your swap!'),
+      })}
+     >
+      {({ values, handleChange, errors, setFieldTouched, setFieldValue, touched, isValid, handleSubmit }) => (
+        <View style={styles.formContainer}>
+          <TextInput
+            value={values.title}
+            style={inputStyle}
+            onChangeText={handleChange('title')}
+            onBlur={() => setFieldTouched('title')}
+            placeholder="title"
+          />
+          {touched.title && errors.title &&
+            <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.title}</Text>
+          }            
+          <TextInput
+            value={values.category}
+            style={inputStyle}
+            onChangeText={handleChange('category')}
+            onBlur={() => setFieldTouched('category')}
+            placeholder="category"
+          />
+          {touched.category && errors.category &&
+            <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.category}</Text>
+          } 
+           <TextInput
+            value={values.description}
+            style={inputStyle}
+            onChangeText={handleChange('description')}
+            onBlur={() => setFieldTouched('description')}
+            placeholder="description"
+          />
+          {touched.title && errors.title &&
+            <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.description}</Text>
+          } 
+
+          <TextInput
+            value={values.location}
+            style={inputStyle}
+            onChangeText={handleChange('location')}
+            onBlur={() => setFieldTouched('location')}
+            placeholder="location"
+          />
+          {touched.location && errors.location &&
+            <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.location}</Text>
+          } 
+
+          <TextInput
+            value={values.swap}
+            style={inputStyle}
+            onChangeText={handleChange('swap')}
+            onBlur={() => setFieldTouched('swap')}
+            placeholder="swap"
+          />
+          {touched.swap && errors.swap &&
+            <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.swap}</Text>
+          }
+          
+            
+       
+          <Button
+            color={colors.black}
+            title='Submit'
+            disabled={!isValid}
+            onPress={handleSubmit}
+          />
         </View>
-    )
-
+      )}
+    </Formik>
+  );
 
 };
 
@@ -105,6 +149,9 @@ const AddItem = (props) => {
 
 const styles = StyleSheet.create({
 
+  formContainer: {
+    padding: 50 
+  },
     postButton: {
     width: '40%',
     borderRadius: 30,
@@ -128,13 +175,41 @@ const styles = StyleSheet.create({
 
     imageContainer:{
 
-    }
+    },
+    dropdown: {
+      backgroundColor: 'white',
+      borderBottomColor: 'gray',
+      borderBottomWidth: 0.5,
+      marginTop: 20,
+  },
+  icon: {
+      marginRight: 5,
+      width: 18,
+      height: 18,
+  },
+  item: {
+      paddingVertical: 17,
+      paddingHorizontal: 4,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+  },
+  textItem: {
+      flex: 1,
+      fontSize: 16,
+  },
+  shadow: {
+      shadowColor: '#000',
+      shadowOffset: {
+      width: 0,
+      height: 1,
+      },
+      shadowOpacity: 0.2,
+      shadowRadius: 1.41,
+      elevation: 2,
+  },
 
 }   
 );
 
-export const addItemForm = reduxForm({
-    form: "addItem", // a unique identifier for this form
-     // <--- validation function given to redux-form
-  })(AddItem);
 

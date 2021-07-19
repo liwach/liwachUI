@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native'
 import {View, Text,Image,TouchableOpacity,ScrollView,ToastAndroid} from 'react-native'
 import { colors } from '../../../utils/colors'
 import { AntDesign } from "@expo/vector-icons"
-import { Dropdown } from 'react-native-material-dropdown-v2-fixed';
+// import { Dropdown } from 'react-native-material-dropdown-v2-fixed';
 import { Root, Popup,Toast } from 'popup-ui'
 
 
@@ -43,14 +43,14 @@ export const SwapBottomSheet = ({item}) => {
     ];
     return(
         <ScrollView style={styles.container} >
-          <ScrollView>
+          {/* <ScrollView>
             <Dropdown
             data={data}
             label="Swap With"
             icon="arrow"
             onChangeText={value=>onChangeHandler(value)}
             /> 
-        </ScrollView>
+        </ScrollView> */}
         <View style={[styles.horizontal]}>
             
             

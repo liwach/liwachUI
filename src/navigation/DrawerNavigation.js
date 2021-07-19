@@ -12,6 +12,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { NotificationScreen } from "../screens/NotificationScreen/NotificationScreen";
 import { AccountScreen } from "../screens/AccountScreen/AccountScreen";
 import { ItemDetailScreen } from "../screens/DetailScreen/ItemDetailScreen";
+import { MessageDetailScreen } from "../screens/MessageScreen/MessageDetailScreen";
 
 const ProductStack = createStackNavigator();
 const HomeStack = createStackNavigator();
@@ -93,7 +94,22 @@ export const HomeStackScreen = () => {
                 />
             <HomeStack.Screen  name="Edit Item" component={editItemForm}/>
             <HomeStack.Screen  name="AccountScreen" component={AccountScreen}/>
-            <HomeStack.Screen  name="NotificationScreen" component={NotificationScreen}/>
+            <HomeStack.Screen  name="NotificationScreen" 
+            options={( { route, navigation })=>({
+                title:"Notification",
+                headerRight: () =>{
+
+                },
+                headerLeft: () =>{
+                    return( <HeaderBackButton 
+                        tintColor={colors.white}
+                        onPress={()=>navigation.goBack()} 
+                        
+                        />)
+                   
+                }
+                 
+                })} component={NotificationScreen}/>
         </HomeStack.Navigator>
     )
 }
@@ -125,7 +141,35 @@ export const ProfileStackScreen = () => {
               ),
         }}
         >
-            <ProfileStack.Screen name="Profile" component={ProfileScreen}/>
+            <ProfileStack.Screen 
+            name="Profile" 
+            options={({ route, navigation }) => ({
+                title: "Profile",
+                headerRight: () =>{
+
+                },
+                headerLeft: () =>{
+                   
+                   
+                }
+                 })} 
+            component={ProfileScreen}/>
+            <HomeStack.Screen  name="Post Detail Screen"
+             options={({ route, navigation }) => ({
+                title: route.params.item.title,
+                headerRight: () =>{
+
+                },
+                headerLeft: () =>{
+                    return( <HeaderBackButton 
+                        tintColor={colors.white}
+                        onPress={()=>navigation.goBack()} 
+                        
+                        />)
+                   
+                }
+                 })} 
+             component={ItemDetailScreen}/>
         </ProfileStack.Navigator>
     )
 }
@@ -138,25 +182,35 @@ export const MessageStackScreen = () => {
             gestureEnabled:true,
             headerStyle: { backgroundColor: colors.grey },
             headerTitleStyle:{color:'white' , alignSelf:'center'},
-            headerRight: (props) => (
-                <AntDesign 
-                onPress={() => navigation.navigate('NotificationScreen')} 
-                style={styles.drawerButton} 
-                name="bells" 
-                size={30}/>
-
-              ),
-            headerLeft: (props) => (
-                <AntDesign 
-                onPress={() => navigation.navigate('AccountScreen')} 
-                style={styles.leftDrawer} 
-                name="user"
-                size={30}/>
-
-              ),
+           
         }}
         >
-            <MessageStack.Screen name="Inbox" component={MessageScreen}/>
+            <MessageStack.Screen name="Inbox"
+                 options={({ route, navigation }) => ({
+                    title: 'Inbox',
+                    headerRight: () =>{
+    
+                    },
+                   
+                     })} 
+             component={MessageScreen}/>
+             <MessageStack.Screen name="SingleMessage"
+              options={({ route, navigation }) => ({
+                title: route.params.item.other_user,
+                headerRight: () =>{
+
+                },
+                headerLeft: () =>{
+                    return( <HeaderBackButton 
+                        tintColor={colors.white}
+                        onPress={()=>navigation.goBack()} 
+                        
+                        />)
+                   
+                }
+                 })} 
+                 component={MessageDetailScreen}
+             />
         </MessageStack.Navigator>
     )
 }
