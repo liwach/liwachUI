@@ -13,6 +13,9 @@ import { NotificationScreen } from "../screens/NotificationScreen/NotificationSc
 import { AccountScreen } from "../screens/AccountScreen/AccountScreen";
 import { ItemDetailScreen } from "../screens/DetailScreen/ItemDetailScreen";
 import { MessageDetailScreen } from "../screens/MessageScreen/MessageDetailScreen";
+import { DrawerNavigator } from "./DrawerNavigator";
+import { DrawerActions } from '@react-navigation/native';
+
 
 const ProductStack = createStackNavigator();
 const HomeStack = createStackNavigator();
@@ -21,6 +24,7 @@ const ProfileStack = createStackNavigator();
 const MessageStack = createStackNavigator();
 const NotificationStack = createStackNavigator();
 const AccountStack = createStackNavigator();
+
 
 
 export const ProductStackScreen = () => {
@@ -94,6 +98,10 @@ export const HomeStackScreen = () => {
                 />
             <HomeStack.Screen  name="Edit Item" component={editItemForm}/>
             <HomeStack.Screen  name="AccountScreen" component={AccountScreen}/>
+            <HomeStack.Screen
+                name="DrawerNavigator"
+                component={DrawerNavigator}
+            />
             <HomeStack.Screen  name="NotificationScreen" 
             options={( { route, navigation })=>({
                 title:"Notification",
