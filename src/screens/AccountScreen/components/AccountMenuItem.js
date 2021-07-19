@@ -7,17 +7,17 @@ StyleSheet
 } from "react-native"
 import { colors } from "../../../utils/colors"
 
-export const AccountMenuItem = ({iconName,Title}) => {
+export const AccountMenuItem = ({iconName,Title,navigation,onPress}) => {
 
     return(
         <View style={styles.container}>
             <View style={[styles.icon,styles.textWithIcon,styles.container]}>
-                <AntDesign color={colors.grey} size={20} name={iconName}/>
+                <AntDesign color={colors.grey} size={20} name={iconName} />
                 <Text style={styles.text}>{Title}</Text>
             </View>
            
             <View  style={styles.icon}>
-                <AntDesign size={20} color={colors.grey} name='right' />
+                <AntDesign size={20} color={colors.grey} name='right' onPress={onPress} />
             </View>
         </View>
     )

@@ -15,6 +15,9 @@ import { ItemDetailScreen } from "../screens/DetailScreen/ItemDetailScreen";
 import { MessageDetailScreen } from "../screens/MessageScreen/MessageDetailScreen";
 import { DrawerNavigator } from "./DrawerNavigator";
 import { DrawerActions } from '@react-navigation/native';
+import { EditAccountScreen } from "../screens/AccountScreen/EditAccountScreen";
+import { SubscribeScreen } from "../screens/SubscriptionScreen/SubscribeScreen";
+import { TypeScreen } from "../screens/SubscriptionScreen/TypeScreen";
 
 
 const ProductStack = createStackNavigator();
@@ -24,7 +27,105 @@ const ProfileStack = createStackNavigator();
 const MessageStack = createStackNavigator();
 const NotificationStack = createStackNavigator();
 const AccountStack = createStackNavigator();
+const SubscribeStack = createStackNavigator();
 
+export const SubscribeStackScreen = () => {
+
+    return(
+        <SubscribeStack.Navigator
+        
+        >
+    <SubscribeStack.Screen
+     options={({ route, navigation }) => ({
+       
+        title: "Subscribe",
+        headerStyle: { backgroundColor: colors.grey },
+        headerTitleStyle:{color:'white' , alignSelf:'center', marginRight:10},
+        
+         })} 
+    name="SubscribeScreen" component={SubscribeScreen}/>
+    <SubscribeStack.Screen 
+     options={({ route, navigation }) => ({
+        
+        title: "Subscribe to Type",
+        headerStyle: { backgroundColor: colors.grey },
+        headerTitleStyle:{color:'white'},
+        headerRight: () =>{
+            return(
+                <AntDesign 
+                onPress={() => alert(route.params.item.name)} 
+                style={styles.drawerButton}
+                name='checkcircleo' 
+                size={25}
+                color={colors.black}
+                />
+            )
+           
+        },
+         })} 
+    name="TypeScreen" component={TypeScreen}/>
+    
+        </SubscribeStack.Navigator>
+    )
+
+}
+
+
+export const AccountStackScreen = () => {
+
+    return(
+        <AccountStack.Navigator
+        
+        >
+    <AccountStack.Screen
+     options={({ route, navigation }) => ({
+       
+        title: "Account Settings",
+        headerStyle: { backgroundColor: colors.grey },
+        headerTitleStyle:{color:'white' , alignSelf:'center'},
+        headerRight: () =>{
+
+        },
+        headerLeft: () =>{
+           
+           
+        }
+         })} 
+    name="AccountScreen" component={AccountScreen}/>
+    <AccountStack.Screen 
+     options={({ route, navigation }) => ({
+        
+        title: "Edit Account",
+        headerStyle: { backgroundColor: colors.grey },
+        headerTitleStyle:{color:'white'},
+        headerRight: () =>{
+            return(
+                <AntDesign 
+                onPress={() => alert(route.params.user.full_name)} 
+                style={styles.drawerButton}
+                name='delete' 
+                size={25}
+                color={colors.black}
+                />
+            )
+           
+        },
+         })} 
+    name="EditAccountScreen" component={EditAccountScreen}/>
+    <AccountStack.Screen 
+     options={({ route, navigation }) => ({
+        headerShown:false,
+        title: "Subscribe",
+        headerStyle: { backgroundColor: colors.grey },
+        headerTitleStyle:{color:'white' , alignSelf:'center'},
+
+        
+      })} 
+    name="SubscribeScreen" component={SubscribeStackScreen}/>
+    
+        </AccountStack.Navigator>
+    )
+}
 
 
 export const ProductStackScreen = () => {
@@ -97,11 +198,17 @@ export const HomeStackScreen = () => {
                 component={ItemDetailScreen}
                 />
             <HomeStack.Screen  name="Edit Item" component={editItemForm}/>
-            <HomeStack.Screen  name="AccountScreen" component={AccountScreen}/>
-            <HomeStack.Screen
-                name="DrawerNavigator"
-                component={DrawerNavigator}
-            />
+            <HomeStack.Screen 
+             options={({ route, navigation }) => ({
+       
+                headerShown:false,
+                headerRight:{
+                    
+                }
+                
+                 })} 
+            name="AccountScreen" component={AccountStackScreen}/>
+
             <HomeStack.Screen  name="NotificationScreen" 
             options={( { route, navigation })=>({
                 title:"Notification",

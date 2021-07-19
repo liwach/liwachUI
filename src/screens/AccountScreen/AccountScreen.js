@@ -5,16 +5,29 @@ import { colors } from '../../utils/colors';
 import { AccountMenuItem } from './components/AccountMenuItem';
 
 export const AccountScreen = ({navigation}) => {
-    const current_user = "Delilah Dessalegn"
+    const current_user = {
+        full_name: 'Delilah Dessalegn',
+        phone_number: '+251923289633',
+        email_address: 'delilahdessalegn@gmail.com',
+        image: "../../assets/images/hero.png"
+    }
     return(
         <View>
             <View style={styles.backgroundContainer}></View>
             <Image style={styles.imageBox} source={require("../../assets/images/hero.png")}/>
-            <Text style={styles.textContainer}>{current_user} </Text> 
-            <AccountMenuItem iconName={"edit"} Title={"Edit Profile"}/>
-            <AccountMenuItem iconName={"adduser"} Title={"Subscribe"}/>
-            <AccountMenuItem iconName={"checksquare"} Title={"Change password"}/>
-            <AccountMenuItem iconName={"sharealt"} Title={"Share"}/>
+            <Text style={styles.textContainer}>{current_user.full_name} </Text> 
+            <AccountMenuItem iconName={"edit"} Title={"Edit Profile"} navigation={navigation}
+                onPress={()=>navigation.navigate('EditAccountScreen'
+                ,{
+                    user:current_user
+                }
+                )}
+            />
+            <AccountMenuItem iconName={"adduser"} Title={"Subscribe"} navigation={navigation}
+                onPress={()=>navigation.navigate('SubscribeScreen')}
+            />
+            <AccountMenuItem iconName={"checksquare"} Title={"Change password"} navigation={navigation}/>
+            <AccountMenuItem iconName={"sharealt"} Title={"Share"} navigation={navigation}/>
         </View>
     );
 };
