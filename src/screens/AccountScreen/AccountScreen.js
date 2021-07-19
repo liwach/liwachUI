@@ -28,6 +28,7 @@ export const AccountScreen = ({navigation}) => {
             />
             <AccountMenuItem iconName={"checksquare"} Title={"Change password"} navigation={navigation}/>
             <AccountMenuItem iconName={"sharealt"} Title={"Share"} navigation={navigation}/>
+            <Button color={colors.black} style={styles.button} onPress={()=>{alert("Logged out")}}>Log out</Button>
         </View>
     );
 };
@@ -36,7 +37,7 @@ export const AccountScreen = ({navigation}) => {
 const styles = StyleSheet.create({
 
     backgroundContainer:{
-        backgroundColor: colors.grey,
+        backgroundColor: colors.purple,
         height:100,
         
     },
@@ -57,5 +58,16 @@ const styles = StyleSheet.create({
         top:30,
         textAlign:'center'
         
+    },
+
+    button:{
+        backgroundColor:colors.white,
+        borderRadius:20,
+        borderColor:colors.black,
+        color:colors.black,
+        width:'40%',
+        alignSelf: 'center',
+        marginTop: 40
     }
+
 })
