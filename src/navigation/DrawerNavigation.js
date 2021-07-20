@@ -157,22 +157,22 @@ export const HomeStackScreen = () => {
                 headerShown:true,
                 headerMode:'screen',
                 gestureEnabled:true,
-                headerStyle: { backgroundColor: colors.grey },
-                headerTitleStyle:{color:'white', },
+                headerStyle: { backgroundColor: colors.primary },
+                headerTitleStyle:{color:'white', alignSelf:'center' },
                 headerRight: (props) => (
                     <AntDesign 
                     onPress={() => navigation.navigate('NotificationScreen')} 
                     style={styles.drawerButton} 
                     name="bells" 
-                    size={30}/>
+                    size={22}/>
 
                   ),
                 headerLeft: (props) => (
                     <AntDesign 
                     onPress={() => navigation.navigate('AccountScreen')} 
                     style={styles.leftDrawer} 
-                    name="user"
-                    size={30}/>
+                    name='user'
+                    size={22}/>
 
                   ),
             })}
@@ -295,7 +295,7 @@ export const MessageStackScreen = () => {
         screenOptions={{
             headerShown:true,
             gestureEnabled:true,
-            headerStyle: { backgroundColor: colors.grey },
+            headerStyle: { backgroundColor: colors.primary },
             headerTitleStyle:{color:'white' , alignSelf:'center'},
            
         }}
@@ -312,6 +312,7 @@ export const MessageStackScreen = () => {
              <MessageStack.Screen name="SingleMessage"
               options={({ route, navigation }) => ({
                 title: route.params.item.other_user,
+                headerTitleStyle:{alignSelf:'center',marginRight:30,color:colors.white},
                 headerRight: () =>{
 
                 },

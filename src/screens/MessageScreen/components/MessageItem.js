@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
         padding:5,
     },
     item:{
-        padding:5,
+        padding:10,
         flexDirection: "row",
         backgroundColor:colors.white,
         color:colors.white,
@@ -44,16 +44,18 @@ const styles = StyleSheet.create({
        
         minWidth:80,
      
-        borderBottomWidth:1,
-        borderColor:colors.grey
+        borderBottomWidth:0.5,
+        borderColor:colors.grey,
+    
     },
     text:{
         marginLeft:10,
-        marginTop:5
+        marginTop:5,
+        color:colors.primary
     },
     title:{
-       
-        fontSize:20,
+        color:colors.primary,
+        fontSize:16,
         fontWeight:'bold'
     },
     imageBox:{
@@ -63,15 +65,16 @@ const styles = StyleSheet.create({
         margin:10
     },
     category:{
-        backgroundColor: colors.black,
+        backgroundColor: colors.peach,
         borderRadius: 20,
-        color: colors.white,
+        color: colors.primary,
         textAlign: 'center',
         width: 80,
         padding:2,
         marginLeft:10,
         marginTop:5,
-        fontSize:12
+        fontSize:12,
+
     },
     time:{
         margin:5,
@@ -79,7 +82,7 @@ const styles = StyleSheet.create({
         fontSize:10,
         alignSelf:'flex-end',
         justifyContent:'flex-start',
-        color: colors.black
+        color:colors.primary
     }
 
 

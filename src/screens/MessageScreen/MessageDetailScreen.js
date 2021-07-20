@@ -9,7 +9,8 @@ export const MessageDetailScreen = ({route,navigation}) => {
     const { item} = route.params;
     return(
         <View>
-            <TextBox item={item}/>
+            <TextBox item={item} type="send"/>
+            <TextBox item={item} type="recieve"/>
         </View>
     )
 

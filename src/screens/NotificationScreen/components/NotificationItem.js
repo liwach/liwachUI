@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
        
         minWidth:80,
      
-        borderBottomWidth:1,
+        borderBottomWidth:0.5,
         borderColor:colors.grey
     },
     text:{
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
         margin:10
     },
     category:{
-        backgroundColor: colors.black,
+        backgroundColor: colors.purple,
         borderRadius: 20,
         color: colors.white,
         textAlign: 'center',

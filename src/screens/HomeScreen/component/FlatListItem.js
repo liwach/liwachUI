@@ -41,8 +41,8 @@ const FlatListItem = ({ item, onPress, backgroundColor, textColor }) => (
 export const CategoryList = () => {
     const [selectedId, setSelectedId] = useState(null);
     const renderItem = ({ item }) => {
-        const backgroundColor = item.id === selectedId ? colors.black : "transparent";
-        const color = item.id === selectedId ? colors.white : colors.black;
+        const backgroundColor = item.id === selectedId ? colors.primary : colors.peach;
+        const color = item.id === selectedId ? colors.white : colors.primary;
         return(
           <FlatListItem
             item={item}

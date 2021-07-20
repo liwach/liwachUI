@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
         margin:10,
         fontSize:18,
         fontWeight:'bold',
-        color: colors.purple
+        color: colors.primary
     }
 })
 

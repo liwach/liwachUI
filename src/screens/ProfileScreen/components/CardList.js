@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     text:{
         marginLeft:10,
         marginTop:10,
-        color:colors.grey
+        color:colors.black
     },
     title:{
        
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
         alignSelf:'center'
     },
     category:{
-        backgroundColor: colors.black,
+        backgroundColor: colors.purple,
         borderRadius: 20,
         color: colors.white,
         textAlign: 'center',
