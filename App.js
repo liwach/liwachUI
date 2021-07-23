@@ -38,12 +38,12 @@ const initialState = {
   
 // }); 
 
-const store = createStore();
+//const store = createStore();
 
 
 export default function App() {
   return (
-    <Provider store={store}>
+    <Provider >
       <NavigationContainer>
       <BottomNavigator/>
       <StatusBar style="auto" />

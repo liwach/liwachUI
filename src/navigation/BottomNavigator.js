@@ -10,12 +10,11 @@ import { itemReducer } from "../reducers/items";
 import { Provider } from 'react-redux';
 import { HomeStackScreen, MessageStackScreen, ProductStackScreen, ProfileStackScreen } from './DrawerNavigation';
 
-const storeItem = createStore(itemReducer);
 const Tab = createBottomTabNavigator();
 
 export const BottomNavigator = ()=>{
   return (
-    <Provider store={storeItem}>
+    <Provider >
     <Tab.Navigator
     initialRouteName="Home"
     tabBarOptions={{
