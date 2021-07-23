@@ -15,35 +15,12 @@ import {
   ITEM_LOADING,
   ITEM_FAILURE,
 } from "./src/reducers/items/itemActions";
-//import { store } from './src/utils/store';
-
-
-const initialState = {
-  items: [],
- 
-};
-
- const itemsReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case FETCH_ITEMS:
-      return {...state, items: action.payload};
-    default:
-      return state;
-  }
-}
-
-
-// const rootReducer = () => combineReducers({
-//   itemsReducer,
-  
-// }); 
-
-//const store = createStore();
+import { store } from './src/utils/store';
 
 
 export default function App() {
   return (
-    <Provider >
+    <Provider store={store}>
       <NavigationContainer>
       <BottomNavigator/>
       <StatusBar style="auto" />

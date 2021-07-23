@@ -1,4 +1,4 @@
-import React,{useState} from "react"
+import React,{useState, useEffect} from "react"
 import { 
     View,
     FlatList,
@@ -12,7 +12,8 @@ import {
 import { color } from "react-native-reanimated";
 import { colors } from "../../../utils/colors";
 import { SwapButton } from "./SwapButton";
-import { getItems, getItem } from "../../../reducers/items/itemActions";
+import { getItems, getItem, fetchitems } from "../../../reducers/items/itemActions";
+import { useSelector, useDispatch } from 'react-redux';
 
 const DATA = [
   {
@@ -111,12 +112,12 @@ export const Section = ({navigation},onPressHandler) => {
   
     
     const [selectedId, setSelectedId] = useState(null);
-    //const items = useSelector(state => state.store.items);
-    //const dispatch = useDispatch();
-    const [selectItem, setSelectedItem] = useState([]);
-    //const fetchItems = () => dispatch(getItems());
+    const items = useSelector(state => state.itemsReducer);
+    const dispatch = useDispatch();
+    //const [selectItem, setSelectedItem] = useState([]);
+    const fetchItems = () => dispatch(fetchitems());
     useEffect(() => {
-      setSelectedItem(DATA);
+      fetchItems()
     }, []);
     const renderItem = ({ item }) => {
         const backgroundColor = item.id === selectedId ? "transparent" : "transparent";
@@ -144,7 +145,7 @@ export const Section = ({navigation},onPressHandler) => {
       
         >
             <FlatList
-              data={selectItem}
+              data={items}
               renderItem={renderItem}
               keyExtractor={(item) => item.id}
               extraData={selectedId}
