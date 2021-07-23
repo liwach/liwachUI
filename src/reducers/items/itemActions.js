@@ -8,7 +8,7 @@ export const ADD_ITEM = "ADD_ITEM";
 
 export const getItem = () => {
   try {
-      const res = await axios.get(`${API_URL}/item`);
+      const res = axios.get(`${API_URL}/item`);
       if (res.data) {
         console.log(res.data)
       } else {
