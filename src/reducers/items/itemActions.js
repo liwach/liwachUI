@@ -4,6 +4,44 @@ export const FETCH_ITEMS = "FETCH_ITEMS";
 export const ITEM_LOADING = "ITEM_LOADING";
 export const ITEM_FAILURE = "ITEM_FAILURE";
 export const ADD_ITEM = "ADD_ITEM";
+
+
+export const getItem = () => {
+  try {
+      const res = await axios.get(`${API_URL}/item`);
+      if (res.data) {
+        console.log(res.data)
+      } else {
+        console.log('Unable to fetch');
+      }
+    }
+  catch (error) {
+    // Add custom logic to handle errors
+  }
+  re
+};
+
+
+
+export const getItems = () => {
+  try {
+    return async dispatch => {
+      const res = await axios.get(`${API_URL}/item`);
+      if (res.data) {
+        dispatch({
+          type: FETCH_ITEMS,
+          payload: res.data,
+        });
+      } else {
+        console.log('Unable to fetch');
+      }
+    };
+  } catch (error) {
+    // Add custom logic to handle errors
+  }
+};
+
+
 export const fetchitems = () => {
   return async (dispatch) => {
     dispatch({
