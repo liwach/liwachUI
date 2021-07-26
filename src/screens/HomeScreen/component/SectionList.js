@@ -12,8 +12,11 @@ import {
 import { color } from "react-native-reanimated";
 import { colors } from "../../../utils/colors";
 import { SwapButton } from "./SwapButton";
-import { getItems, getItem, fetchitems } from "../../../reducers/items/itemActions";
+//import { getItems, getItem, fetchitems } from "../../../reducers/items/itemActions";
 import { useSelector, useDispatch } from 'react-redux';
+import { SelectAllItems } from "../../../reducers/items/itemReducer";
+import { getItems, selectAllItems } from "../../../redux/itemSlice";
+import { getAllItems } from "../../../routes/itemsApi";
 
 const DATA = [
   {
@@ -92,10 +95,10 @@ const FlatListItem = ({navigation, item, onPress, backgroundColor, textColor }) 
 
         
         <View style={[styles.cardContainer,backgroundColor]}> 
-            <Image source={item.source} style={{borderTopRightRadius:20,borderTopLeftRadius:20,width:180}}/>
+            <Image source={require("../../../assets/images/hero.png")} style={{borderTopRightRadius:20,borderTopLeftRadius:20,width:180}}/>
             <View style={styles.shadow}>
               <View style={styles.horizontalContainer}>
-                <Text style={[ styles.header, textColor]}>{item.title}</Text>
+                <Text style={[ styles.header, textColor]}>{item.name}</Text>
                 <SwapButton item={item}/>
                
               </View>
@@ -112,14 +115,23 @@ export const Section = ({navigation},onPressHandler) => {
   
     
     const [selectedId, setSelectedId] = useState(null);
-    const items = useSelector(state => state.itemsReducer);
-    const dispatch = useDispatch();
-    //const [selectItem, setSelectedItem] = useState([]);
-    const fetchItems = () => dispatch(fetchitems());
+
+    const [data, setData] = useState("");
+    const [loading, setLoading] = useState(true);
+  
+    const fetchData = async () => {
+      const items = await getAllItems()
+      setData(items);
+      setLoading(false);
+
+    };
+
     useEffect(() => {
-      fetchItems()
+      fetchData();
     }, []);
+ 
     const renderItem = ({ item }) => {
+        console.log(`RenderItem: ${item}`)
         const backgroundColor = item.id === selectedId ? "transparent" : "transparent";
         const color = item.id === selectedId ? colors.black : colors.black;
         return(
@@ -145,7 +157,7 @@ export const Section = ({navigation},onPressHandler) => {
       
         >
             <FlatList
-              data={items}
+              data={data}
               renderItem={renderItem}
               keyExtractor={(item) => item.id}
               extraData={selectedId}

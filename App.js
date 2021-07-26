@@ -15,7 +15,7 @@ import {
   ITEM_LOADING,
   ITEM_FAILURE,
 } from "./src/reducers/items/itemActions";
-import { store } from './src/utils/store';
+import store  from './src/utils/store';
 
 
 export default function App() {

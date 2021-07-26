@@ -1,13 +1,12 @@
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
-import  {itemsReducer}  from '../reducers/items/itemReducer';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { configureStore } from '@reduxjs/toolkit'
+import itemsReducer from '../redux/itemSlice'
 
-
-const rootReducer = () => combineReducers({
-            itemsReducer,
-            
-        }); 
-
-
-export const store = createStore(rootReducer,composeWithDevTools(applyMiddleware(thunk)));
+export default configureStore({
+    reducer: {
+      items: itemsReducer,
+      
+    },
+  })

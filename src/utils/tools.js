@@ -4,6 +4,24 @@ import * as Permissions from "expo-permissions";
 import Constants from "expo-constants";
 
 
+export const timeoutPromise = (url) => {
+  return new Promise((resolve, reject) => {
+    const timeoutId = setTimeout(() => {
+      reject(new Error("Timeout, Server is not responding"));
+    }, 20 * 1000);
+    url.then(
+      (res) => {
+        clearTimeout(timeoutId);
+        resolve(res);
+      },
+      (err) => {
+        clearTimeout(timeoutId);
+        reject(err);
+      }
+    );
+  });
+};
+
 export const _pickImage = async (action) => {
     try {
       if (Constants.platform.ios) {
