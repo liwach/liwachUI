@@ -28,11 +28,12 @@ import * as yup from 'yup'
 import { Formik } from 'formik'
 import {launchImageLibrary} from 'react-native-image-picker';
 //Action
-import { addItem, fetchItem,requestItem,addUser,fetchRequests } from "../../reducers";
+//import { addItem, fetchItem,requestItem,addUser,fetchRequests } from "../../reducers";
 //PropTypes check
 import PropTypes from "prop-types";
 
 import { Dropdown } from 'react-native-material-dropdown-v2-fixed';
+import { addItem } from '../../routes/itemsApi';
 
 export const addItemForm = (props) => {
 
@@ -56,7 +57,19 @@ export const addItemForm = (props) => {
         location: '',
         swap: '',  
       }}
-      onSubmit={values => Alert.alert(JSON.stringify(values))}
+      onSubmit={
+        values => 
+         {
+           const name = values.title
+           const description = values.description
+           const response = addItem(
+            name, 
+            description, 
+            )
+           Alert.alert(JSON.stringify(response))
+          
+          }
+      }
       validationSchema={yup.object().shape({
         title: yup
           .string()

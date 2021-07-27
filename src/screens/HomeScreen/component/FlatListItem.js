@@ -1,4 +1,4 @@
-import React,{useState} from "react"
+import React,{useState, useEffect} from "react"
 import { 
     View,
     FlatList,
@@ -9,6 +9,7 @@ import {
     TouchableOpacity  
     } from "react-native"
 import { colors } from "../../../utils/colors";
+import { getAllTypes } from "../../../routes/TypeApi";
 
 const DATA = [
 
@@ -33,13 +34,30 @@ const DATA = [
 const FlatListItem = ({ item, onPress, backgroundColor, textColor }) => (
 
         <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-            <Text style={[styles.title, textColor]}>{item.title}</Text>
+            <Text style={[styles.title, textColor]}>{item.name}</Text>
         </TouchableOpacity>
     
 )
 
 export const CategoryList = () => {
     const [selectedId, setSelectedId] = useState(null);
+    const [data, setData] = useState("");
+    const [loading, setLoading] = useState(true);
+  
+  
+    const fetchData = async () => {
+      const items = await getAllTypes()
+      setData(items);
+      setLoading(false);
+      
+    };
+
+    useEffect(() => {
+      fetchData();
+    }, []);
+
+
+
     const renderItem = ({ item }) => {
         const backgroundColor = item.id === selectedId ? colors.primary : colors.peach;
         const color = item.id === selectedId ? colors.white : colors.primary;
@@ -57,7 +75,7 @@ export const CategoryList = () => {
     return(
         <SafeAreaView style={styles.container}>
             <FlatList
-              data={DATA}
+              data={data}
               renderItem={renderItem}
               keyExtractor={(item) => item.id}
               extraData={selectedId}
