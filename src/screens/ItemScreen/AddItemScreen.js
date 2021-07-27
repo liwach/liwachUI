@@ -34,11 +34,16 @@ import PropTypes from "prop-types";
 
 import { Dropdown } from 'react-native-material-dropdown-v2-fixed';
 import { addItem } from '../../routes/itemsApi';
+import MapboxAutocomplete from 'react-mapbox-autocomplete';
+import { MAPBOX_KEY } from '../../utils/config';
 
 export const addItemForm = (props) => {
 
   const [dropdown, setDropdown] = useState(null);
   const [selected, setSelected] = useState([]);
+  _suggestionSelect =(result, lat, lng, text) => {
+    console.log(result, lat, lng, text)
+  }
 
   const inputStyle = {
     borderWidth: 1,
@@ -131,6 +136,11 @@ export const addItemForm = (props) => {
           {touched.location && errors.location &&
             <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.location}</Text>
           } 
+
+          <MapboxAutocomplete publicKey= {MAPBOX_KEY}
+                              onSuggestionSelect={_suggestionSelect}
+                              country='et'
+                              resetSearch={false}/>
 
           <TextInput
             value={values.swap}
