@@ -158,7 +158,7 @@ export const HomeStackScreen = () => {
                 headerMode:'screen',
                 gestureEnabled:true,
                 headerStyle: { backgroundColor: colors.primary },
-                headerTitleStyle:{color:'white', alignSelf:'center' },
+                headerTitleStyle:{color:'white', alignSelf:'center', marginRight:50 },
                 headerRight: (props) => (
                     <AntDesign 
                     onPress={() => navigation.navigate('NotificationScreen')} 
@@ -181,7 +181,7 @@ export const HomeStackScreen = () => {
             <HomeStack.Screen  name="Detail Screen" component={DetailScreen}/>
             <HomeStack.Screen  name="Single Item"  
              options={({ route, navigation }) => ({
-                title: route.params.item.title,
+                title: route.params.item.name,
                 headerRight: () =>{
 
                 },

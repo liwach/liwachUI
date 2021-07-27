@@ -119,11 +119,12 @@ export const Section = ({navigation},onPressHandler) => {
     const [data, setData] = useState("");
     const [loading, setLoading] = useState(true);
   
+  
     const fetchData = async () => {
       const items = await getAllItems()
       setData(items);
       setLoading(false);
-
+      
     };
 
     useEffect(() => {
@@ -131,7 +132,29 @@ export const Section = ({navigation},onPressHandler) => {
     }, []);
  
     const renderItem = ({ item }) => {
-        console.log(`RenderItem: ${item}`)
+        //console.log(`RenderItem: ${item}`)
+        
+        const swap_types = item.item_swap_type.map(function(data, idx){
+          return(
+            {
+              id: data.type_id,
+            }
+          )
+         });
+
+        const singleItem = {
+          name: item.name,
+          location:item.bartering_location.city,
+          picture: "",
+          category: item.type == null ? "No Type": item.type.name,
+          time: item.created_at,
+          swap_type: swap_types,
+          number_request: item.number_of_request,
+          user: item.user == null? "":item.user.first_name,
+          status: item.status,
+          desc: item.description
+    
+        }
         const backgroundColor = item.id === selectedId ? "transparent" : "transparent";
         const color = item.id === selectedId ? colors.black : colors.black;
         return(
@@ -141,7 +164,7 @@ export const Section = ({navigation},onPressHandler) => {
             onPress={() => 
               /* 1. Navigate to the Details route with params */
               navigation.navigate('Single Item', {
-                item:item
+                item:singleItem
               })}
             
             backgroundColor={{ backgroundColor }}

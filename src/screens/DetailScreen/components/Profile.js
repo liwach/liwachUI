@@ -13,7 +13,7 @@ export const ProfileDetail = ({user,barter,time}) => {
                 <Text style={styles.user}>{user}</Text>
                 <View style={styles.horizontal}>
                     <AntDesign name={'swap'} size={13} style={styles.iconDesc}/>
-                    <Text style={styles.barter}>{barter}</Text>
+                    <Text style={styles.barter}>{barter} requests</Text>
                 </View>
                 <View style={styles.horizontal}>
                     <AntDesign name={'clockcircleo'} size={13} style={styles.iconDesc}/>
