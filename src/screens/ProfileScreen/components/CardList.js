@@ -14,13 +14,15 @@ import { colors } from "../../../utils/colors";
 
 
 const FlatListItem = ({ item, onPress, backgroundColor, textColor }) => (
+
+        
         
         <TouchableOpacity style={[styles.item, backgroundColor]} onPress={onPress}>
             <View>           
                  <Image source={require("../../../assets/images/hero.png")} style={styles.imageBox}/>
             </View>
             <View>
-                <Text style={[styles.title, styles.text]}>{item.title}</Text>
+                <Text style={[styles.title, styles.text]}>{item.name}</Text>
                 <Text style={[styles.category]}>{item.category}</Text>
                 <Text style={[styles.text]}>Swap with: {item.title}</Text>
             </View>
@@ -31,12 +33,35 @@ const FlatListItem = ({ item, onPress, backgroundColor, textColor }) => (
     
 )
 
-export const CardList = ({data,navigation}) => {
-    const [selectedId, setSelectedId] = useState(null);
+export const CardList = ({item,navigation}) => {
+   
    
     const renderItem = ({ item }) => {
-        const backgroundColor = item.id === selectedId ? colors.white : colors.white;
-        const color = item.id === selectedId ? colors.white : colors.black;
+        // const backgroundColor = item.id === selectedId ? colors.white : colors.white;
+        // const color = item.id === selectedId ? colors.white : colors.black;
+
+        // const [selectedId, setSelectedId] = useState(null);
+        const swap_types = item.item_swap_type.map(function(data, idx){
+            return(
+              {
+                id: data.type_id,
+              }
+            )
+           });
+    
+          const singleItem = {
+            name: item.name,
+            location:item.bartering_location.city,
+            picture: "",
+            category: item.type == null ? "No Type": item.type.name,
+            time: item.created_at,
+            swap_type: swap_types,
+            number_request: item.number_of_request,
+            user: item.user == null? "":item.user.first_name,
+            status: item.status,
+            desc: item.description
+      
+          }
         
         return(
           <FlatListItem
@@ -44,12 +69,9 @@ export const CardList = ({data,navigation}) => {
             onPress={() => 
                 /* 1. Navigate to the Details route with params */
                 navigation.navigate('Post Detail Screen', {
-                  item:item
+                  item:singleItem
                 })
             }
-            backgroundColor={{ backgroundColor }}
-            textColor={{ color }}
-            
           />
         )
       }
@@ -57,10 +79,9 @@ export const CardList = ({data,navigation}) => {
     return(
         <SafeAreaView style={styles.container}>
             <FlatList
-              data={data}
+              data={item}
               renderItem={renderItem}
               keyExtractor={(item) => item.id}
-              extraData={selectedId}
               
             />
         </SafeAreaView>
