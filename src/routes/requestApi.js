@@ -14,7 +14,7 @@ export const getAllRequests = async () => {
         if (res.data) {
         //console.log(`Axios:${JSON.stringify(res.data)}`)
         const items = res.data.data
-        console.log(items)
+        
         return items
         } else {
           console.log('Unable to fetch');

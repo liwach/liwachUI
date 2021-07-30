@@ -7,13 +7,36 @@ import {
     StyleSheet, 
     Text, 
     TouchableOpacity ,
-    Image 
+    Image,
+    Modal, 
+    Alert
     } from "react-native"
 import { colors } from "../../../utils/colors";
 import { AntDesign } from "@expo/vector-icons";
+import { sendMessage } from "../../../routes/messageApi";
+import { ExchangeButton, ChatButton } from "./ActionButtons";
 
 
-const FlatListItem = ({ item, onPress, backgroundColor, textColor }) => (
+const ModalBox = ({visible}) => {
+    return(
+        <Modal
+            animationType="slide"
+            transparent={true}
+            visible={visible}
+            onRequestClose = { () => {
+                Alert.alert("Modal is closed")
+            }
+
+            }
+        />
+    )
+}
+
+
+
+const FlatListItem = ({ item, onPress, onMessagePress, backgroundColor, textColor }) => (
+
+        
     
         <TouchableOpacity style={[styles.item, backgroundColor]} >
             <View>           
@@ -42,9 +65,9 @@ const FlatListItem = ({ item, onPress, backgroundColor, textColor }) => (
 {
                item.status == "accepted" ?
                  <View style={[styles.horizontal]}>
-                <AntDesign style={[styles.timeTexts,styles.icons]} name='swap' size={25} color={colors.primary} onPress={()=>{alert("Message")}}  />
-
-                 <AntDesign style={[styles.timeTexts,styles.icons]} name='message1' size={20} color={colors.primary}  />
+                 <ExchangeButton/>
+                 <ChatButton/>
+                <AntDesign style={[styles.timeTexts,styles.icons]} name='message1' size={20} color={colors.primary} onPress={()=>{alert(sendMessage("","Text","shdjfhjdkfdk",1))}}  />
 
              </View>
              : <View/>
@@ -56,7 +79,6 @@ const FlatListItem = ({ item, onPress, backgroundColor, textColor }) => (
 )
 
 export const RequestCardList = ({item,navigation}) => {
-    console.log(`RenderList:${item}`)
    
     const renderItem = ({ item }) => {
         // const backgroundColor = item.id === selectedId ? colors.white : colors.white;
@@ -75,7 +97,11 @@ export const RequestCardList = ({item,navigation}) => {
         //     time : item.updated_at,
         //     requester_user : item.requester_user
         //   }
-      
+        
+        // const send = () => {
+        //     const response = sendMessage("","Text","shdjfhjdkfdk",1)
+        //     alert(response.data)
+        // }
         
         return(
           <FlatListItem
@@ -84,8 +110,8 @@ export const RequestCardList = ({item,navigation}) => {
                 /* 1. Navigate to the Details route with params */
                 navigation.navigate('Post Detail Screen', {
                   item:item
-                })
-            }
+                })}
+          
           />
         )
       }

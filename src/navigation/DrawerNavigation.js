@@ -236,7 +236,7 @@ export const ProfileStackScreen = () => {
         screenOptions={{
             headerShown:true,
             gestureEnabled:true,
-            headerStyle: { backgroundColor: colors.grey },
+            headerStyle: { backgroundColor: colors.primary },
             headerTitleStyle:{color:'white', alignSelf:'center'},
             headerRight: (props) => (
                 <AntDesign 
