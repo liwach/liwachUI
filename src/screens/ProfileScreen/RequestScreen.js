@@ -1,7 +1,7 @@
 import React,{useState, useEffect} from 'react'
 import {View,Text,ScrollView, StyleSheet} from "react-native"
-import {CardList} from "./components/CardList"
-import { getAllItems } from '../../routes/itemsApi'
+import {RequestCardList} from "./components/RequestCardList"
+import { getAllRequests } from '../../routes/requestApi'
 
 
 
@@ -11,7 +11,8 @@ export const RequestScreen = ({navigation}) => {
 
 
   const fetchData = async () => {
-    const items = await getAllItems()
+    const items = await getAllRequests()
+    
     setData(items);
     setLoading(false);
     
@@ -23,7 +24,7 @@ export const RequestScreen = ({navigation}) => {
 
     return(
         <View>
-             <CardList navigation={navigation} item={data} />
+             <RequestCardList navigation={navigation} item={data} />
         </View>
     )
 
