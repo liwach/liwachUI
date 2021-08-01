@@ -15,12 +15,18 @@ import java.util.ArrayList;
 import org.reactnative.maskedview.RNCMaskedViewPackage;
 // react-native-cross-actionsheet
 import me.aelesia.ActionSheetAndroidPackage;
+// react-native-element-dropdown
+import com.element.dropdown.ElementDropdownPackage;
 // react-native-gesture-handler
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 // react-native-image-picker
 import com.imagepicker.ImagePickerPackage;
+// react-native-pager-view
+import com.reactnativecommunity.viewpager.RNCViewPagerPackage;
 // react-native-reanimated
 import com.swmansion.reanimated.ReanimatedPackage;
+// react-native-safe-area-context
+import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
 // react-native-screens
 import com.swmansion.rnscreens.RNScreensPackage;
 // react-native-vector-icons
@@ -72,9 +78,12 @@ public class PackageList {
       new MainReactPackage(mConfig),
       new RNCMaskedViewPackage(),
       new ActionSheetAndroidPackage(),
+      new ElementDropdownPackage(),
       new RNGestureHandlerPackage(),
       new ImagePickerPackage(),
+      new RNCViewPagerPackage(),
       new ReanimatedPackage(),
+      new SafeAreaContextPackage(),
       new RNScreensPackage(),
       new VectorIconsPackage()
     ));
