@@ -57,8 +57,9 @@ export const SignUpSecond = ({navigation}) => {
   const [date, setDate] = useState(new Date(1598051730000));
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
-  const [place,setPlace] = useState([])
+  const [place,setPlace] = useState('')
   const [location,setLocation] = useState([])
+  const [phoneNumber,setPhone] = useState('')
   const [info,setInfo] = useState([])
 
   _suggestionSelect =(result, lat, lng, text) => {
@@ -102,30 +103,34 @@ export const SignUpSecond = ({navigation}) => {
        });
      
    text.length == 0 ? setLocation([]): setLocation(swap_types)
-   
+   await setPlace(text)
   }
  
   const clearData = () => {
+ 
         setLocation([])
-        setPlace(info)
+        
   }
 
+  
   const setAddress = (text) => {
       setInfo(text)
       setPlace(info)
       console.log("text",text)
   }
 
+   
+ 
   
-const FlatListItem = ({ item, onPress }) => (
+// const FlatListItem = ({ item, onPress }) => (
   
-    <TouchableOpacity style={styles.listItem}   onPress={onPress}  >
-        <Text >{item.data.place_name}</Text>
-    </TouchableOpacity>
+//     <TouchableOpacity style={styles.listItem}  onPress={onPress} onLongPress={item} >
+//         <Text >{item.data.place_name}</Text>
+//     </TouchableOpacity>
   
 
 
-)
+// )
   
 
 
@@ -134,22 +139,55 @@ const [selectedId, setSelectedId] = useState(null);
 
 const [loading, setLoading] = useState(true);
 
+const FlatListData = ({ list, onItemClick }) => {
 
-const renderItem = ({ item }) => {
+  
 
-  const backgroundColor = item.id === selectedId ? colors.primary : colors.peach;
-    console.log(`render:${backgroundColor}`)
+
+  const renderItem = ({ item }) => {
+ 
+    // _replaceAddress = ({item}) => {
+    //   console.log("touched:",item)
+    // }
+    const backgroundColor = item.id === selectedId ? colors.primary : colors.peach;
+      console.log(`render:${item.data.place_name}`)
+      return(
+        <TouchableOpacity style={styles.listItem}  onPress={()=>onItemClick(item)}  >
+        <Text >{item.data.place_name}</Text>
+        </TouchableOpacity>
+      )
+    }
+
     return(
-      <FlatListItem
-      
-        item={item}
-        onPress={() => setSelectedId(item.id)}
-        
-      
-      />
+      <SafeAreaView
+       style={styles.list}
+       
+       >
+      <FlatList
+       data={list}
+       renderItem={renderItem}
+       keyExtractor={(item) => item.id}
+       extraData={selectedId}
+       horizontal={false}
+       keyboardShouldPersistTaps="handled"
+       style={{
+           elevation:3,
+           zIndex: 3
+       }}
+     />
+     </SafeAreaView>
     )
-  }
+  
 
+
+}
+const itemClick = (item) => {
+  setPlace(item.data.place_name)
+  clearData()
+  console.log("touched:",item.data.place_name)
+  // console.log("touched place:",place)
+
+}
   return (
     
     <View style={styles.contain}>
@@ -175,10 +213,14 @@ const renderItem = ({ item }) => {
       onSubmit={
         values => 
          {
-           values.address = info.data.place_name
+          //  values.address = info.data.place_name
+          //  setPhone(values.phoneNumber)
+          //  console.log("address",place)
+          //  console.log("phone",phoneNumber)
+          alert(values)
         }
       }
-
+      
       
       validationSchema={yup.object().shape({
         firstName: yup
@@ -211,26 +253,14 @@ const renderItem = ({ item }) => {
             <TextInput
             value={place}
             style={styles.inputStyle}
-            onChangeText={text =>displayList(text)}
+            onChangeText={text =>{displayList(text), setPlace(text)}}
             onBlur={() => setFieldTouched('address')}
             placeholder="Address"
             placeholderTextColor={colors.flord}
             onEndEditing={clearData}
-            
+            onChange={event => setFieldValue(event.target.value)}
              />
-             <SafeAreaView style={styles.list}>
-             <FlatList
-              data={location}
-              renderItem={renderItem}
-              keyExtractor={(item) => item.id}
-              extraData={selectedId}
-              horizontal={false}
-              style={{
-                  elevation:3,
-                  zIndex: 3
-              }}
-            />
-            </SafeAreaView>
+             <FlatListData list={location} onItemClick={itemClick} />
          
 {/*           
           {touched.address && errors.address &&
@@ -286,25 +316,14 @@ const renderItem = ({ item }) => {
             <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{errors.birthDate}</Text>
           }
 
-<CustomPicker/>
-          {touched.membership && errors.membership &&
-            <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{errors.membership}</Text>
-          }
-        
-     
-
-        
-      
-       
-   
-      
-
+          <CustomPicker/>
+          
        
           <Button
             
             color={colors.flord_intro2}
             title='Sign Up'
-            onPress={()=>ToastAndroid.show("Registered",ToastAndroid.SHORT)}
+            onPress={()=>alert(location)}
             
           />
          
@@ -338,7 +357,8 @@ const styles = StyleSheet.create({
         margin: 10,
         borderBottomWidth:0.5,
         alignContent:'center',
-        borderBottomColor: colors.flord_secondary
+        borderBottomColor: colors.flord_secondary,
+        
   },
   cover :{
     zIndex:100,
