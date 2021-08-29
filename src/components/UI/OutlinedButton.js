@@ -17,16 +17,16 @@ const styles = StyleSheet.create({
     container:{
         borderWidth:1,
         borderRadius:20,
-        borderColor: colors.black,
+        borderColor: colors.flord_secondary,
         minWidth: 80,
         padding:2,
         width: '20%',
         marginLeft:20,
         marginBottom:20,
-        backgroundColor:'transparent'
+        backgroundColor: colors.flord_secondary
     },
     textContainer:{
-        color: colors.black,
+        color: colors.flord_intro,
         textAlign:'center',
         
     }

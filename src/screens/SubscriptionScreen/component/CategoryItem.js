@@ -15,7 +15,7 @@ export const CategoryItem = ({item,onPress}) => {
 const styles = StyleSheet.create({
 
     container:{
-        backgroundColor:colors.purple,
+        backgroundColor:colors.flord_intro2,
         margin:20,
         width: "70%",
         padding:20,

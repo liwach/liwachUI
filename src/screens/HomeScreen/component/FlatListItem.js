@@ -11,25 +11,7 @@ import {
 import { colors } from "../../../utils/colors";
 import { getAllTypes } from "../../../routes/TypeApi";
 
-const DATA = [
 
-  {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-    title: "Electronics",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d72",
-    title: "Clothes",
-  },
-  {
-    id: "50694a0f-3da1-471f-bd96-145571e29d72",
-    title: "Clothes",
-  },
-  {
-    id: "57694a0f-3da1-471f-bd96-145571e29d72",
-    title: "Clothes",
-  },
-];
 
 const FlatListItem = ({ item, onPress, backgroundColor, textColor }) => (
 
@@ -59,8 +41,8 @@ export const CategoryList = () => {
 
 
     const renderItem = ({ item }) => {
-        const backgroundColor = item.id === selectedId ? colors.primary : colors.peach;
-        const color = item.id === selectedId ? colors.white : colors.primary;
+        const backgroundColor = item.id === selectedId ? colors.flord_intro : colors.flord_intro2;
+        const color = item.id === selectedId ? colors.white : colors.white;
         return(
           <FlatListItem
             item={item}
@@ -89,18 +71,18 @@ const styles = StyleSheet.create({
 
     container:{
         position:'absolute',
-        marginTop: StatusBar.currentHeight || 0, 
+        marginTop: 10,
         height:30,
-        margin:20,
+        
     },
     item:{
         color:colors.white,
         marginRight:20,
         padding:5,
         minWidth:80,
-        borderRadius:20,
+        borderRadius:10,
         borderWidth:1,
-        borderColor:colors.white
+        borderColor:colors.flord_secondary
     },
     title:{
         textAlign:'center'

@@ -35,12 +35,12 @@ android_library(
 
 android_build_config(
     name = "build_config",
-    package = "com.delilahdessalegn.LiwachUI",
+    package = "com.liwach",
 )
 
 android_resource(
     name = "res",
-    package = "com.delilahdessalegn.LiwachUI",
+    package = "com.liwach",
     res = "src/main/res",
 )
 

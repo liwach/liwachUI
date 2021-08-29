@@ -9,6 +9,7 @@ import { createStore } from "redux";
 import { itemReducer } from "../reducers/items";
 import { Provider } from 'react-redux';
 import { HomeStackScreen, MessageStackScreen, ProductStackScreen, ProfileStackScreen } from './DrawerNavigation';
+import  Icon  from 'react-native-vector-icons/Ionicons';
 
 const Tab = createBottomTabNavigator();
 
@@ -18,55 +19,52 @@ export const BottomNavigator = ()=>{
     <Tab.Navigator
     initialRouteName="Home"
     tabBarOptions={{
-      activeTintColor: colors.black,
+      activeTintColor: colors.flord,
+      inactiveTintColor:colors.flord,
+      
       style:{
+        fontWeight:'bold',
         borderTopWidth: 0,
-        backgroundColor: "transparent",
+        backgroundColor: "#E1CCC7",
         elevation:0,
-      }
+      },
+      keyboardHidesTabBar: true
+      
     }}
     screenOptions={({ route }) => ({
       tabBarIcon: ({ focused }) => {
         let iconName;
-        const color = focused ? colors.black : colors.grey;
+        const color = focused ? colors.flord_intro2 : colors.flord_intro;
         if (route.name === 'Home') {
-          iconName = 'home';
-        } else if (route.name === 'Add') {
-          iconName = 'plus';
-        }
+          iconName = 'home-outline';
+        } 
         else if (route.name === 'Profile') {
-          iconName = 'idcard';
+          iconName = 'list';
         }
         else if (route.name === 'Message') {
-          iconName = 'mail';
+          iconName = 'mail-outline';
         }   
-        return <AntDesign name={iconName} size={23} color={color} />;
+        return <Icon name={iconName} size={23} color={color} />;
       },
     })}
 
     barStyle={{
-      backgroundColor: colors.black,
+      backgroundColor: colors.primary,
       height: 50,
       justifyContent: 'center',
     }}
-    activeColor={colors.light_grey}
-    inactiveColor={colors.white}
+    activeColor={colors.flord}
+    inactiveColor={colors.flord}
     >
       <Tab.Screen 
       name="Home" 
       component={HomeStackScreen}
       
-      options={{
+      options= {{
         tabBarLabel: 'Home',
       }}
       />
-      <Tab.Screen 
-      name="Add" 
-      component={ProductStackScreen}
-      options={{
-        tabBarLabel: 'Add Item',
-      }}
-      />
+     
       <Tab.Screen 
       name="Profile" 
       component={ProfileStackScreen}

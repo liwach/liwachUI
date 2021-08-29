@@ -23,8 +23,18 @@ const FlatListItem = ({ item, onPress, backgroundColor, textColor }) => (
             </View>
             <View>
                 <Text style={[styles.title, styles.text]}>{item.name}</Text>
+                {console.log("Category in item",item.category)}
                 <Text style={[styles.category]}>{item.category}</Text>
-                <Text style={[styles.text]}>Swap with: {item.title}</Text>
+                <View style={styles.horizontal}>
+                <Text style={[styles.text]}>Swap with:</Text>
+                {item.swap_type.map((prop, key) => {
+                    
+                    return (
+                      <Text style={[styles.text]}> {prop.id},</Text>
+                    );
+                  })}
+                </View>
+                {/* <Text style={[styles.text]}>Swap with: {item.swap_types}</Text> */}
             </View>
             <View style={[styles.time]}>
             <Text style={[styles.time]}>{item.time}</Text>
@@ -35,25 +45,26 @@ const FlatListItem = ({ item, onPress, backgroundColor, textColor }) => (
 
 export const CardList = ({item,navigation}) => {
    
-   
+  
+
     const renderItem = ({ item }) => {
         // const backgroundColor = item.id === selectedId ? colors.white : colors.white;
         // const color = item.id === selectedId ? colors.white : colors.black;
-
         // const [selectedId, setSelectedId] = useState(null);
         const swap_types = item.item_swap_type.map(function(data, idx){
             return(
               {
                 id: data.type_id,
+                
               }
             )
            });
-    
+
           const singleItem = {
             name: item.name,
             location:item.bartering_location.city,
             picture: "",
-            category: item.type == null ? "No Type": item.type.name,
+            category: item.type.name,
             time: item.created_at,
             swap_type: swap_types,
             number_request: item.number_of_request,
@@ -62,10 +73,9 @@ export const CardList = ({item,navigation}) => {
             desc: item.description
       
           }
-        
         return(
           <FlatListItem
-            item={item}
+            item={singleItem}
             onPress={() => 
                 /* 1. Navigate to the Details route with params */
                 navigation.navigate('Post Detail Screen', {
@@ -93,23 +103,27 @@ const styles = StyleSheet.create({
     container:{
         marginTop: StatusBar.currentHeight || 0, 
         margin:10,
-        elevation:2,
+        backgroundColor:colors.background,
+       
+       
     },
     item:{
         flexDirection: "row",
-        backgroundColor:colors.white,
+        backgroundColor:colors.bottomNav,
         color:colors.white,
         margin:5,
         padding:5,
         minWidth:80,
         borderRadius:20,
-        borderWidth:1,
-        borderColor:colors.white
+        elevation:3
+    },
+    horizontal:{
+      flexDirection:"row"
     },
     text:{
         marginLeft:10,
         marginTop:10,
-        color:colors.black
+        color:colors.flord_intro
     },
     title:{
        
@@ -126,9 +140,9 @@ const styles = StyleSheet.create({
         alignSelf:'center'
     },
     category:{
-        backgroundColor: colors.purple,
+        backgroundColor: colors.flord_intro2,
         borderRadius: 20,
-        color: colors.white,
+        color: colors.flord_intro,
         textAlign: 'center',
         width: 80,
         padding:2,
@@ -142,7 +156,7 @@ const styles = StyleSheet.create({
         fontSize:10,
         alignSelf:'flex-end',
         justifyContent:'flex-start',
-        color: colors.black
+        color:colors.flord_intro
     }
 
 

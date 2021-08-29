@@ -16,15 +16,16 @@ export const ProfileScreen = () => {
     <Tab.Navigator
       initialRouteName="Posts"
       tabBarOptions={{
-        activeTintColor: colors.black,
+        activeTintColor: colors.white,
+        
         labelStyle: { fontSize: 12 },
-        style: { backgroundColor: colors.white },
+        style: { backgroundColor: colors.flord_intro2,elevation:0 },
       }}
     >
       <Tab.Screen
         name="Posts"
         component={PostScreen}
-        options={{ tabBarLabel: 'Posts' }}
+        options={{ tabBarLabel: 'Posts',  }}
       />
       <Tab.Screen
         name="Requests"

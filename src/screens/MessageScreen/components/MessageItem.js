@@ -7,14 +7,22 @@ Text,
 StyleSheet
 } from 'react-native'
 import {colors} from '../../../utils/colors'
+import UserAvatar from "@muhzi/react-native-user-avatar"
 
 export const MessageItem = ({item,onPress}) => {
    
     return(
         <TouchableOpacity style={[styles.item]} onPress={onPress}>
         <View>           
-             <Image source={require("../../../assets/images/hero.png")} style={styles.imageBox}/>
-        </View>
+   
+              <UserAvatar
+              userName={item.other_user}
+              size={60}
+              backgroundColor={colors.flord_intro}
+              fontSize={20}
+              // url={image}
+              />
+       </View>
         <View>
             <Text style={[styles.title, styles.text]}>{item.other_user}</Text>
             <Text style={[styles.category]}>{item.title}</Text>
@@ -38,7 +46,7 @@ const styles = StyleSheet.create({
     item:{
         padding:10,
         flexDirection: "row",
-        backgroundColor:colors.white,
+        backgroundColor:colors.background,
         color:colors.white,
         
        
@@ -65,7 +73,7 @@ const styles = StyleSheet.create({
         margin:10
     },
     category:{
-        backgroundColor: colors.peach,
+        backgroundColor: colors.flord_intro2,
         borderRadius: 20,
         color: colors.primary,
         textAlign: 'center',

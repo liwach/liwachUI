@@ -1,6 +1,7 @@
 import React from 'react'
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
+import { colors } from '../../utils/colors';
 import {NotificationItem} from './components/NotificationItem'
 import { NotificationList } from './components/NotificationList';
 
@@ -29,8 +30,16 @@ data = [
 ]
 export const NotificationScreen = ({navigation}) => {
     return(
-        <View>
+        <View style={styles.container}>
             <NotificationList navigation={navigation} data={data}/>
         </View>
     );
 };
+
+const styles = StyleSheet.create({
+    container:{
+        backgroundColor:colors.background,
+        height: "100%"
+
+    }
+})

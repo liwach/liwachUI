@@ -23,8 +23,8 @@ const FlatListItem = ({ item, onPress, backgroundColor, textColor }) => (
 export const HorizontalFlatList = ({data}) => {
     const [selectedId, setSelectedId] = useState(null);
     const renderItem = ({ item }) => {
-        const backgroundColor = item.id === selectedId ? colors.primary : colors.peach;
-        const color = item.id === selectedId ? colors.white : colors.primary;
+        const backgroundColor = item.id === selectedId ? colors.flord_secondary : colors.flord_secondary;
+        const color = item.id === selectedId ? colors.flord_intro : colors.flord_intro;
         return(
           <FlatListItem
             item={item}
@@ -62,12 +62,12 @@ const styles = StyleSheet.create({
         minWidth:80,
         borderRadius:20,
         borderWidth:1,
-        borderColor:colors.white,
-        backgroundColor: colors.peach
+        borderColor:colors.flord_secondary,
+        backgroundColor: colors.flord_secondary
     },
     title:{
         textAlign:'center',
-        color: colors.black,
+        color: colors.flord,
     }
 
 })

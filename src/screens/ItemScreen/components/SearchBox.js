@@ -3,6 +3,7 @@ import axios from 'axios'
 import { MAPBOX_KEY } from '../../../utils/config'
 import { View, TextInput,Text, TouchableOpacity } from 'react-native'
 import { FlatList } from 'react-native'
+import { colors } from '../../../utils/colors'
 
 
 const FlatListItem = ({ item, onPress }) => (
@@ -65,7 +66,7 @@ export default class AutocompletePlace extends Component {
       })
       return
     }
-    axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.state.search}.json?access_token=${MAPBOX_KEY}`)
+    axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.state.search}.json?types=place&access_token=pk.eyJ1IjoibGl3YWNoIiwiYSI6ImNrcmhjZmZqNDBpNWQycHBnMGNpeDN1dW4ifQ.gWe-VTYxuBeEHNEwc1eY_w`)
       .then(response => {
         this.setState({
           results: response.data.features,
@@ -83,7 +84,7 @@ export default class AutocompletePlace extends Component {
   render() {
     return (
       <View className="AutocompletePlace">
-        <TextInput className="AutocompletePlace-input" type="text" value={this.state.search} onChange={this.handleSearchChange} placeholder="Type an address" />
+        <TextInput className="AutocompletePlace-input" placeholderTextColor={colors.flord_intro} type="text" value={this.state.search} onChangeText={this.handleSearchChange} placeholder="Type an address" />
         <FlatList 
         
         className="AutocompletePlace-results"

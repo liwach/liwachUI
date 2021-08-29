@@ -1,5 +1,13 @@
 export const colors = {
     primary: "#3A405A",
+    background: "#F5EEE8",
+    blue2: "#5A6BEA",
+    flord:"#594155",
+    flord_secondary:"#F39C5B",
+    flord_intro:"#3F2C37",
+    flord_intro2:"#B7777C",
+    bottomNav: "#E1CCC7",
+    light_background: "#D7D7FB",
     lighter_blue:"#AEC5EB",
     peach:"#EDAFB8",
     text: "#707070",

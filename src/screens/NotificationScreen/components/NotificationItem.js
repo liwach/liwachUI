@@ -8,13 +8,13 @@ import {
     StyleSheet
     } from 'react-native'
     import {colors} from '../../../utils/colors'
-
+import Ionicons from "react-native-vector-icons/Ionicons"
 export const NotificationItem = ( {item,onPress}) => {
 
     return(
         <TouchableOpacity style={[styles.item]}>
         <View>           
-             <AntDesign size={25}  style={styles.imageBox} name="rocket1"/>
+             <Ionicons size={25} color={colors.flord_intro2} style={styles.imageBox} name="rocket"/>
         </View>
         <View style={[styles.text]}>
 
@@ -36,11 +36,12 @@ const styles = StyleSheet.create({
         margin:15,
         elevation:2,
         padding:5,
+        backgroundColor:colors.background,
     },
     item:{
         padding:15,
         flexDirection: "row",
-        backgroundColor:colors.white,
+        backgroundColor:colors.background,
         color:colors.white,
         
        
@@ -66,9 +67,9 @@ const styles = StyleSheet.create({
         margin:10
     },
     category:{
-        backgroundColor: colors.purple,
+        backgroundColor: colors.bottomNav,
         borderRadius: 20,
-        color: colors.white,
+        color: colors.flord_intro,
         textAlign: 'center',
         width: 80,
         padding:2,

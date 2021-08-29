@@ -11,8 +11,10 @@ import {
     Image 
     } from "react-native"
 import { colors } from "../../../utils/colors";
+import { ToastAndroid } from "react-native";
 
 export const CategoryList = ({navigation, data }) => {
+    console.log(data)
     const [selectedId, setSelectedId] = useState(null);
     
     const renderItem = ({ item }) => {
@@ -22,11 +24,7 @@ export const CategoryList = ({navigation, data }) => {
         return(
             <CategoryItem
             item={item}
-            onPress={() => 
-                /* 1. Navigate to the Details route with params */
-                navigation.navigate('TypeScreen', {
-                    item:item
-                })
+            onPress={ ()=>ToastAndroid.show("Subscribed",ToastAndroid.LONG)
             }
             />
         )

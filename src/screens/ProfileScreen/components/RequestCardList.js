@@ -9,12 +9,16 @@ import {
     TouchableOpacity ,
     Image,
     Modal, 
-    Alert
+    Alert,
+    ScrollView,
+    RefreshControl
     } from "react-native"
 import { colors } from "../../../utils/colors";
 import { AntDesign } from "@expo/vector-icons";
 import { sendMessage } from "../../../routes/messageApi";
 import { ExchangeButton, ChatButton } from "./ActionButtons";
+import Icon  from "react-native-vector-icons/Ionicons";
+import { exchangeItem } from "../../../routes/exchangeApi";
 
 
 const ModalBox = ({visible}) => {
@@ -34,7 +38,7 @@ const ModalBox = ({visible}) => {
 
 
 
-const FlatListItem = ({ item, onPress, onMessagePress, backgroundColor, textColor }) => (
+const FlatListItem = ({navigation, item, onPress, onMessagePress, backgroundColor, textColor }) => (
 
         
     
@@ -50,14 +54,14 @@ const FlatListItem = ({ item, onPress, onMessagePress, backgroundColor, textColo
             </View>
             <View style={{flexDirection:'column',flex:1}}>
             <View style={[styles.time]}>
-                <AntDesign style={[styles.timeTexts,styles.icons]} name='clockcircleo' size={10} color={colors.primary}  />
+                <Icon style={[styles.timeTexts,styles.icons]} name='time' size={10} color={colors.primary}  />
                 <Text style={styles.timeTexts}>{item.requested_item==null?"":item.created_at}</Text>
             </View>
            {
                item.status == "open" ?
                  <View style={[styles.horizontal]}>
-                 <AntDesign style={[styles.timeTexts,styles.icons]} name='closecircleo' size={25} color={colors.primary}  />
-                 <AntDesign style={[styles.timeTexts,styles.icons]} name='rightcircleo' size={25} color={colors.primary}  />
+                 <Icon style={[styles.timeTexts,styles.icons]} name='close-circle' size={25} color={colors.primary}  />
+                 <Icon style={[styles.timeTexts,styles.icons]} name='checkmark-circle-sharp' size={25} color={colors.primary}  />
              </View>
              : <View/>
            }
@@ -65,9 +69,21 @@ const FlatListItem = ({ item, onPress, onMessagePress, backgroundColor, textColo
 {
                item.status == "accepted" ?
                  <View style={[styles.horizontal]}>
-                 <ExchangeButton/>
-                 <ChatButton/>
-                <AntDesign style={[styles.timeTexts,styles.icons]} name='message1' size={20} color={colors.primary} onPress={()=>{alert(sendMessage("","Text","shdjfhjdkfdk",1))}}  />
+                 <ExchangeButton navigation={navigation} item={item}/>
+                 <ChatButton navigation={navigation} item={item}/>
+
+             </View>
+             : <View/>
+           }
+
+            {
+               item.status == "expired" ?
+                 <View style={[styles.horizontal]}>
+                <Icon style={[styles.timeTexts,styles.icons]} name='arrow-undo-circle' size={25} color={colors.primary} onPress={()=>{
+                    exchangeItem(item.id,item.status)
+                    
+                    }}  />
+
 
              </View>
              : <View/>
@@ -78,34 +94,24 @@ const FlatListItem = ({ item, onPress, onMessagePress, backgroundColor, textColo
     
 )
 
+const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  }
+
 export const RequestCardList = ({item,navigation}) => {
-   
+    const [refreshing, setRefreshing] = React.useState(false);
+    
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        wait(2000).then(() => setRefreshing(false));
+    }, []);
     const renderItem = ({ item }) => {
-        // const backgroundColor = item.id === selectedId ? colors.white : colors.white;
-        // const color = item.id === selectedId ? colors.white : colors.black;
 
-        // const [selectedId, setSelectedId] = useState(null);
-        // console.log(`Render-item:${item.requested_item}`)
-
-      
-
-        // const singleItem = {
-        //     requested : item.requested_item,
-        //     requester : item.requester_item,
-        //     status : item.status,
-        //     type : item.type,
-        //     time : item.updated_at,
-        //     requester_user : item.requester_user
-        //   }
-        
-        // const send = () => {
-        //     const response = sendMessage("","Text","shdjfhjdkfdk",1)
-        //     alert(response.data)
-        // }
         
         return(
           <FlatListItem
             item={item}
+            navigation={navigation}
             onPress={() => 
                 /* 1. Navigate to the Details route with params */
                 navigation.navigate('Post Detail Screen', {
@@ -118,12 +124,20 @@ export const RequestCardList = ({item,navigation}) => {
 
     return(
         <SafeAreaView style={styles.container}>
+            <ScrollView
+            refreshControl={
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={onRefresh}
+                />}
+            >
             <FlatList
               data={item}
               renderItem={renderItem}
               keyExtractor={(item) => item.id}
               
             />
+            </ScrollView>
         </SafeAreaView>
     )
 };
@@ -133,7 +147,6 @@ const styles = StyleSheet.create({
     container:{
         marginTop: StatusBar.currentHeight || 0, 
         margin:10,
-        elevation:2,
     },
     horizontal : {
         flexDirection:'row',
@@ -143,7 +156,7 @@ const styles = StyleSheet.create({
     },
     item:{
         flexDirection: "row",
-        backgroundColor:colors.white,
+        backgroundColor:colors.bottomNav,
         color:colors.white,
         margin:5,
         padding:5,
@@ -172,9 +185,9 @@ const styles = StyleSheet.create({
         alignSelf:'center'
     },
     category:{
-        backgroundColor: colors.purple,
+        backgroundColor: colors.flord_intro2,
         borderRadius: 20,
-        color: colors.white,
+        color: colors.flord_intro,
         textAlign: 'center',
         width: 80,
         padding:2,

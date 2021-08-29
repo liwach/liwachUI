@@ -1,4 +1,4 @@
-import React,{useState, useEffect} from "react"
+import React,{useState, useEffect, createRef} from "react"
 import { 
     View,
     FlatList,
@@ -17,95 +17,33 @@ import { useSelector, useDispatch } from 'react-redux';
 import { SelectAllItems } from "../../../reducers/items/itemReducer";
 import { getItems, selectAllItems } from "../../../redux/itemSlice";
 import { getAllItems } from "../../../routes/itemsApi";
+import Entypo from "react-native-vector-icons/Entypo";
+import { SwapActionSheet } from "./SwapActionSheet";
 
-const DATA = [
-  {
-    id: "17694a0f-3da1-471f-bd96-145571e29d72",
-    title: "White Tshirt",
-    category:"Clothes",
-    location:"Addis Ababa, Ethiopia",
-    user:"Delilah",
-    description: "Black Jacket, Jeans Jacket",
-    source: require("../../../assets/images/hero.png"),
-    barter:"3 barters",
-    time:"3 minutes ago",
-    desc:"Perfect year-round, this set of crewneck undershirts combines lightweight cotton jersey with a slightly relaxed fit that allows for freedom of movement.",
-    swap: "Clothes"
-  },
- 
-  {
-    id: "27694a0f-3da1-471f-bd96-145571e29d72",
-    title: "White Tshirt",
-    category:"Clothes",
-    location:"Addis Ababa, Ethiopia",
-    user:"Delilah",
-    description: "Black Jacket, Jeans Jacket",
-    source: require("../../../assets/images/hero.png"),
-    barter:"3 barters",
-    time:"3 minutes ago",
-    desc:"Perfect year-round, this set of crewneck undershirts combines lightweight cotton jersey with a slightly relaxed fit that allows for freedom of movement.",
-    swap: "Clothes"
-  },
-  {
-    id: "37694a0f-3da1-471f-bd96-145571e29d72",
-    title: "White Tshirt",
-    category:"Clothes",
-    location:"Addis Ababa, Ethiopia",
-    user:"Delilah",
-    description: "Black Jacket, Jeans Jacket",
-    source: require("../../../assets/images/hero.png"),
-    barter:"3 barters",
-    time:"3 minutes ago",
-    desc:"Perfect year-round, this set of crewneck undershirts combines lightweight cotton jersey with a slightly relaxed fit that allows for freedom of movement.",
-    swap: "Clothes"
-  },
-  {
-    id: "47694a0f-3da1-471f-bd96-145571e29d72",
-    title: "White Tshirt",
-    category:"Clothes",
-    location:"Addis Ababa, Ethiopia",
-    user:"Delilah",
-    description: "Black Jacket, Jeans Jacket",
-    source: require("../../../assets/images/hero.png"),
-    barter:"3 barters",
-    time:"3 minutes ago",
-    desc:"Perfect year-round, this set of crewneck undershirts combines lightweight cotton jersey with a slightly relaxed fit that allows for freedom of movement.",
-    swap: "Clothes"
-  },
-  {
-    id: "57694a0f-3da1-471f-bd96-145571e29d72",
-    title: "White Tshirt",
-    category:"Clothes",
-    location:"Addis Ababa, Ethiopia",
-    user:"Delilah",
-    description: "Black Jacket, Jeans Jacket",
-    source: require("../../../assets/images/hero.png"),
-    barter:"3 barters",
-    time:"3 minutes ago",
-    desc:"Perfect year-round, this set of crewneck undershirts combines lightweight cotton jersey with a slightly relaxed fit that allows for freedom of movement.",
-    swap: "Clothes"
-  },
-];
 
 const onPressHandler = () => {
     alert("View Item");
 }
 
-const FlatListItem = ({navigation, item, onPress, backgroundColor, textColor }) => (
+const FlatListItem = ({actionRef, navigation, item, onPress, backgroundColor, textColor }) => (
 
-        
         <View style={[styles.cardContainer,backgroundColor]}> 
-            <Image source={require("../../../assets/images/hero.png")} style={{borderTopRightRadius:20,borderTopLeftRadius:20,width:180}}/>
-            <View style={styles.shadow}>
-              <View style={styles.horizontalContainer}>
-                <Text style={[ styles.header, textColor]}>{item.name}</Text>
-                <SwapButton item={item}/>
-               
+
+            <Image source={require("../../../assets/images/hero.png")} style={{width:180,borderRadius:20
+}}/>
+            <View style={styles.horizontalView}  >
+              <View style={styles.horizontalContainer} >
+                <Text style={[ styles.header]}>{item.name}</Text>
+                <SwapActionSheet 
+                     onPress={onPress}
+                     item={item} 
+                     actionSheetRef={actionRef}/>
               </View>
-              <Text style={[styles.title, textColor]}>{item.description}</Text>
-              <View style={styles.horizontalContainer}>
-              <Text style={[ styles.header, textColor]} onPress={onPress}>View</Text>
-              </View>
+              <Text style={[styles.title, textColor]}>{item.desc}</Text> 
+              {/* <View style={styles.horizontalContainer}>
+              <Text style={[ styles.endText, textColor]} onPress={onPress}>View</Text>
+              <Entypo name={"chevron-right"} size={15} color={colors.flord_secondary}/>
+               </View> */}
             </View>
         </View>
     
@@ -119,7 +57,6 @@ export const Section = ({navigation},onPressHandler) => {
     const [data, setData] = useState("");
     const [loading, setLoading] = useState(true);
   
-  
     const fetchData = async () => {
       const items = await getAllItems()
       setData(items);
@@ -132,8 +69,9 @@ export const Section = ({navigation},onPressHandler) => {
     }, []);
  
     const renderItem = ({ item }) => {
-        //console.log(`RenderItem: ${item}`)
-        
+        console.log(`RenderItem: ${item}`)
+        const SwapActionRef = createRef()
+
         const swap_types = item.item_swap_type.map(function(data, idx){
           return(
             {
@@ -156,16 +94,16 @@ export const Section = ({navigation},onPressHandler) => {
     
         }
         const backgroundColor = item.id === selectedId ? "transparent" : "transparent";
-        const color = item.id === selectedId ? colors.black : colors.black;
+        const color = item.id === selectedId ? colors.flord_intro : colors.flord_intro;
         return(
         <View style={styles.container}>
           <FlatListItem
-            item={item}
-            onPress={() => 
-              /* 1. Navigate to the Details route with params */
-              navigation.navigate('Single Item', {
-                item:singleItem
-              })}
+            item={singleItem}
+            actionRef={SwapActionRef}
+            onPress={() => {
+              SwapActionRef.current?.setModalVisible();
+              
+            }}
             
             backgroundColor={{ backgroundColor }}
             textColor={{ color }}
@@ -198,6 +136,7 @@ const styles = StyleSheet.create({
     
        marginLeft:10,
        marginBottom:10,
+      
     },
     item:{
         
@@ -209,29 +148,50 @@ const styles = StyleSheet.create({
 
     cardContainer:{
         width:180,
+        elevation:100,
         flexDirection:'column',
-        color:colors.white,
+        color:colors.flord_intro,
         marginRight:5,
+        position:'relative'
     },
     imageBox:{
         width:180,
     },
     horizontalContainer:{
       flexDirection:'row',
-      margin: 6,
-     
+      marginLeft: 6,
+      marginRight:6,
+      
+    },
+    horizontalView:{
+      backgroundColor: colors.bottomNav,
+      borderRadius:10,      
+      position:"relative",
+      height:70,
+      width:170,
+      alignSelf:'center',
+      top: -20,
+      elevation:3
     },
     horizontalText:{
       flex:1,
+      color:colors.flord_intro,
     },
     header:{
       flex:1,
-      fontSize:16,
+      fontSize:14,
       fontWeight:'bold',
-      
+      textTransform:'uppercase',
+      color: colors.flord,
+      margin: 6,
     },
     endText:{
-      justifyContent:'flex-end',
+      marginLeft:6,
+      justifyContent:"flex-end",
+      alignSelf:"flex-end",
+      color:colors.flord_intro,
+      fontWeight:"bold"
+
     },
     shadow:{  
       borderWidth:0.5,

@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
     container:{
        
         elevation:2,
+        backgroundColor:colors.background,
         
     },
     item:{

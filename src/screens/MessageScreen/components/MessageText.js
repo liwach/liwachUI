@@ -11,8 +11,8 @@ export const TextBox = ({item, type}) => {
         const color = type === "send" ? colors.primary : colors.white;
         return(
             <View style={[styles.container,{backgroundColor:backgroundColor}]}>
-                <Text style={[styles.message,{color:color}]}>{item.message}</Text>
-                <Text style={[styles.time,{color:color}]}>{item.time}</Text>
+                <Text style={[styles.message,{color:color}]}>{item.content}</Text>
+                <Text style={[styles.time,{color:color}]}>{item.created_at}</Text>
             </View>
         )
 }

@@ -1,4 +1,4 @@
-import React,{ useState, useRef, useEffect } from 'react';
+import React,{ useState, useRef, useEffect,createRef } from 'react';
 import { Field, reduxForm } from "redux-form";
 import {
   StyleSheet,
@@ -14,7 +14,11 @@ import {
   TextInput, 
   Text, 
   Button,
-  Image
+  Image,
+  SafeAreaView,
+  FlatList,
+  Pressable,
+  Modal
 
   
 } from "react-native";
@@ -37,14 +41,28 @@ import { addItem } from '../../routes/itemsApi';
 
 import { MAPBOX_KEY } from '../../utils/config';
 import AutocompletePlace from './components/SearchBox';
+import { CustomPicker } from '../../components/UI/CustomPicker';
+import { TypeSeachBox } from './components/TypeSearchBox';
+import { ImageActionSheet } from './components/ImageActionSheet';
+import { SwapTypeDropBox } from './components/SwapTypeDropBox';
 
 export const addItemForm = (props) => {
 
   const [dropdown, setDropdown] = useState(null);
   const [selected, setSelected] = useState([]);
-  _suggestionSelect =(result, lat, lng, text) => {
-    console.log(result, lat, lng, text)
-  }
+  const [place,setPlace] = useState([])
+  const [location,setLocation] = useState([])
+  const [info,setInfo] = useState([])
+  const [modalVisible,setModalVisible] = useState(false)
+
+  const imageActionRef = createRef()
+ 
+
+  const [items, setItems] = useState([
+    {label: 'Normal', value: 'normal'},
+    {label: 'Premium', value: 'banana'},
+    {label: 'Gold', value: 'gold'}
+  ]);
   
 
 
@@ -54,9 +72,69 @@ export const addItemForm = (props) => {
     padding: 12,
     marginBottom: 5,
   };
+  const displayList = async(text) => {
+    const data =  await getLocation(text)
+    const swap_types = data.features.map(function(data, idx){
+        return(
+          {
+             data,
+          }
+        )
+       });
+     
+   text.length == 0 ? setLocation([]): setLocation(swap_types)
+   
+  }
+ 
+  const clearData = () => {
+        setLocation([])
+        setPlace(info)
+  }
 
+  const FlatListItem = ({ item, onPress }) => (
+  
+    <TouchableOpacity style={styles.listItem}   onPress={onPress}  >
+        <Text >{item.data.place_name}</Text>
+    </TouchableOpacity>)
+  const [selectedId, setSelectedId] = useState(null);
+
+  const [loading, setLoading] = useState(true);
+  
+  
+  const renderItem = ({ item }) => {
+  
+    const backgroundColor = item.id === selectedId ? colors.primary : colors.peach;
+      console.log(`render:${backgroundColor}`)
+      return(
+        <FlatListItem
+        
+          item={item}
+          onPress={() => setSelectedId(item.id)}
+          
+        
+        />
+      )
+    }
  
   return (
+    <View style={styles.container}>
+       <View style={styles.modalContainer}>
+        <Modal
+        animationType="fade"
+        transparent={true}
+        visible={false}>
+        
+          <View style={{elevation:4,position:'absolute',top:'50%',left:'25%',width:200,height:100,alignItems:'center',justifyContent:'center', backgroundColor:colors.flord_intro2}}>
+            <Text>Touched!</Text>
+          </View>
+        </Modal>
+    </View>
+    <View style={styles.imageBox}>
+    <Text style={styles.subtitle}> Add items to swap with the ones you need!</Text>
+    <Text style={styles.subtitle}> Let's get you started!</Text>
+    </View>
+    <ImageActionSheet actionSheetRef={imageActionRef}/>
+  
     <Formik
       initialValues={{ 
         title: '',
@@ -99,73 +177,68 @@ export const addItemForm = (props) => {
       {({ values, handleChange, errors, setFieldTouched, setFieldValue, touched, isValid, handleSubmit }) => (
         <View style={styles.formContainer}>
 
-        <AutocompletePlace onSelect={place => console.log(place)} />
+        {/* <AutocompletePlace onSelect={place => console.log(place)} /> */}
+
           <TextInput
             value={values.title}
-            style={inputStyle}
+            style={styles.inputStyle}
             onChangeText={handleChange('title')}
             onBlur={() => setFieldTouched('title')}
-            placeholder="title"
+            placeholder="Title"
+            placeholderTextColor={colors.flord_intro}
           />
           {touched.title && errors.title &&
             <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.title}</Text>
-          }            
-          <TextInput
-            value={values.category}
-            style={inputStyle}
-            onChangeText={handleChange('category')}
-            onBlur={() => setFieldTouched('category')}
-            placeholder="category"
-          />
-          {touched.category && errors.category &&
-            <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.category}</Text>
           } 
            <TextInput
             value={values.description}
-            style={inputStyle}
-            onChangeText={alert(geocoder.query(value.description))}
+            style={styles.inputStyle}
+            onChangeText={handleChange('description')}
             onBlur={() => setFieldTouched('description')}
-            placeholder="description"
+            placeholder="Description"
+            placeholderTextColor={colors.flord_intro}
           />
           {touched.title && errors.title &&
             <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.description}</Text>
           } 
-
+          <TypeSeachBox/> 
+          <SwapTypeDropBox/> 
           <TextInput
-            value={values.location}
-            style={inputStyle}
-            onChangeText={handleChange('location')}
-            onBlur={() => setFieldTouched('location')}
-            placeholder="location"
-          />
-          {touched.location && errors.location &&
-            <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.location}</Text>
-          } 
-
-         
-
-          <TextInput
-            value={values.swap}
-            style={inputStyle}
-            onChangeText={handleChange('swap')}
-            onBlur={() => setFieldTouched('swap')}
-            placeholder="swap"
-          />
-          {touched.swap && errors.swap &&
-            <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.swap}</Text>
-          }
-          
+            value={place}
+            style={styles.inputStyle}
+            onChangeText={text =>displayList(text)}
+            onBlur={() => setFieldTouched('address')}
+            placeholder="Address"
+            placeholderTextColor={colors.flord}
+            onEndEditing={clearData}
             
-       
-          <Button
-            color={colors.black}
-            title='Submit'
-            disabled={!isValid}
-            onPress={handleSubmit}
-          />
+             />
+             <SafeAreaView style={styles.list}>
+             <FlatList
+              data={location}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.id}
+              extraData={selectedId}
+              horizontal={false}
+              style={{
+                  elevation:3,
+                  zIndex: 3
+              }}
+            />
+            </SafeAreaView>
+         
+          
+          {touched.address && errors.address &&
+            <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{errors.address}</Text>
+          }
+            
+          <Pressable style={styles.button} onPress={setModalVisible(true)}>
+                <Text style={styles.text}>Submit</Text>
+              </Pressable>
         </View>
       )}
     </Formik>
+    </View>
   );
 
 };
@@ -173,9 +246,78 @@ export const addItemForm = (props) => {
 
 
 const styles = StyleSheet.create({
-
+  modalContainer:{
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: 100,
+    height: 100,
+    backgroundColor: colors.bottomNav,
+    
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  imageBox:{
+    
+    width:"100%",
+    height:100,
+    backgroundColor:colors.bottomNav,
+    borderWidth: 1,
+    borderColor:colors.bottomNav,
+    borderBottomEndRadius: 70,
+    borderBottomStartRadius: 70
+  },
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    width:200,
+    backgroundColor:colors.flord_intro2,
+    alignSelf:"center",
+    marginTop:20
+  },
+  text: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: 'white',
+  },
   formContainer: {
     padding: 50 
+  },
+  inputStyle:{
+    marginBottom: 10,
+    color:colors.flord_intro,
+    
+    borderColor: colors.flord,
+    borderBottomWidth: 1,
+    width:"100%",
+  
+    marginRight:4,
+    borderRadius: 20,
+    textAlign:"center",
+  },
+  horizontalInputStyle:{
+    marginBottom: 10,
+    color:colors.black,
+    borderColor: colors.flord,
+    borderBottomWidth: 1,
+    textTransform:"capitalize",
+    textAlign:"center",
+    width:"50%",
+    marginRight:4,
+    borderRadius: 20,
+  },
+  subtitle:{
+    
+    top: 30,
+    color: colors.flord,
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight:'bold',
   },
     postButton: {
     width: '40%',
@@ -191,7 +333,9 @@ const styles = StyleSheet.create({
 
     container:{
         width: '100%',
+        height: "100%",
         alignContent:'center', 
+        backgroundColor: colors.background
     },
 
     imageView:{
@@ -212,6 +356,16 @@ const styles = StyleSheet.create({
       width: 18,
       height: 18,
   },
+  header:{
+    
+    zIndex: 100,
+    top: 45,
+    color: colors.flord,
+    textAlign: 'center',
+    fontSize: 30,
+    fontWeight:'bold',
+    
+  } ,
   item: {
       paddingVertical: 17,
       paddingHorizontal: 4,

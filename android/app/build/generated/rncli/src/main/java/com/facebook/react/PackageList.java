@@ -11,10 +11,16 @@ import com.facebook.react.shell.MainReactPackage;
 import java.util.Arrays;
 import java.util.ArrayList;
 
+// @react-native-async-storage/async-storage
+import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
+// @react-native-community/datetimepicker
+import com.reactcommunity.rndatetimepicker.RNDateTimePickerPackage;
 // @react-native-community/masked-view
 import org.reactnative.maskedview.RNCMaskedViewPackage;
 // react-native-cross-actionsheet
 import me.aelesia.ActionSheetAndroidPackage;
+// react-native-date-picker
+import com.henninghall.date_picker.DatePickerPackage;
 // react-native-element-dropdown
 import com.element.dropdown.ElementDropdownPackage;
 // react-native-gesture-handler
@@ -76,8 +82,11 @@ public class PackageList {
   public ArrayList<ReactPackage> getPackages() {
     return new ArrayList<>(Arrays.<ReactPackage>asList(
       new MainReactPackage(mConfig),
+      new AsyncStoragePackage(),
+      new RNDateTimePickerPackage(),
       new RNCMaskedViewPackage(),
       new ActionSheetAndroidPackage(),
+      new DatePickerPackage(),
       new ElementDropdownPackage(),
       new RNGestureHandlerPackage(),
       new ImagePickerPackage(),

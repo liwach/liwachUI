@@ -46,16 +46,18 @@ const styles = StyleSheet.create({
         },
         user:{
             fontSize:16,
-            fontWeight:'bold'
+            fontWeight:'bold',
+            color:colors.flord,
+            marginLeft:10,
         },
         barter:{
             fontSize:16,
-            color:colors.purple,
+            color:colors.flord,
             marginLeft:10,
         },
         time:{
             fontSize:16,
-            color:colors.purple,
+            color:colors.flord,
             marginLeft:10,
         },
         icon:{
@@ -64,7 +66,7 @@ const styles = StyleSheet.create({
     
         iconDesc:{
             marginTop:4,
-            color:colors.purple
+            color:colors.flord,
         }
     
 })

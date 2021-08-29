@@ -1,12 +1,15 @@
-import React from 'react'
-import { View, Text, StyleSheet,Image } from 'react-native';
+import React,{useState} from 'react'
+import { View, Text, StyleSheet,Image,TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-paper';
 import { colors } from '../../utils/colors';
 import { AccountMenuItem } from './components/AccountMenuItem';
-
+import UserAvatar from '@muhzi/react-native-user-avatar';
 export const AccountScreen = ({navigation}) => {
+    const [user, setUser] = useState("")
     const current_user = {
         full_name: 'Delilah Dessalegn',
+        firstName: 'Delilah',
+        lastName: 'Dessalegn',
         phone_number: '+251923289633',
         email_address: 'delilahdessalegn@gmail.com',
         image: "../../assets/images/hero.png"
@@ -14,20 +17,34 @@ export const AccountScreen = ({navigation}) => {
     return(
         <View>
             <View style={styles.backgroundContainer}></View>
-            <Image style={styles.imageBox} source={require("../../assets/images/hero.png")}/>
+            <TouchableOpacity
+              
+
+                style={styles.imageBox}
+            >
+                <UserAvatar
+                userName="Delilah Dessalegn"
+                size={80}
+                backgroundColor={colors.flord_intro}
+                // url={image}
+                />
+            </TouchableOpacity>         
             <Text style={styles.textContainer}>{current_user.full_name} </Text> 
-            <AccountMenuItem iconName={"edit"} Title={"Edit Profile"} navigation={navigation}
+            <AccountMenuItem iconName={"md-pencil"} Title={"Edit Profile"} navigation={navigation}
                 onPress={()=>navigation.navigate('EditAccountScreen'
                 ,{
                     user:current_user
                 }
                 )}
             />
-            <AccountMenuItem iconName={"adduser"} Title={"Subscribe"} navigation={navigation}
+            <AccountMenuItem iconName={"add-circle-outline"} Title={"Subscribe"} navigation={navigation}
                 onPress={()=>navigation.navigate('SubscribeScreen')}
             />
-            <AccountMenuItem iconName={"checksquare"} Title={"Change password"} navigation={navigation}/>
-            <AccountMenuItem iconName={"sharealt"} Title={"Share"} navigation={navigation}/>
+            <AccountMenuItem iconName={"shield-checkmark"} Title={"Change password"} navigation={navigation}/>
+            <AccountMenuItem iconName={"share"} Title={"Share"} navigation={navigation}/>
+            <AccountMenuItem iconName={"share"} Title={"Sign Up"} navigation={navigation} onPress={()=>navigation.navigate('SignupScreen')}/>
+            <AccountMenuItem iconName={"share"} Title={"Sign Up"} navigation={navigation} onPress={()=>navigation.navigate('LoginScreen')}/>
+
             <Button color={colors.black} style={styles.button} onPress={()=>{alert("Logged out")}}>Log out</Button>
         </View>
     );
@@ -37,8 +54,10 @@ export const AccountScreen = ({navigation}) => {
 const styles = StyleSheet.create({
 
     backgroundContainer:{
-        backgroundColor: colors.purple,
+        backgroundColor: colors.bottomNav,
         height:100,
+        borderBottomStartRadius:50,
+        borderBottomEndRadius:50
         
     },
 
@@ -61,10 +80,10 @@ const styles = StyleSheet.create({
     },
 
     button:{
-        backgroundColor:colors.white,
+        backgroundColor:colors.flord_intro2,
         borderRadius:20,
         borderColor:colors.black,
-        color:colors.black,
+        color:colors.flord,
         width:'40%',
         alignSelf: 'center',
         marginTop: 40

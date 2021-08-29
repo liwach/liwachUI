@@ -4,9 +4,11 @@ import { OutlinedButton } from '../../components/UI/OutlinedButton'
 import { colors } from '../../utils/colors'
 import { ProfileDetail } from './components/Profile'
 import {Button} from "react-native-paper"
-import { AntDesign } from '@expo/vector-icons'
 import { HorizontalFlatList } from '../../components/UI/HorizontalFlatList'
 import { getOneType } from '../../routes/TypeApi'
+import Ionicons from "react-native-vector-icons/Ionicons"
+import FontAwesome from "react-native-vector-icons/FontAwesome"
+import AntDesign from "react-native-vector-icons/AntDesign"
 
 export const ItemDetailScreen = ({route, navigation}) => {
     const { item} = route.params;
@@ -49,23 +51,23 @@ export const ItemDetailScreen = ({route, navigation}) => {
              <View>
                  <View style={styles.horizontal}>
                      <Text style={styles.header}>{data.name}</Text>
-                     <AntDesign name={'enviromento'} size={13} style={styles.icon}/>
+                     <Ionicons name={'location'} size={13} style={styles.icon}/>
                      <Text style={styles.endText}>{data.location}</Text>
                  </View>
                  <OutlinedButton text={data.category}/>
              </View>
              <ProfileDetail user={data.user} barter={data.number_request} time={item.time}/>
              <View  style={styles.horizontal}>
-                 <AntDesign name={'bars'} size={13} style={styles.iconDesc}/>
-                 <Text style={{fontSize:16,color:colors.purple}} >Description</Text>
+                 <FontAwesome name={'bars'} size={13} style={styles.iconDesc}/>
+                 <Text style={{fontSize:16,color:colors.flord_intro2}} >Description</Text>
                  <Text style={styles.desc}>{data.desc}</Text>
              </View>
              <View  style={styles.horizontal}>
                  <AntDesign name={'swap'} size={13} style={styles.iconDesc}/>
-                 <Text style={{fontSize:16,color:colors.purple,marginRight:2,width:70}} >Swap with</Text>
+                 <Text style={{fontSize:16,color:colors.flord_intro2,marginRight:2,width:70}} >Swap with</Text>
              <HorizontalFlatList  data={swapType}/>
              </View>
-             <Button color={colors.white} style={styles.button} onPress={onPressHandler}> Send Request</Button>
+             <Button color={colors.flord_intro} style={styles.button} onPress={onPressHandler}> Send Request</Button>
              
         </View>
        
@@ -91,9 +93,9 @@ const styles = StyleSheet.create({
     },
     header:{
         flex:1,
-      
+        fontWeight: "bold",
         fontSize:24,
-        color:colors.purple,
+        color:colors.flord_intro,
         alignContent:'center',
         justifyContent:'center'
     },
@@ -104,7 +106,8 @@ const styles = StyleSheet.create({
         marginLeft:5,
         marginTop:4,
         fontSize:14,
-        alignContent:'center'
+        alignContent:'center',
+        fontWeight:"bold"
     },
     desc:{
         width:'70%',
@@ -114,18 +117,20 @@ const styles = StyleSheet.create({
     },
     button:{
         borderWidth:1,
-        backgroundColor: colors.primary,
+        backgroundColor: colors.flord_secondary,
         width:150,
         color:colors.white,
         alignSelf:'center'
     },
     icon:{
         marginTop:7,
+        color:colors.flord_intro
     },
 
     iconDesc:{
         marginTop:4,
-        color:colors.purple
+        color:colors.flord_intro,
+        marginRight:3
     }
 
 })

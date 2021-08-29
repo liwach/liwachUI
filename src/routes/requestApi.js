@@ -27,3 +27,49 @@ export const getAllRequests = async () => {
       console.log(error.message)
     }
 }
+
+
+
+export const getLocation = async (text) => {
+  console.log(text)
+  try {
+    try {
+      const res = await axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${text}.json?types=place&access_token=pk.eyJ1IjoibGl3YWNoIiwiYSI6ImNrcmhjZmZqNDBpNWQycHBnMGNpeDN1dW4ifQ.gWe-VTYxuBeEHNEwc1eY_w`,{
+        "headers": {
+        "content-type": "application/json",
+        },
+        })
+      //console.log('',res.data.features)
+      if (res.data) {
+        console.log("I am in here")
+        // const swap_types = 
+        //   res.data.features.map(function({data, index}){
+        //     console.log(`dataswap:${data.place_name} `)
+            
+        //         return(
+                  
+        //             {
+        //             index: data.place_name,
+        //             }
+                  
+                 
+        //         )
+        //        });
+            
+          //console.log(`GetLocationswap${JSON.stringify(swap_types)}`)
+          // console.log("Place name",res.data.features)
+
+          return res.data
+        
+      } else {
+        console.log(res);
+      }
+    }
+  catch (error) {
+    // Add custom logic to handle errors
+  }
+  } catch (error) {
+    console.log(error.message)
+  }
+
+}

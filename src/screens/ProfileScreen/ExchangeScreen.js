@@ -2,7 +2,7 @@ import React,{useState, useEffect} from 'react'
 import {View,Text,ScrollView, StyleSheet} from "react-native"
 import {CardList} from "./components/CardList"
 import { getAllItems } from '../../routes/itemsApi'
-
+import { ExchangeCardList } from './components/ExchangeCardList'
 
 export const ExchangeScreen = ( {navigation}) => {
   const [data, setData] = useState("");
@@ -10,7 +10,8 @@ export const ExchangeScreen = ( {navigation}) => {
 
 
   const fetchData = async () => {
-    const items = await getAllItems()
+    const items = await getAllRequests()
+    
     setData(items);
     setLoading(false);
     
@@ -19,10 +20,9 @@ export const ExchangeScreen = ( {navigation}) => {
   useEffect(() => {
     fetchData();
   }, []);
-
     return(
         <View>
-            <CardList navigation={navigation} item={data} />
+            <ExchangeCardList navigation={navigation} item={data} />
         </View>
     )
 

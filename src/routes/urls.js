@@ -12,6 +12,8 @@ export const GET_ALL_TYPES = `${API_URL}/type`
 
 //Requests
 export const GET_ALL_REQUESTS =  `${API_URL}/request`
+export const UPDATE_REQUEST_STATUS = `${API_URL}/request`
 
 //Message
 export const POST_MESSAGE = `${API_URL}/message`
+export const GET_MESSAGE_BY_REQUEST = `${API_URL}/message/search`

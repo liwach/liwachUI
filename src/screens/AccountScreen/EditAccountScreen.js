@@ -1,23 +1,33 @@
 import { AntDesign } from "@expo/vector-icons";
-import React from "react"
+import React,{createRef} from "react"
 import {
-    View,Text,StyleSheet,Image
+    View,Text,StyleSheet,Image,TouchableOpacity
     
 } from "react-native"
 
 import{Button, TextInput} from 'react-native-paper'
 import { colors } from '../../utils/colors';
-
+import UserAvatar from "@muhzi/react-native-user-avatar";
+import { ImageActionSheet } from "../ItemScreen/components/ImageActionSheet";
 export const EditAccountScreen = ({navigation,route}) => {
     const { user } = route.params;
+    const imageActionRef = createRef()
+
         return (
 
             <View>
-            <View style={styles.backgroundContainer}></View>
-            <Image style={styles.imageBox} source={require("../../assets/images/hero.png")}/>
-            <AntDesign style={styles.icon} name='edit' size={20} color={colors.white}/>
+            <View style={styles.backgroundContainer}>
+            </View>
+            <View style={styles.actionSheet}>
+            <ImageActionSheet actionSheetRef={imageActionRef}/> 
+            </View>
+         
+                
+           <AntDesign style={styles.icon} name='edit' size={20} color={colors.white}/>
             <View style={styles.textContainer}>
-                <TextInput value={user.full_name} placeholder="Full Name" style={styles.textInputContainer}/>
+                <TextInput value={user.firstName} placeholder="First Name" style={styles.textInputContainer}/>
+                <TextInput value={user.lastName} placeholder="Last Name" style={styles.textInputContainer}/>
+
                 <TextInput value={user.phone_number} placeholder="Phone number" style={styles.textInputContainer} />
                 <TextInput value={user.email_address} placeholder="Email Address" style={styles.textInputContainer}/>
             </View>
@@ -33,9 +43,17 @@ export const EditAccountScreen = ({navigation,route}) => {
 const styles = StyleSheet.create({
 
     backgroundContainer:{
-        backgroundColor: colors.grey,
+        backgroundColor: colors.bottomNav,
         height:100,
+        borderBottomStartRadius:70,
+        borderBottomEndRadius:70
         
+    },
+    actionSheet:{
+        position: "absolute",
+        top:50,
+
+        alignSelf:'center'
     },
 
     imageBox:{
@@ -71,7 +89,7 @@ const styles = StyleSheet.create({
         
     },
     button:{
-        backgroundColor:colors.black,
+        backgroundColor:colors.flord_intro2,
         borderRadius: 40,
         width: '30%',
         color: colors.white,
