@@ -598,7 +598,12 @@ export const ProfileStackScreen = () => {
   );
 };
 
-export const MessageStackScreen = () => {
+export const MessageStackScreen = ({route,navigation }) => {
+  if (route.state.index === 0) {
+    navigation.setOptions({tabBarVisible: true});
+    } else {
+    navigation.setOptions({tabBarVisible: false});
+   }
   return (
     <MessageStack.Navigator
       screenOptions={{
@@ -606,6 +611,7 @@ export const MessageStackScreen = () => {
         gestureEnabled: true,
         headerStyle: {backgroundColor: colors.flord_intro2},
         headerTitleStyle: {color: colors.flord_intro, alignSelf: 'center'},
+        
       }}>
       <MessageStack.Screen
         name="Inbox"
@@ -618,6 +624,7 @@ export const MessageStackScreen = () => {
       <MessageStack.Screen
         name="SingleMessage"
         options={({route, navigation}) => ({
+          
           title: 'Inbox',
           headerTitleStyle: {alignSelf: 'center', color: colors.white},
           headerRight: () => {},

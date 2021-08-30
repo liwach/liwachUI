@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from "axios";
 import { API_URL } from '../utils/config';
-import { POST_MESSAGE, GET_MESSAGE_BY_REQUEST,POST_USER, LOGIN } from './urls';
+import { POST_MESSAGE, GET_MESSAGE_BY_REQUEST,POST_USER, LOGIN, FIND_USER } from './urls';
 
 
 export const getMessageByRequest = async ({token}) => {
@@ -119,3 +119,36 @@ export const login = async (email,password) => {
       }
   }
   
+  export const getUserByID = async (id) => {
+    const params = JSON.stringify({
+       
+            "id": id
+    });
+      try {
+        try {
+            const res = await axios.post(FIND_USER, params,{
+                "headers": {
+                "content-type": "application/json",
+                },
+                })
+          if (res.data) {
+            const user = {
+                id: res.data.id,
+                first_name: res.data.first_name,
+                last_name: res.data.last_name,
+                phone_number : res.data.phone_number,
+                email : res.data.email
+            }
+            // alert(`Message: ${JSON.stringify(res.data)}`)
+            return res.data
+          } else {
+            console.log('Unable to fetch');
+          }
+        }
+      catch (error) {
+        // Add custom logic to handle errors
+      }
+      } catch (error) {
+        console.log(error.message)
+      }
+  }

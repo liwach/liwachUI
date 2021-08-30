@@ -15,22 +15,25 @@ export const getAllMessageByID = async(id) => {
 }
 
 
-export const getMessageByChatId = async (token) => {
-  const body = JSON.stringify({
+export const getMessageByChatId = async(token) => {
+  
+  const params = JSON.stringify(
+    {
     "chat_id": token,
-  });
+    }
+  );
     try {
       try {
        
-        const res = await axios.post(GET_MESSAGE_BY_REQUEST,body,{
+        const res = await axios.post(GET_MESSAGE_BY_REQUEST,params,{
           "headers": {
           "content-type": "application/json",
           },
           })
         if (res.data) {
-          const items = res.data.data
-          alert(`Message: ${items}`)
-          return items
+          const items = res.data
+          // alert(JSON.stringify("Items "+JSON.stringify(res.data)))
+          return res.data
         } else {
           console.log('Unable to fetch');
         }
@@ -42,6 +45,40 @@ export const getMessageByChatId = async (token) => {
       console.log(error.message)
     }
 }
+
+
+export const getAllMessagesByChatID = async(token) => {
+
+  
+  const params = JSON.stringify(
+    {
+    "chat_id": token,
+    }
+  );
+   
+      try {
+        const res = await axios.post(GET_MESSAGE_BY_REQUEST,params,{
+          "headers": {
+          "content-type": "application/json",
+          },
+          })
+        if (res.data) {
+         
+            return res.data
+
+          
+        } else {
+          alert("Can't fetch")
+        }
+      }
+    catch (error) {
+      alert(error.message)
+    }
+   
+
+
+}
+
 
 
 export const getMessageByRequest = async ({token}) => {

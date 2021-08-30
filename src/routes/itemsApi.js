@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from "axios";
 import { API_URL } from '../utils/config';
-import { POST_ITEM } from './urls';
+import { POST_ITEM, getOneItem } from './urls';
 
 
 export const getAllItems = async () => {
@@ -22,6 +22,40 @@ export const getAllItems = async () => {
       console.log(error.message)
     }
 }
+
+export const getItemsByUserID = async(id) => {
+
+  const params = JSON.stringify({
+  
+    "user_id": "2",
+    
+      });
+      
+  try {
+    try {
+  
+      const res = await axios.post(getOneItem, params,{
+          "headers": {
+          "content-type": "application/json",
+          },
+          })
+      if (res.data) {
+        console.log(`Axios:${JSON.stringify(res.data)}`)
+        alert(res.data)
+      } else {
+        console.log('Unable to fetch');
+      }
+    }
+  catch (error) {
+    // Add custom logic to handle errors
+  }
+  } catch (error) {
+    console.log(error.message)
+  }
+
+
+}
+
 
 export const addItem = async(name, description) => {
     

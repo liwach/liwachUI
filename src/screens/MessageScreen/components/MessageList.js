@@ -11,17 +11,20 @@ import {
     Image 
     } from "react-native"
 import { colors } from "../../../utils/colors";
-import { getAllMessageByID } from "../../../routes/messageApi";
+import { getAllMessageByID, getAllMessagesByChatID, getMessageByChatId } from "../../../routes/messageApi";
 
 export const MessageList = ({navigation,data}) => {
-    
+  
+
 
     const [selectedId, setSelectedId] = useState(null);
-    
-    const renderItem = ({ item }) => {
+    const renderItem = ( item ) => {
         // const backgroundColor = item.id === selectedId ? colors.white : colors.white;
         // const color = item.id === selectedId ? colors.white : colors.black;
+        //  alert("render "+JSON.stringify(item.item))
         
+         
+
         return(
             <MessageItem
             item={item}

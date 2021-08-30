@@ -1,4 +1,4 @@
-import React from "react"
+import React,{useEffect,useState} from "react"
 import {
 TouchableOpacity,
 View,
@@ -8,15 +8,27 @@ StyleSheet
 } from 'react-native'
 import {colors} from '../../../utils/colors'
 import UserAvatar from "@muhzi/react-native-user-avatar"
+import { getAllMessagesByChatID, getMessageByChatId } from "../../../routes/messageApi"
 
 export const MessageItem = ({item,onPress}) => {
-   
+    // alert(item.item.token)
+    const [msg,setMsg] = useState(null)
+    const getMessage = async() => {
+        const msg = await getAllMessagesByChatID(item.item.token)
+        alert(JSON.stringify(msg))
+        setMsg(msg)
+    }
+
+    useEffect(()=>{
+        getMessage()
+    },[])
+
     return(
         <TouchableOpacity style={[styles.item]} onPress={onPress}>
         <View>           
-   
+
               <UserAvatar
-              userName={item.other_user}
+              userName={`${item.item.requester.first_name} ${item.item.requester.last_name}`}
               size={60}
               backgroundColor={colors.flord_intro}
               fontSize={20}
@@ -24,9 +36,9 @@ export const MessageItem = ({item,onPress}) => {
               />
        </View>
         <View>
-            <Text style={[styles.title, styles.text]}>{item.other_user}</Text>
-            <Text style={[styles.category]}>{item.title}</Text>
-            <Text style={[styles.text]}>{item.message}</Text>
+            <Text style={[styles.title, styles.text]}>{item.item.requested_item.name}</Text>
+            <Text style={[styles.category]}>{item.item.requested_item.status}</Text>
+            <Text style={[styles.text]}>{msg!==null&&msg.length>0? item.item.requester.first_name+" : "+msg[msg.length-1].content:"No message"}</Text>
         </View>
         <View style={[styles.time]}>
         <Text style={[styles.time]}>{item.time}</Text>
@@ -59,7 +71,8 @@ const styles = StyleSheet.create({
     text:{
         marginLeft:10,
         marginTop:5,
-        color:colors.primary
+        color:colors.primary,
+        width:200
     },
     title:{
         color:colors.primary,
@@ -81,7 +94,7 @@ const styles = StyleSheet.create({
         padding:2,
         marginLeft:10,
         marginTop:5,
-        fontSize:12,
+        fontSize:15,
 
     },
     time:{

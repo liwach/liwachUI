@@ -1,8 +1,9 @@
 import React,{useState, useEffect} from 'react'
 import {View,Text,ScrollView, StyleSheet} from "react-native"
 import {CardList} from "./components/CardList"
-import { getAllItems } from '../../routes/itemsApi'
+import { getAllItems, getItemsByUserID } from '../../routes/itemsApi'
 import { colors } from '../../utils/colors'
+import { fetchuser } from '../../utils/checkFirstTimeActions'
 
 
 
@@ -13,7 +14,9 @@ export const PostScreen = ({navigation}) => {
 
 
   const fetchData = async () => {
-    const items = await getAllItems()
+    // const items = await getAllItems()
+    const user = await fetchuser()
+    const items = await getItemsByUserID(user.id)
     setData(items);
     setLoading(false);
     
