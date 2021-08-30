@@ -49,19 +49,24 @@ import { CustomPicker } from './components/CustomPicker';
 import { SearchBar } from 'react-native-elements';
 import { ImageActionSheet } from '../ItemScreen/components/ImageActionSheet';
 import { ToastAndroid } from 'react-native';
-export const SignUpSecond = ({navigation}) => {
+import  {getAllMembership} from '../../routes/membershipAPI'
+import { postUser } from '../../routes/accountApi';
 
+export const SignUpSecond = ({route, navigation}) => {
+  const { item} = route.params;
   const imageActionRef = createRef()
-  const [dropdown, setDropdown] = useState(null);
-  const [selected, setSelected] = useState([]);
+ 
   const [date, setDate] = useState(new Date(1598051730000));
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [place,setPlace] = useState('')
   const [location,setLocation] = useState([])
+  const [geometry, setGeometry] = useState([])
   const [phoneNumber,setPhone] = useState('')
   const [info,setInfo] = useState([])
-
+  const [membership, setMembership] = useState(null);
+  const [photo,setPhoto] = useState("https://res.cloudinary.com/liwach/image/upload/v1630288666/b7alngy52u86tqep6iwp.png");
+  
   _suggestionSelect =(result, lat, lng, text) => {
     console.log(result, lat, lng, text)
   }
@@ -103,7 +108,6 @@ export const SignUpSecond = ({navigation}) => {
        });
      
    text.length == 0 ? setLocation([]): setLocation(swap_types)
-   await setPlace(text)
   }
  
   const clearData = () => {
@@ -119,7 +123,36 @@ export const SignUpSecond = ({navigation}) => {
       console.log("text",text)
   }
 
-   
+   const signUpUser = async(values) =>{
+       const user = {
+        "first_name": item.firstName,
+        "last_name": item.lastName,
+        "email": item.email,
+        "password": item.password,
+        "profile_picture": photo,
+        "phone_number": values.phoneNumber ,
+        "TIN_picture": "",
+        "status": "active",
+        "birthdate": date,
+        "type": "user",
+        "address": {
+          "country": place,
+          "city": place,
+          "latitude": geometry[1],
+          "longitude":geometry[0],
+          "type": "user"
+        },
+        "membership_id": membership
+       }
+
+       const response =  postUser(user)
+
+       if(response){
+        alert("Succesfully Registered,"+JSON.stringify(response))
+        navigation.navigate('LoginScreen')
+       }
+       
+   }
  
   
 // const FlatListItem = ({ item, onPress }) => (
@@ -183,8 +216,9 @@ const FlatListData = ({ list, onItemClick }) => {
 }
 const itemClick = (item) => {
   setPlace(item.data.place_name)
+  setGeometry(item.data.geometry.coordinates)
   clearData()
-  console.log("touched:",item.data.place_name)
+  console.log("touched:",item.data.geometry.coordinates)
   // console.log("touched place:",place)
 
 }
@@ -217,7 +251,7 @@ const itemClick = (item) => {
           //  setPhone(values.phoneNumber)
           //  console.log("address",place)
           //  console.log("phone",phoneNumber)
-          alert(values)
+          alert(place)
         }
       }
       
@@ -249,7 +283,7 @@ const itemClick = (item) => {
      >
       {({ values, handleChange, errors, setFieldTouched, setFieldValue, touched, isValid, handleSubmit }) => (
         <View style={styles.formContainer}>
-            <ImageActionSheet actionSheetRef={imageActionRef} />
+            <ImageActionSheet photo={photo} setPhoto={setPhoto} actionSheetRef={imageActionRef} />
             <TextInput
             value={place}
             style={styles.inputStyle}
@@ -316,14 +350,14 @@ const itemClick = (item) => {
             <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{errors.birthDate}</Text>
           }
 
-          <CustomPicker/>
+          <CustomPicker membership={membership} setMembership={setMembership}/>
           
        
           <Button
             
             color={colors.flord_intro2}
             title='Sign Up'
-            onPress={()=>alert(location)}
+            onPress={()=>signUpUser(values)}
             
           />
          

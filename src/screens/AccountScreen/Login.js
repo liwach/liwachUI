@@ -43,6 +43,9 @@ import { SearchList } from './components/SearchFlatList';
 import DatePicker from 'react-native-datepicker'
 import { CustomPicker } from './components/CustomPicker';
 import { SearchBar } from 'react-native-elements';
+import { login } from '../../routes/accountApi';
+import { AsyncStorage } from 'react-native';
+import { saveUserToStorage } from '../../utils/checkFirstTimeActions';
 
 export const LoginForm = ({navigation}) => {
 
@@ -54,6 +57,25 @@ export const LoginForm = ({navigation}) => {
   const [place,setPlace] = useState([])
   const [location,setLocation] = useState([])
 
+  const signin= async(values) => {
+
+    const response = await login(values.email,values.password)
+    if(response.id!=null){
+      
+      alert("Sign in Successful,"+response.first_name)
+      await saveUserToStorage("logged_user",response)
+      navigation.navigate('Home', {
+        user:response
+      })
+     
+      
+    }
+   
+    
+    
+    
+  }
+
   _suggestionSelect =(result, lat, lng, text) => {
     console.log(result, lat, lng, text)
   }
@@ -63,18 +85,6 @@ export const LoginForm = ({navigation}) => {
     setDate(currentDate);
   };
 
-  const showMode = (currentMode) => {
-    setShow(true);
-    setMode(currentMode);
-  };
-
-  const showDatepicker = () => {
-    showMode('date');
-  };
-
-  const showTimepicker = () => {
-    showMode('time');
-  };
 
 
   const inputStyle = {
@@ -84,27 +94,7 @@ export const LoginForm = ({navigation}) => {
     marginBottom: 5,
   };
 
-  const displayList = async(text) => {
-    const data =  await getLocation(text)
-      
-      text.length == 0 ? setPlace([]): setPlace(data.features)
-   
-      // console.log("Places",data.features)
-      // const swap_types = 
-      //     res.data.features.map(function({data, index}){
-      //       console.log(`dataswap:${data.place_name} `)
-            
-      //           return(
-                  
-      //               {
-      //               index: data.place_name,
-      //               }
-                  
-                 
-      //           )
-      //          });
-      
-  }
+ 
  
   return (
     
@@ -198,7 +188,7 @@ export const LoginForm = ({navigation}) => {
             
             color={colors.flord_intro2}
             title='Login'
-            onPress={()=>navigation.navigate('SignUpSecond')}
+            onPress={()=>signin(values)}
             
           />
          

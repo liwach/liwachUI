@@ -7,11 +7,33 @@ import { StyleSheet } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons"
 import {launchCamera,launchImageLibrary} from "react-native-image-picker"
 import { ToastAndroid } from "react-native";
+import axios from "axios";
+import FormData from "form-data"
 
-export const ImageActionSheet = ({actionSheetRef}) => {
+
+export const ImageActionSheet = ({actionSheetRef,photo,setPhoto}) => {
   let actionSheet;
-  const [image,setImage] = useState("")
-  const imageSource = "../../../assets/images/image_icon.png"
+  const [image,setImage] = useState([])
+  // const [photo, setPhoto] = useState("https://res.cloudinary.com/liwach/image/upload/v1630288666/b7alngy52u86tqep6iwp.png");
+  
+
+
+  const cloudinaryUpload = async (photo) => {
+    const data = new FormData()
+    data.append('file', photo)
+    data.append('upload_preset', 'liwach')
+     fetch("https://api.cloudinary.com/v1_1/liwach/image/upload", {
+      method: "post",
+      body: data
+    }).then(res => res.json()).
+      then(data => {
+        alert(JSON.stringify(data))
+        setPhoto(data.secure_url)
+      }).catch(err => {
+        alert(err.message)
+      })
+  }
+  
   const openCamera = () => {
     let options = {
         storageOptions: {
@@ -29,17 +51,32 @@ export const ImageActionSheet = ({actionSheetRef}) => {
         } else if (response.customButton) {
           console.log('User tapped custom button: ', response.customButton);
           alert(response.customButton);
-        } else {
-            const source = response.assets.map(function(data, idx){
-                return {fileUri:data.uri}
-                  
-                
+        } 
+      
+    
+      
+        else {
+          
+          const source = response.assets.map(function(data, idx){
+            let base64Img = `data:image/jpg;base64,${data.base64}`;
+          console.log('base64Img', base64Img);
+            const uri = data.uri;
+          const type = data.type;
+          const name = data.fileName;
+          const source = {
+            "uri": uri,
+             "type":type,
+             "name":name
+            }
+            console.log('source', source);
+            cloudinaryUpload(source)
+           });
+         
+          
+           
+            
 
-               });
-            setImage(source.fileUri)
-          ToastAndroid.show(JSON.stringify(source), ToastAndroid.SHORT)
-
-          console.log('source', source);
+        
         //   this.setState({
         //     filePath: response,
         //     fileData: response.data,
@@ -49,7 +86,6 @@ export const ImageActionSheet = ({actionSheetRef}) => {
       });
 
   }
-
   const openImageLibrary = () => {
     let options = {
         storageOptions: {
@@ -67,17 +103,20 @@ export const ImageActionSheet = ({actionSheetRef}) => {
           console.log('User tapped custom button: ', response.customButton);
           alert(response.customButton);
         } else {
-            const source = response.assets.map(function(data, idx){
-                return {fileUri:data.uri}
-                  
-                
-
-               });
-            setImage(JSON.stringify(source.fileUri))
-          ToastAndroid.show(JSON.stringify(source), ToastAndroid.SHORT)
-
-          console.log('source', source);
-          
+          const source = response.assets.map(function(data, idx){
+            
+            const uri = data.uri;
+          const type = data.type;
+          const name = data.fileName;
+          const source = {
+            "uri": uri,
+             "type":type,
+             "name":name
+            }
+            console.log('source', source);
+            cloudinaryUpload(source)
+           });
+                   
         //   this.setState({
         //     filePath: response,
         //     fileData: response.data,
@@ -104,7 +143,7 @@ export const ImageActionSheet = ({actionSheetRef}) => {
         
         size={80}
         backgroundColor={colors.flord_intro}
-        src={"https://images.pexels.com/photos/4403924/pexels-photo-4403924.jpeg"}
+        src={photo}
         />
       </TouchableOpacity>
 

@@ -46,13 +46,11 @@ import { SearchBar } from 'react-native-elements';
 
 export const SignUpForm = ({navigation}) => {
 
-  const [dropdown, setDropdown] = useState(null);
-  const [selected, setSelected] = useState([]);
   const [date, setDate] = useState(new Date(1598051730000));
-  const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(false);
-  const [place,setPlace] = useState([])
-  const [location,setLocation] = useState([])
+  const [firstName,setFirstName] = useState('')
+  const [lastName,setLastName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
   _suggestionSelect =(result, lat, lng, text) => {
     console.log(result, lat, lng, text)
@@ -106,6 +104,19 @@ export const SignUpForm = ({navigation}) => {
       
   }
  
+  const storeValues = async(values) => {
+    
+      const item = {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: values.email,
+        password: values.password
+      }
+      /* 1. Navigate to the Details route with params */
+      navigation.navigate('SignUpSecond', {
+        item:item
+      })
+  }
   return (
     
     <View style={styles.contain}>
@@ -131,6 +142,7 @@ export const SignUpForm = ({navigation}) => {
       onSubmit={
         values => 
          {
+           alert(values.firstName)
         }
       }
 
@@ -138,15 +150,21 @@ export const SignUpForm = ({navigation}) => {
       validationSchema={yup.object().shape({
         firstName: yup
           .string()
+          .min(2, 'Too Short!')
+          .max(50, 'Too Long!')
           .required('Please, provide your title!'),
         lastName: yup
           .string()
+          .min(2, 'Too Short!')
+          .max(50, 'Too Long!')
           .required('Please, provide your category!'),
           email: yup
           .string()
+          .email('Invalid email')
           .required('Please, provide your description!'),
           password: yup
           .string()
+          .min(8)
           .required('Please, provide your location!'),
           phoneNumber : yup
           .string()
@@ -216,7 +234,7 @@ export const SignUpForm = ({navigation}) => {
             <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{errors.password}</Text>
           } 
 
-        <TextInput
+        {/* <TextInput
             style={styles.inputStyle}
             value={values.password}
             onChangeText={handleChange('password')}
@@ -227,7 +245,7 @@ export const SignUpForm = ({navigation}) => {
           />
           {touched.password && errors.password &&
             <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{errors.password}</Text>
-          } 
+          }  */}
        
       
 
@@ -236,7 +254,7 @@ export const SignUpForm = ({navigation}) => {
             
             color={colors.flord_intro2}
             title='Next'
-            onPress={()=>navigation.navigate('SignUpSecond')}
+            onPress={()=>storeValues(values)}
             
           />
          

@@ -1,4 +1,4 @@
-import React,{useState} from "react"
+import React,{useState,useEffect} from "react"
 import { MessageItem } from "./MessageItem";
 import { 
     View,
@@ -11,8 +11,10 @@ import {
     Image 
     } from "react-native"
 import { colors } from "../../../utils/colors";
+import { getAllMessageByID } from "../../../routes/messageApi";
 
 export const MessageList = ({navigation,data}) => {
+    
 
     const [selectedId, setSelectedId] = useState(null);
     

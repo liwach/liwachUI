@@ -11,10 +11,10 @@ import { useState } from 'react'
 import Ionicons from "react-native-vector-icons/Ionicons"
 import Entypo from "react-native-vector-icons/Entypo"
 import FontAwesome from "react-native-vector-icons/FontAwesome"
-import { removeFirstOpen } from '../../utils/checkFirstTimeActions'
-export const HomeScreen = ({navigation}) => {
-   
-   
+import { fetchuser, removeFirstOpen } from '../../utils/checkFirstTimeActions'
+export const HomeScreen = ({route,navigation}) => {
+    
+    const [user,setUser] = useState([])
     const [isMenuOpen, setMenuOpen] = useState(false)
 
     const items = [
@@ -22,8 +22,10 @@ export const HomeScreen = ({navigation}) => {
         { label: 'Add Item', icon : "shopping-basket" },
       ];
    
-   useEffect(()=>{
+   useEffect(async()=>{
     removeFirstOpen("isFirst",false)
+    const userData = await fetchuser()
+    setUser(userData)
    },[])
 
     const handleMenuToggle = isMenuOpen =>

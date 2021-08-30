@@ -1,5 +1,5 @@
 import React from "react"
-import { GET_ALL_REQUESTS } from "./urls";
+import { GET_ALL_REQUESTS, GET_REQUEST_BY_STATUS } from "./urls";
 import axios from "axios";
 
 export const getAllRequests = async () => {
@@ -28,6 +28,37 @@ export const getAllRequests = async () => {
     }
 }
 
+export const getRequestByStatus = async (status) => {
+  const body = JSON.stringify({
+    "status": status,
+  });
+  
+  try {
+    try {
+      const res = await axios.post(GET_REQUEST_BY_STATUS,body,{
+          "headers": {
+          "content-type": "application/json",
+          },
+          })
+      if (res.data) {
+      //console.log(`Axios:${JSON.stringify(res.data)}`)
+      const items = res.data
+      
+      return items
+      } else {
+        console.log('Unable to fetch');
+        alert("Can't")
+      }
+    }
+  catch (error) {
+    // Add custom logic to handle errors
+    alert("Can't")
+  }
+  } catch (error) {
+    console.log(error.message)
+    alert("Can't")
+  }
+}
 
 
 export const getLocation = async (text) => {

@@ -12,8 +12,17 @@ export const GET_ALL_TYPES = `${API_URL}/type`
 
 //Requests
 export const GET_ALL_REQUESTS =  `${API_URL}/request`
+export const GET_REQUEST_BY_STATUS = `${API_URL}/request/search`
 export const UPDATE_REQUEST_STATUS = `${API_URL}/request`
 
 //Message
 export const POST_MESSAGE = `${API_URL}/message`
 export const GET_MESSAGE_BY_REQUEST = `${API_URL}/message/search`
+
+//Membership
+export const POST_MEMBERSHIP = `${API_URL}/membership`
+export const GET_ALL_MEMBERSHIP = `${API_URL}/membership`
+
+//User
+export const POST_USER =  `${API_URL}/user`
+export const LOGIN =  `${API_URL}/user/login`
