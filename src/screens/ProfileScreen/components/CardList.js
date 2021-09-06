@@ -1,8 +1,11 @@
+import UserAvatar from "@muhzi/react-native-user-avatar";
 import React,{useEffect, useState} from "react"
 import { 
     View,
     FlatList,
     SafeAreaView,
+    ScrollView,
+    RefreshControl,
     StatusBar,
     StyleSheet, 
     Text, 
@@ -10,7 +13,9 @@ import {
     Image 
     } from "react-native"
 import { colors } from "../../../utils/colors";
-
+import { getAllItems, getItemsByUserID } from '../../../routes/itemsApi'
+import { fetchuser } from '../../../utils/checkFirstTimeActions'
+import { getServicesByUserID } from "../../../routes/serviceApi";
 
 
 const FlatListItem = ({ item, onPress, backgroundColor, textColor }) => (
@@ -19,7 +24,8 @@ const FlatListItem = ({ item, onPress, backgroundColor, textColor }) => (
         
         <TouchableOpacity style={[styles.item, backgroundColor]} onPress={onPress}>
             <View>           
-                 <Image source={require("../../../assets/images/hero.png")} style={styles.imageBox}/>
+              
+                 <UserAvatar size={80} src={item.media[0]} style={styles.imageBox}/>
             </View>
             <View>
                 <Text style={[styles.title, styles.text]}>{item.name}</Text>
@@ -38,20 +44,64 @@ const FlatListItem = ({ item, onPress, backgroundColor, textColor }) => (
             </View>
             <View style={[styles.time]}>
             <Text style={[styles.time]}>{item.time}</Text>
+            <Text style={[styles.post]}>{item.post_type}</Text>
             </View>
         </TouchableOpacity>
     
 )
 
 export const CardList = ({item,navigation}) => {
-   
-  
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [user,setUser] = useState([])
 
+  const fetchData = async () => {
+    // const items = await getAllItems()
+    const user = await fetchuser()
+    setUser(user)
+    const items = await getItemsByUserID(user.id)
+    const services = await getServicesByUserID(user.id)
+    // alert(JSON.stringify(services))
+    const final = []
+    const listItems = items.map(function(data, idx){
+        final.push(data)
+    });
+    const listServ = services.map(function(data, idx){
+      final.push(data)
+  });
+    setData(final);
+    setLoading(false);
+    
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  }
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    fetchData()
+    wait(2000).then(() => setRefreshing(false));
+   
+  }, []);
+    
     const renderItem = ({ item }) => {
         // const backgroundColor = item.id === selectedId ? colors.white : colors.white;
         // const color = item.id === selectedId ? colors.white : colors.black;
         // const [selectedId, setSelectedId] = useState(null);
-        const swap_types = item.item_swap_type.map(function(data, idx){
+        // console.log("render items: ",item)
+        const types = []
+        if(item.bartering_location.type=="item"){
+          const swap_types = item.item_swap_type.map(function(data, idx){
+            types.push( {
+              id: data.type_id,
+              
+            })
             return(
               {
                 id: data.type_id,
@@ -59,18 +109,44 @@ export const CardList = ({item,navigation}) => {
               }
             )
            });
-
+        }
+        if(item.bartering_location.type=="service"){
+          const swap_types = item.service_swap_type.map(function(data, idx){
+            types.push( {
+              id: data.type_id,
+              
+            })
+            return(
+              {
+                id: data.type_id,
+                
+              }
+            )
+           });
+        }
+      
+           const picture_urls = item.media.map(function(data, idx){
+            const url = data.url
+           return(
+             url
+           )
+          });
+ 
+         const pic = picture_urls[0]
+          const editItem = item.user.id===user.id?true:false
+          console.log(editItem)
           const singleItem = {
             name: item.name,
             location:item.bartering_location.city,
-            picture: "",
+            media: picture_urls,
             category: item.type.name,
             time: item.created_at,
-            swap_type: swap_types,
+            swap_type: types,
             number_request: item.number_of_request,
-            user: item.user == null? "":item.user.first_name,
+            user:item.user.first_name,
             status: item.status,
-            desc: item.description
+            desc: item.description,
+            post_type: item.bartering_location.type 
       
           }
         return(
@@ -79,7 +155,8 @@ export const CardList = ({item,navigation}) => {
             onPress={() => 
                 /* 1. Navigate to the Details route with params */
                 navigation.navigate('Post Detail Screen', {
-                  item:singleItem
+                  item:item,
+                  edit:editItem
                 })
             }
           />
@@ -87,14 +164,21 @@ export const CardList = ({item,navigation}) => {
       }
 
     return(
-        <SafeAreaView style={styles.container}>
+        <ScrollView
+                refreshControl={
+                  <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                  />
+                }
+            >
             <FlatList
-              data={item}
+              data={data}
               renderItem={renderItem}
               keyExtractor={(item) => item.id}
               
             />
-        </SafeAreaView>
+       </ScrollView>
     )
 };
 
@@ -131,8 +215,8 @@ const styles = StyleSheet.create({
         fontWeight:'bold'
     },
     imageBox:{
-        width:60,
-        height:60,
+        width:100,
+        height:100,
         borderRadius:40,
         margin:10,
         flex:1,
@@ -153,10 +237,23 @@ const styles = StyleSheet.create({
     time:{
         margin:5,
         flex:1,
-        fontSize:10,
+        fontSize:15,
         alignSelf:'flex-end',
         justifyContent:'flex-start',
         color:colors.flord_intro
+    },
+    post:{
+      fontSize: 16,
+      margin:5,
+      flex:1,
+      alignSelf:'flex-end',
+      justifyContent:'flex-start',
+      color:colors.flord_intro2,
+      fontWeight:"bold",
+      textDecorationLine:'underline',
+      textDecorationStyle:'double',
+      textTransform:'uppercase',
+      
     }
 
 

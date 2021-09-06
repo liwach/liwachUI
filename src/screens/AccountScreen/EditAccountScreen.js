@@ -19,17 +19,17 @@ export const EditAccountScreen = ({navigation,route}) => {
             <View style={styles.backgroundContainer}>
             </View>
             <View style={styles.actionSheet}>
-            <ImageActionSheet actionSheetRef={imageActionRef}/> 
+            {/* <ImageActionSheet actionSheetRef={imageActionRef}/>  */}
             </View>
          
                 
            <AntDesign style={styles.icon} name='edit' size={20} color={colors.white}/>
             <View style={styles.textContainer}>
-                <TextInput value={user.firstName} placeholder="First Name" style={styles.textInputContainer}/>
-                <TextInput value={user.lastName} placeholder="Last Name" style={styles.textInputContainer}/>
+                <TextInput value={user.first_name} placeholder="First Name" style={styles.textInputContainer}/>
+                <TextInput value={user.last_name} placeholder="Last Name" style={styles.textInputContainer}/>
 
                 <TextInput value={user.phone_number} placeholder="Phone number" style={styles.textInputContainer} />
-                <TextInput value={user.email_address} placeholder="Email Address" style={styles.textInputContainer}/>
+                <TextInput value={user.email} placeholder="Email Address" style={styles.textInputContainer}/>
             </View>
             <Button style={styles.button} color={colors.white} onPress={()=>{alert("Saved")}}>Done</Button>
         </View>

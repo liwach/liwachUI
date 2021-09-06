@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
+import React, { useState } from 'react';
 import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
 import {
   addItemForm,
@@ -13,7 +13,7 @@ import {ProfileScreen} from '../screens/ProfileScreen/ProfileScreen';
 import {MessageScreen} from '../screens/MessageScreen/MessageScreen';
 import {colors} from '../utils/colors';
 import {DrawerButton} from '../screens/HomeScreen/component/DrawerButton';
-import {Button, StyleSheet} from 'react-native';
+import {Button, StyleSheet, View} from 'react-native';
 import {NotificationScreen} from '../screens/NotificationScreen/NotificationScreen';
 import {AccountScreen} from '../screens/AccountScreen/AccountScreen';
 import {ItemDetailScreen} from '../screens/DetailScreen/ItemDetailScreen';
@@ -23,7 +23,9 @@ import {DrawerActions} from '@react-navigation/native';
 import {EditAccountScreen} from '../screens/AccountScreen/EditAccountScreen';
 import {SubscribeScreen} from '../screens/SubscriptionScreen/SubscribeScreen';
 import {TypeScreen} from '../screens/SubscriptionScreen/TypeScreen';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/Ionicons'
+import Entypo from 'react-native-vector-icons/Entypo'
 import {IntroScreen} from '../screens/IntroScreen.js/IntroScreen';
 import {SecondIntroScreen} from '../screens/IntroScreen.js/SecondIntroScreen'
 import {ThirdIntroScreen} from '../screens/IntroScreen.js/ThirdIntroScreen'
@@ -33,6 +35,13 @@ import { OrganizationForm } from '../screens/SignUpScreen/OrganizationScreen';
 import { SignUpSecond } from '../screens/SignUpScreen/SignUpSecond';
 import AntDesign from "react-native-vector-icons/AntDesign"
 import { LoginForm } from '../screens/AccountScreen/Login';
+import AwesomeAlert from 'react-native-awesome-alerts';
+import Alert from "react-native"
+import { fetchuser } from '../utils/checkFirstTimeActions';
+import { RequestScreen } from '../screens/ProfileScreen/RequestScreen';
+import { AuthenticationPage } from '../screens/AuthScreen/AuthScreen';
+import { IntroductionScreen } from '../screens/IntroScreen.js/Introduction';
+
 
 const ProductStack = createStackNavigator();
 const HomeStack = createStackNavigator();
@@ -44,6 +53,90 @@ const AccountStack = createStackNavigator();
 const SubscribeStack = createStackNavigator();
 const IntroStack = createStackNavigator();
 const SignupStack = createStackNavigator();
+const RequestStack = createStackNavigator();
+const IntroductionStack = createStackNavigator();
+
+export const IntroductStackScreen = () => {
+  return (
+    <IntroductionStack.Navigator>
+      <IntroductionStack.Screen
+       options={({route, navigation}) => ({
+        headerShown:false
+       })}
+       name="IntroductionScreen"
+       component={IntroductionScreen}
+       
+      />
+       <AccountStack.Screen
+        options={({route, navigation}) => ({
+          headerShown: false,
+          title: 'Authenticate',
+          headerStyle: {backgroundColor: colors.flord_intro},
+          headerTitleStyle: {color: colors.flord_secondary, alignSelf: 'center'},
+        })}
+        name="AuthScreen"
+        component={AuthenticationPage}
+      />
+        <IntroductionStack.Screen
+       options={({route, navigation}) => ({
+        headerShown:false
+       })}
+       name="SignUpStack"
+       component={SignupStackScreen}
+       
+      />
+    </IntroductionStack.Navigator>
+  )
+}
+
+
+export const RequestScreenStack = () => {
+
+  return(
+    <RequestStack.Navigator>
+        <RequestStack.Screen
+        
+        options={({route, navigation}) => ({
+          headerShown:false
+         })}
+         name="RequestScreen"
+         component={RequestScreen}
+        
+        />
+     <MessageStack.Screen
+        name="Inbox"
+        
+        options={({route, navigation}) => ({
+          
+          title: 'Inbox',
+          headerRight: () => {},
+        })}
+        component={MessageScreen}
+      />
+      <MessageStack.Screen
+        name="SingleMessage"
+        options={({route, navigation}) => ({
+          headerShown:true,
+          title: 'Inbox',
+          headerTitleStyle: {alignSelf: 'center', color: colors.white},
+          headerRight: () => {},
+          headerLeft: () => {
+            return (
+              <HeaderBackButton
+                tintColor={colors.white}
+                onPress={() => navigation.goBack()}
+              />
+            );
+          },
+        })}
+        component={MessageDetailScreen}
+      />
+    </RequestStack.Navigator>
+  )
+
+
+}
+
 
 export const SignupStackScreen = () => {
 
@@ -92,7 +185,7 @@ export const IntroStackScreen = () => {
          headerShown:false
         })}
         name="IntroScreen"
-        component={IntroScreen}
+        component={IntroductionScreen}
       />
         <IntroStack.Screen
       
@@ -260,6 +353,16 @@ export const AccountStackScreen = () => {
         name="SubscribeScreen"
         component={SubscribeStackScreen}
       />
+       <AccountStack.Screen
+        options={({route, navigation}) => ({
+          headerShown: false,
+          title: 'Authenticate',
+          headerStyle: {backgroundColor: colors.flord_intro},
+          headerTitleStyle: {color: colors.flord_secondary, alignSelf: 'center'},
+        })}
+        name="AuthScreen"
+        component={AuthenticationPage}
+      />
        <SignupStack.Screen
           
           options={({route, navigation}) => ({
@@ -305,14 +408,45 @@ export const ProductStackScreen = () => {
         component={addItemForm}
       />
       <ProductStack.Screen name="Add Service" component={addServiceForm} />
+      <HomeStack.Screen
+        
+        name="Home"
+        component={HomeScreen}
+        options={({navigation}) => ({
+          headerShown: true,
+          headerMode: 'screen',
+          gestureEnabled: true,
+          headerStyle: {backgroundColor: colors.flord_intro},
+          headerTitleStyle: {color: colors.flord_secondary, alignSelf: 'center'},
+          headerRight: props => (
+            <Icon
+              onPress={() => navigation.navigate('NotificationScreen')}
+              style={styles.drawerButton}
+              name="md-notifications"
+              size={22}
+              color={colors.flord_secondary}
+            />
+          ),
+          headerLeft: props => (
+            <Icon
+              onPress={() => navigation.navigate('AccountScreen')}
+              style={styles.leftDrawer}
+              name="person"
+              size={22}
+              color={colors.flord_secondary}
+            />
+          ),
+        })}
+      />
     </ProductStack.Navigator>
   );
 };
 
 export const HomeStackScreen = () => {
+  
   return (
     <HomeStack.Navigator
-      screenOptions={({navigation}) => ({
+      screenOptions={({route,navigation}) => ({
         headerShown: true,
         headerMode: 'screen',
         gestureEnabled: true,
@@ -327,14 +461,15 @@ export const HomeStackScreen = () => {
             
           />
         ),
-        headerLeft: props => (
-          <Icon
+        headerLeft: () => {
+          console.log("Icon", )
+          return(<Icon
             onPress={() => navigation.navigate('AccountScreen')}
             style={styles.leftDrawer}
             name="person-outline"
             size={30}
-          />
-        ),
+          />)
+        },
       })}>
       <HomeStack.Screen
         options={{headerShown:true,
@@ -472,6 +607,30 @@ export const HomeStackScreen = () => {
         })}
         component={NotificationScreen}
       />
+       <SubscribeStack.Screen
+        options={({route, navigation}) => ({
+          title: 'Subscribe',
+          headerStyle: {backgroundColor: colors.flord_intro2},
+          headerTitleStyle: {
+            color: colors.white,
+            alignSelf: 'center',
+            marginRight: 10,
+          },
+        })}
+        name="SubscribeScreen"
+        component={SubscribeScreen}
+      />
+      <SubscribeStack.Screen
+        options={({route, navigation}) => ({
+          title: `Subscribe to ${route.params.category.name}`,
+          headerStyle: {backgroundColor: colors.flord_intro2},
+          headerTitleStyle: {color: colors.white},
+         
+        })}
+        name="TypeScreen"
+        component={TypeScreen}
+      />
+  
         <ProductStack.Screen
         
         options={({route, navigation}) => ({
@@ -520,6 +679,30 @@ export const HomeStackScreen = () => {
 };
 
 export const ProfileStackScreen = () => {
+  const [openEdit,setOpenEdit] = useState(false)
+  const [openAlert,setOpenAlert] = useState(false)
+ 
+
+  const showAlert = () =>
+  alert(
+    "Alert Title",
+    "My Alert Msg",
+    [
+      {
+        text: "Cancel",
+        onPress: () => alert("Cancel Pressed"),
+        style: "cancel",
+      },
+    ],
+    {
+      cancelable: true,
+      onDismiss: () =>
+        alert(
+          "This alert was dismissed by tapping outside of the alert dialog."
+        ),
+    }
+  );
+
   return (
     <ProfileStack.Navigator
       screenOptions={{
@@ -545,6 +728,7 @@ export const ProfileStackScreen = () => {
           />
         ),
       }}>
+
       <ProfileStack.Screen
         name="Profile"
         options={({route, navigation}) => ({
@@ -554,24 +738,69 @@ export const ProfileStackScreen = () => {
         })}
         component={ProfileScreen}
       />
-      <HomeStack.Screen
+      <ProfileStack.Screen
+      
         name="Post Detail Screen"
         options={({route, navigation}) => ({
           title: route.params.item.name,
-          headerTitleStyle:{marginRight:60,color:colors.flord_secondary,textAlign:"center"},
-          headerRight: () => {},
+          headerTitleStyle:{color:colors.white,textAlign:"center"},
+          headerRight: () => {
+           
+            if(route.params.edit==true)
+                 return(
+                   
+              <View style={{flexDirection:'row'}}>
+                {openEdit!=true?
+                  <AntDesign
+                onPress={showAlert}
+                style={{marginRight:10}}
+                color={colors.flord_intro}
+                name="delete"
+                size={25}
+              />:<View></View>}
+            {openEdit!=true?
+               <Entypo
+               onPress={() => setOpenEdit(true)}
+               style={styles.drawerButton}
+               color={colors.white}
+               name="edit"
+               size={25}
+                
+             />:
+             <Entypo
+             onPress={() => setOpenEdit(false)}
+             style={styles.drawerButton}
+             color={colors.white}
+             name="cross"
+             size={30}
+              
+           />
+            }
+           
+           </View>
+            
+            
+         )
+              },
           headerLeft: () => {
             return (
-              <HeaderBackButton
-                tintColor={colors.flord_secondary}
-                onPress={() => navigation.goBack()}
-              />
+              <View>
+                {openEdit!=true?
+                   <HeaderBackButton
+                   tintColor={colors.flord_secondary}
+                   onPress={() => navigation.goBack()}
+                 />:<View></View>
+                }
+             
+              </View>
             );
           },
         })}
-        component={ItemDetailScreen}
+        
+        component={openEdit==false?ItemDetailScreen:editItemForm}
       />
 
+      
       <MessageStack.Screen
         name="ProfileInbox"
         options={({route, navigation}) => ({
@@ -581,12 +810,12 @@ export const ProfileStackScreen = () => {
               : route.params.item.requester.first_name +
                 ' ' +
                 route.params.item.requester.last_name,
-          headerTitleStyle: {alignSelf: 'center', color: colors.flord_secondary},
+          headerTitleStyle: {alignSelf: 'center', color: colors.white},
           headerRight: () => {},
           headerLeft: () => {
             return (
               <HeaderBackButton
-                tintColor={colors.flord_secondary}
+                tintColor={colors.white}
                 onPress={() => navigation.goBack()}
               />
             );
@@ -599,11 +828,7 @@ export const ProfileStackScreen = () => {
 };
 
 export const MessageStackScreen = ({route,navigation }) => {
-  if (route.state.index === 0) {
-    navigation.setOptions({tabBarVisible: true});
-    } else {
-    navigation.setOptions({tabBarVisible: false});
-   }
+ 
   return (
     <MessageStack.Navigator
       screenOptions={{

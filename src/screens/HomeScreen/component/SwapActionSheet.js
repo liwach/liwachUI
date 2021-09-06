@@ -1,5 +1,5 @@
 import ActionSheet from "react-native-actions-sheet";
-import React, { createRef,useState } from "react";
+import React, { createRef,useState,useEffect } from "react";
 import { View,Text,TouchableOpacity,ScrollView,Image } from "react-native";
 import UserAvatar from "@muhzi/react-native-user-avatar"
 import { colors } from "../../../utils/colors";
@@ -9,13 +9,18 @@ import { ToastAndroid } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons"
 import { ItemPicker } from "./ItemPicker"
 import { SendButton } from "./BottomSheet";
+import { fetchuser } from "../../../utils/checkFirstTimeActions";
 
 
 export const SwapSheet = ({item,actionSheetRef}) => {
+    const [value, setValue] = useState(null);
+   
+    console.log("Selected value: ",value)
    return( 
+    <ScrollView style={styles.actionSheetContainer} >
    <ActionSheet ref={actionSheetRef} containerStyle={styles.actionsheet}>
     
-    <ScrollView style={styles.actionSheetContainer} >
+   
       {/* <ScrollView>
         <Dropdown
         data={data}
@@ -27,29 +32,42 @@ export const SwapSheet = ({item,actionSheetRef}) => {
     <View style={[styles.horizontal]}>
         
     </View>
-    <View style={[styles.horizontal,styles.descBox]}>
-        <View style={styles.horizontalItems} >
-        <Image style={styles.imageBox} source={require("../../../assets/images/laptop.png")}/>
-       
-         <Text style={[styles.header]}>{item.name}</Text>
-         <Text style={styles.desc}>{item.desc}</Text>
-         
+    <View style={[styles.descBox]}>
+        <View style={styles.horizontal}>
+            <View style={styles.horizontalItems} >
+                <UserAvatar style={styles.imageBox} src={item.picture}  size={100}/>
+            
+                <Text style={[styles.header]}>{item.name}</Text>
+                <Text style={styles.desc}>{item.desc}</Text>
+                
+            </View>
+            <View style={{width:150,height:"100%",margin:10}} >
+                    <ItemPicker value={value} setValue={setValue}/>
+            </View>
         </View>
-        <View style={{width:150,height:"100%",margin:10}} >
-        <ItemPicker/>
-        </View>
-      
+        <SendButton selectedValue={value} item={item}/>
+
     </View>
-    <SendButton item={item}/>
-    </ScrollView>
+   
       </ActionSheet>
-    
+      </ScrollView>
     );
 } 
 
 
 export const SwapActionSheet = ({actionSheetRef,item,onPress}) => {
   let actionSheet;
+  const [isVisible,setVisible] = useState(false)
+  const fetchData = async() => {
+      const user = await fetchuser()
+      console.log("itemmmmmm",JSON.stringify(item))
+      if(user.id !== item.user_id){
+          setVisible(true)
+      }
+  }
+  useEffect(()=>{
+      fetchData()
+  },[])
   const onChangeHandler = (value) => {
     selectedId(value);
     
@@ -57,33 +75,33 @@ export const SwapActionSheet = ({actionSheetRef,item,onPress}) => {
   }
 
   console.log("Swap Action",item.name)
-let data = [
-    {      value: 'Jacket',    },
-    {      value: 'Trouser',    },
-    {      value: 'Tshirt',    },
-    {      value: 'Socks',    },
-    {      value: 'Socks',    },
-];
+
 
 const [id,selectedId] = useState("");
-  return (
-    <View>
-      <TouchableOpacity
-        onPress={onPress}
 
-        style={styles.container}
-      >
-      <Text  style={styles.textContainer} >Swap</Text>
-      <Ionicons style={styles.iconContainer}  name={'swap-horizontal'} size={20}/>
-      </TouchableOpacity>
-      <SwapSheet actionSheetRef={actionSheetRef} item={item}/>
-      </View>
-  );
+    return (
+        <View>
+            {isVisible?
+        <View>
+          <TouchableOpacity
+            onPress={onPress}
+    
+            style={styles.container}
+          >
+       <Text  style={styles.textContainer} >Swap</Text>
+          <Ionicons style={styles.iconContainer}  name={'swap-horizontal'} size={20}/>
+          </TouchableOpacity>
+          <SwapSheet actionSheetRef={actionSheetRef} item={item}/>
+          </View>:<View/>}
+          </View>
+      )
+
+ 
 }
 
 const styles = StyleSheet.create({
     actionsheet:{
-        height: 220,
+        height: 250,
         backgroundColor:colors.bottomNav
 
     },
@@ -98,12 +116,15 @@ const styles = StyleSheet.create({
         fontSize:12,
         fontWeight:'bold',
         color: colors.flord_intro2,
-        marginLeft:20
+        marginLeft:20,
+        
+    
 
     },
     horizontal:{
         flexDirection:'row',
-        alignContent:'center'
+        alignContent:'center',
+        
     },
     icon:{},
     text:{
@@ -124,12 +145,18 @@ const styles = StyleSheet.create({
         paddingRight:7,
         borderRadius: 10,
         height:25,
-        backgroundColor:colors.bottomNav
+        backgroundColor:colors.bottomNav,
+        alignItems:'center',
+        alignContent:'center',
+        justifyContent:'center',
+        width: "60%"
     },
 
     textContainer:{
         color: colors.flord_intro2,
-        marginRight:5,
+        marginRight:25,
+        textAlign:'center',
+        fontSize:17
     },
     iconContainer:{
         color:colors.flord_intro2

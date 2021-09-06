@@ -7,9 +7,9 @@ import axios from "axios";
 import { GET_ONE_TYPE } from "../../../routes/urls";
 
 
-export const TypeSeachBox = () => {
+export const TypeSeachBox = ({value, setValue}) => {
     const [open, setOpen] = useState(false);
-    const [value, setValue] = useState(null);
+    // const [value, setValue] = useState(null);
     const [items,setItems] = useState([])
     const [types,setTypes] = useState(null)
     
@@ -21,7 +21,7 @@ export const TypeSeachBox = () => {
              { label:name,value:name}
             )
             })
-        console.log("Item_list",types)
+        // console.log("Item_list",types)
         setItems(types)
     }
   
@@ -41,7 +41,6 @@ export const TypeSeachBox = () => {
       }}
         open={open}
         value={value}
-        searchable={true}
         searchablePlaceholder="Search..."
         onChangeSearchText={async(text) => {
             // Show the loading animation

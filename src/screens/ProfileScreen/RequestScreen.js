@@ -1,30 +1,19 @@
 import React,{useState, useEffect} from 'react'
 import {View,Text,ScrollView, StyleSheet} from "react-native"
 import {RequestCardList} from "./components/RequestCardList"
-import { getAllRequests } from '../../routes/requestApi'
+import { getAllRequests, getAllRequestsByItemID, getAllRequestsBySenderID } from '../../routes/requestApi'
+import { getItemsByUserID } from '../../routes/itemsApi'
+import { fetchuser } from '../../utils/checkFirstTimeActions'
 
 
 
 export const RequestScreen = ({navigation}) => {
-  const [data, setData] = useState("");
-  const [loading, setLoading] = useState(true);
 
 
-  const fetchData = async () => {
-    const items = await getAllRequests()
-    
-    setData(items);
-    setLoading(false);
-    
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
     return(
         <View>
-             <RequestCardList navigation={navigation} item={data} />
+             <RequestCardList  navigation={navigation} item={data} />
         </View>
     )
 

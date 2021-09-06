@@ -46,43 +46,48 @@ import { SearchBar } from 'react-native-elements';
 import { login } from '../../routes/accountApi';
 import { AsyncStorage } from 'react-native';
 import { saveUserToStorage } from '../../utils/checkFirstTimeActions';
+import { BackgroundImage } from 'react-native-elements/dist/config';
+import { ImageBackground } from 'react-native';
+import { Pressable } from 'react-native';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
-export const LoginForm = ({navigation}) => {
+export const AuthenticationPage = ({navigation}) => {
+
 
   const [show,setShow] = useState(false)
+  const [message,setMessage] = useState("Something went wrong.")
   const signin= async(values) => {
-
-    const response = await login(values.email,values.password)
-    if(response.id!=null){
-      await saveUserToStorage("logged_user",response)
-      navigation.navigate('Home', {
-        user:response
-      })
+    try{
+        const response = await login(values.email,values.password)
+        if(response.id!==null){
+            await saveUserToStorage("logged_user",response)
+            setShow(true)
+            setMessage("You have logged in!")
+          }
     }
-
-    if(response.id===null){
-      setShow(true)
+    catch(error){
+        setShow(true)
+        setMessage("Something went wrong. Check your internet connection.")
     }
+   
+
+   
    
     
     
     
   }
 
-  const inputStyle = {
-    borderWidth: 1,
-    borderColor: colors.grey,
-    padding: 12,
-    marginBottom: 5,
-  };
+  
 
  
+const image = { uri: "https://res.cloudinary.com/liwach/image/upload/v1630627424/odynsmqnvligqdmhlgns.jpg" };
  
   return (
     
     <View style={styles.contain}>
-    
+     <ImageBackground style={{width:"100%", height:"100%"}} source={image} resizeMode="cover" blurRadius={10}/>
+     <View style={{position:'absolute',width:'100%',height:'100%'}}>
       <View style={styles.imageBox}>
       <Text style={styles.header}> Log in</Text>
       </View>
@@ -90,46 +95,32 @@ export const LoginForm = ({navigation}) => {
       <Text style={styles.subtitle}> Let's get you signed in!</Text>
     <Formik
       initialValues={{ 
-        firstName: '',
-        lastName: '', 
+       
         email: '',
         password: '',
-        profilePicture: '',  
-        phoneNumber : '',
-        birthDate: '',
-        type : '',
-        address : '',
-        membership : '',
+        
       }}
       onSubmit={
         values => 
          {
+            signin(values)
         }
       }
 
       
       validationSchema={yup.object().shape({
-        firstName: yup
-          .string()
-          .required('Please, provide your title!'),
-        lastName: yup
-          .string()
-          .required('Please, provide your category!'),
+       
           email: yup
           .string()
-          .required('Please, provide your description!'),
+          .email()
+        
+          .required('Please, provide your email!'),
           password: yup
           .string()
-          .required('Please, provide your location!'),
-          phoneNumber : yup
-          .string()
-          .required('Please provide your phone number.'),
-          membership : yup
-          .string().
-          required("Please provide your membership"),
-          address : yup
-          .string()
-          .required("Please provide your location.")
+          .min(8)
+          .max(15)
+          .required('Please, provide your password!'),
+         
        
       })}
      >
@@ -148,7 +139,7 @@ export const LoginForm = ({navigation}) => {
             placeholderTextColor={colors.flord}
           />
           {touched.email && errors.email &&
-            <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{errors.email}</Text>
+            <Text style={{ fontSize: 12, color: colors.white  }}>{errors.email}</Text>
           } 
 
           <TextInput
@@ -161,43 +152,44 @@ export const LoginForm = ({navigation}) => {
             placeholderTextColor={colors.flord}
           />
           {touched.password && errors.password &&
-            <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{errors.password}</Text>
+            <Text style={{ fontSize: 12, color: colors.white  }}>{errors.password}</Text>
           } 
-
-         
-              <AwesomeAlert
+            <AwesomeAlert
               show={show}
               showProgress={false}
-              title="AwesomeAlert"
-              message="I have a message for you!"
+              title="Login"
+              message={message}
               closeOnTouchOutside={true}
               closeOnHardwareBackPress={false}
-              showCancelButton={true}
               showConfirmButton={true}
               cancelText="No, cancel"
-              confirmText="Yes, delete it"
-              confirmButtonColor="#DD6B55"
-              onCancelPressed={() => {
-                this.hideAlert();
-              }}
+              confirmText="Okay"
+              confirmButtonColor={colors.flord_secondary}
+             
               onConfirmPressed={() => {
-                this.hideAlert();
+                setShow(false)
               }}
             />
+
+     
 
        
           <Button
             
-            color={colors.flord_intro2}
+            color={colors.flord_secondary}
             title='Login'
-            onPress={()=>setShow(true)}
+            
+            onPress={handleSubmit}
             
           />
-         
+      
+         <Text style={styles.subtitle}>Don't have account? </Text>
+          <Text onPress={()=>navigation.navigate("SignUpStack")} style={[styles.subtitle,styles.underlined]}>Sign up</Text>
         </View>
       )}
     </Formik>
-
+    
+    </View>
     </View>
   );
 
@@ -206,9 +198,14 @@ export const LoginForm = ({navigation}) => {
 
 
 const styles = StyleSheet.create({
+    underlined:{
+        textDecorationLine:'underline',
+        zIndex:100
+
+    },
   contain:{
-    
-    backgroundColor:colors.white,
+    position: "absolute",
+    backgroundColor:"transparent",
     justifyContent:'center',
     flex:1,
     width: "100%",
@@ -219,14 +216,16 @@ const styles = StyleSheet.create({
   },
   horizontal:{
       flexDirection:"row",
+      zIndex:100
   },
   subtitle:{
     
     top: 30,
-    color: colors.flord,
+    color: colors.white,
     textAlign: 'center',
     fontSize: 20,
     fontWeight:'bold',
+    zIndex:100
   },
   header:{
     
@@ -236,14 +235,27 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 30,
     fontWeight:'bold',
+
+    
+  } ,
+  header:{
+    
+    zIndex: 100,
+    top: 45,
+    color: colors.white,
+    textAlign: 'center',
+    fontSize: 30,
+    fontWeight:'bold',
+
     
   } ,
   imageBox:{
     flex:1.5,
     width:"100%",
-    backgroundColor:colors.flord_intro2,
+    backgroundColor:colors.flord_secondary,
+    opacity: 0.6,
     borderWidth: 1,
-    borderColor:colors.flord_intro2,
+    borderColor:colors.flord_secondary,
     borderBottomEndRadius: 70,
     borderBottomStartRadius: 70
   },
@@ -258,10 +270,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     color:colors.flord_intro,
     
-    borderColor: colors.flord,
-    borderBottomWidth: 1,
+    
     width:"100%",
     backgroundColor: colors.white,
+    opacity: 0.5,
     marginRight:4,
     borderRadius: 20,
     textAlign:"center",
@@ -281,7 +293,7 @@ const styles = StyleSheet.create({
     width: '40%',
     borderRadius: 30,
     height:40,
-    backgroundColor:colors.flord_intro2,
+    backgroundColor:colors.flord_secondary,
     color: colors.white,
     alignSelf: 'center',
     margin:20,

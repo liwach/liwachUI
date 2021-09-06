@@ -1,5 +1,5 @@
 import React,{useEffect, useRef} from 'react'
-import {View, Text, ScrollView, StyleSheet,Button,TextInput,AsyncStorage} from 'react-native'
+import {View, Text, ScrollView,RefreshControl, StyleSheet,Button,TextInput,AsyncStorage} from 'react-native'
 
 import {HeroImage} from './component/HeroImage'
 import {CategoryList} from './component/FlatListItem'
@@ -13,7 +13,16 @@ import Entypo from "react-native-vector-icons/Entypo"
 import FontAwesome from "react-native-vector-icons/FontAwesome"
 import { fetchuser, removeFirstOpen } from '../../utils/checkFirstTimeActions'
 export const HomeScreen = ({route,navigation}) => {
-    
+    const wait = (timeout) => {
+        return new Promise(resolve => setTimeout(resolve, timeout));
+      }
+      const [refreshing, setRefreshing] = React.useState(false);
+
+      const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        wait(2000).then(() => setRefreshing(false));
+      }, []);
+        
     const [user,setUser] = useState([])
     const [isMenuOpen, setMenuOpen] = useState(false)
 
@@ -26,6 +35,7 @@ export const HomeScreen = ({route,navigation}) => {
     removeFirstOpen("isFirst",false)
     const userData = await fetchuser()
     setUser(userData)
+    setMenuOpen(false)
    },[])
 
     const handleMenuToggle = isMenuOpen =>
@@ -54,10 +64,12 @@ export const HomeScreen = ({route,navigation}) => {
       };
 
     return(
-        <ScrollView
+        <View>
+              <ScrollView
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
         style={{ backgroundColor: colors.background}}
+        
         > 
             <HeroImage navigation={navigation}/>
             <View style={styles.horizontal}>
@@ -66,7 +78,7 @@ export const HomeScreen = ({route,navigation}) => {
             <Ionicons name={"arrow-forward"} size={20} color={colors.flord_intro2} style={styles.icon}/>
             </View>
             
-            <Section navigation={navigation}  />
+            <Section type={"item"} navigation={navigation}  />
             
             <View style={styles.horizontal}>
             <Text style={styles.text}>Latest Services</Text>
@@ -74,8 +86,11 @@ export const HomeScreen = ({route,navigation}) => {
             <Ionicons name={"arrow-forward"} size={20} color={colors.flord_intro2} style={styles.icon}/>
             </View>
 
-            <Section navigation={navigation} />
+            <Section type={"service"} navigation={navigation} />
             {/* <View style={styles.container}> */}
+            
+            {/* </View> */}
+        </ScrollView>
             <FloatingMenu
                 items={items}
                 isOpen={isMenuOpen}
@@ -90,10 +105,10 @@ export const HomeScreen = ({route,navigation}) => {
                 renderItemIcon ={renderItemIcon}
                 buttonWidth={45}
                 position= {"bottom-right"}
-                top={50}
+                
                 />
-            {/* </View> */}
-        </ScrollView>
+        </View>
+      
     )
 }
 

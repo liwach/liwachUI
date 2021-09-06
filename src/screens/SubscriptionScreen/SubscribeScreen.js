@@ -4,7 +4,7 @@ import {
 View, Text
 } from "react-native"
 import { CategoryList } from "./component/CategoryList"
-import { getAllTypes } from "../../routes/TypeApi"
+import { getAllCategory, getAllTypes } from "../../routes/TypeApi"
 
 export const SubscribeScreen = ({navigation}) => {
     const [selectedId, setSelectedId] = useState(null);
@@ -12,7 +12,7 @@ export const SubscribeScreen = ({navigation}) => {
     const [loading, setLoading] = useState(true);
   
     const fetchData = async () => {
-      const items = await getAllTypes()
+      const items = await getAllCategory()
       setData(items);
       setLoading(false);
       

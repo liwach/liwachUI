@@ -2,13 +2,16 @@ import React from 'react'
 import {Image,StyleSheet,View,Text} from "react-native"
 import { colors } from '../../../utils/colors'
 import { AntDesign } from '@expo/vector-icons'
+import UserAvatar from '@muhzi/react-native-user-avatar'
 
 
-export const ProfileDetail = ({user,barter,time}) => {
+export const ProfileDetail = ({src,user,barter,time}) => {
 
     return(
+        
         <View style={[styles.horizontal,styles.container]}>
-            <Image style={styles.imageBox} source={require("../../../assets/images/hero.png")}/>
+        <UserAvatar style={styles.imageBox} src={src} size={120}/>
+
             <View>
                 <Text style={styles.user}>{user}</Text>
                 <View style={styles.horizontal}>
@@ -31,6 +34,7 @@ const styles = StyleSheet.create({
         container:{
             marginTop:20,
             marginBottom:30,
+            marginLeft:30
         },
         horizontal:{
             
@@ -56,6 +60,8 @@ const styles = StyleSheet.create({
             marginLeft:10,
         },
         time:{
+            marginTop:20,
+            
             fontSize:16,
             color:colors.flord,
             marginLeft:10,

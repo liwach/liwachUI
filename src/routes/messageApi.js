@@ -127,6 +127,7 @@ export const sendMessage = async(content, type,chat_id,sender_id) => {
               })
           if (res.data) {
             console.log(`Axios:${JSON.stringify(res.data)}`)
+            return res.data
             
           } else {
             console.log('Unable to fetch');

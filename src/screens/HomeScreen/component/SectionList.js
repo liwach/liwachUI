@@ -7,7 +7,9 @@ import {
     StyleSheet, 
     Text, 
     TouchableOpacity,
-    Image  
+    Image ,
+    ScrollView,
+    RefreshControl
     } from "react-native"
 import { color } from "react-native-reanimated";
 import { colors } from "../../../utils/colors";
@@ -19,7 +21,12 @@ import { getItems, selectAllItems } from "../../../redux/itemSlice";
 import { getAllItems } from "../../../routes/itemsApi";
 import Entypo from "react-native-vector-icons/Entypo";
 import { SwapActionSheet } from "./SwapActionSheet";
+import UserAvatar from "@muhzi/react-native-user-avatar";
+import { getAllServices } from "../../../routes/serviceApi";
 
+const wait = (timeout) => {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+}
 
 const onPressHandler = () => {
     alert("View Item");
@@ -29,17 +36,16 @@ const FlatListItem = ({actionRef, navigation, item, onPress, backgroundColor, te
 
         <View style={[styles.cardContainer,backgroundColor]}> 
 
-            <Image source={require("../../../assets/images/hero.png")} style={{width:180,borderRadius:20
-}}/>
-            <View style={styles.horizontalView}  >
-              <View style={styles.horizontalContainer} >
+            <UserAvatar size={150} src={item.picture} style={{width:100,borderRadius:20}} rounded={false}/>
+            <View   >
+              
                 <Text style={[ styles.header]}>{item.name}</Text>
                 <SwapActionSheet 
                      onPress={onPress}
                      item={item} 
                      actionSheetRef={actionRef}/>
-              </View>
-              <Text style={[styles.title, textColor]}>{item.desc}</Text> 
+              
+              <Text style={[styles.title]}>{item.desc}</Text> 
               {/* <View style={styles.horizontalContainer}>
               <Text style={[ styles.endText, textColor]} onPress={onPress}>View</Text>
               <Entypo name={"chevron-right"} size={15} color={colors.flord_secondary}/>
@@ -49,17 +55,31 @@ const FlatListItem = ({actionRef, navigation, item, onPress, backgroundColor, te
     
 )
 
-export const Section = ({navigation},onPressHandler) => {
+export const Section = ({navigation,item,type},onPressHandler) => {
   
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    fetchData()
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
     
     const [selectedId, setSelectedId] = useState(null);
 
     const [data, setData] = useState("");
+    
     const [loading, setLoading] = useState(true);
   
     const fetchData = async () => {
       const items = await getAllItems()
-      setData(items);
+      const services = await getAllServices()
+      if(type=="item"){
+        setData(items);
+      }
+      if(type=="service"){
+        setData(services)
+      }
       setLoading(false);
       
     };
@@ -72,25 +92,43 @@ export const Section = ({navigation},onPressHandler) => {
         console.log(`RenderItem: ${item}`)
         const SwapActionRef = createRef()
 
-        const swap_types = item.item_swap_type.map(function(data, idx){
+        const swap_types = type=="item"? item.item_swap_type.map(function(data, idx){
           return(
             {
               id: data.type_id,
             }
           )
+         }):item.service_swap_type.map(function(data, idx){
+          return(
+            {
+              id: data.type_id,
+            }
+          )
+         })
+
+         const picture_urls = item.media.map(function(data, idx){
+           const url = data.url
+          return(
+            url
+          )
          });
 
+        const pic = picture_urls[0]
+        console.log("picture",picture_urls)
         const singleItem = {
+          id: item.id,
           name: item.name,
           location:item.bartering_location.city,
-          picture: "",
+          picture: pic,
           category: item.type == null ? "No Type": item.type.name,
           time: item.created_at,
           swap_type: swap_types,
           number_request: item.number_of_request,
           user: item.user == null? "":item.user.first_name,
           status: item.status,
-          desc: item.description
+          desc: item.description,
+          user_id:item.user_id,
+          post_type: item.bartering_location.type
     
         }
         const backgroundColor = item.id === selectedId ? "transparent" : "transparent";
@@ -114,8 +152,13 @@ export const Section = ({navigation},onPressHandler) => {
       }
 
     return(
-        <SafeAreaView
-      
+        <ScrollView
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+              />
+            }
         >
             <FlatList
               data={data}
@@ -125,7 +168,7 @@ export const Section = ({navigation},onPressHandler) => {
               horizontal={true}
               
             />
-        </SafeAreaView>
+        </ScrollView>
     )
 };
 
@@ -142,8 +185,11 @@ const styles = StyleSheet.create({
         
     },
     title:{
-      margin: 6,
-     
+      color:colors.flord_intro,
+      width:165,
+      
+      margin:6,
+      textDecorationLine:'underline'
     },
 
     cardContainer:{
@@ -169,7 +215,7 @@ const styles = StyleSheet.create({
       position:"relative",
       height:70,
       width:170,
-      alignSelf:'center',
+      
       top: -20,
       elevation:3
     },

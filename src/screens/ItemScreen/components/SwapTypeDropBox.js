@@ -7,9 +7,9 @@ import axios from "axios";
 import { GET_ONE_TYPE } from "../../../routes/urls";
 
 
-export const SwapTypeDropBox = () => {
+export const SwapTypeDropBox = ({value,setValue}) => {
     const [open, setOpen] = useState(false);
-    const [value, setValue] = useState(null);
+    // const [value, setValue] = useState(null);
     const [items,setItems] = useState([])
     const [types,setTypes] = useState(null)
     
@@ -21,7 +21,7 @@ export const SwapTypeDropBox = () => {
              { label:name,value:name}
             )
             })
-        console.log("Item_list",types)
+        // console.log("Item_list",types)
         setItems(types)
     }
   
@@ -52,7 +52,7 @@ export const SwapTypeDropBox = () => {
           badgeColors={[colors.flord_intro2,colors.flord_intro2]}
           badgeDotColors={[colors.flord_intro]}
           badgeStyle={{width:100}}
-        searchable={true}
+       
         searchablePlaceholder="Search..."
         onChangeSearchText={async(text) => {
             // Show the loading animation
@@ -76,7 +76,7 @@ export const SwapTypeDropBox = () => {
                      { label:name,value:name}
                     )
                     })
-                console.log("Item_list",types)
+                // console.log("Item_list",types)
                 setItems(types)
             })
               .catch((err) => {

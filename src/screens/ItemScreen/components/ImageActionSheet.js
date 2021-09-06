@@ -15,7 +15,7 @@ export const ImageActionSheet = ({actionSheetRef,photo,setPhoto}) => {
   let actionSheet;
   const [image,setImage] = useState([])
   // const [photo, setPhoto] = useState("https://res.cloudinary.com/liwach/image/upload/v1630288666/b7alngy52u86tqep6iwp.png");
-  
+  const imageList = []
 
 
   const cloudinaryUpload = async (photo) => {
@@ -28,7 +28,9 @@ export const ImageActionSheet = ({actionSheetRef,photo,setPhoto}) => {
     }).then(res => res.json()).
       then(data => {
         alert(JSON.stringify(data))
-        setPhoto(data.secure_url)
+        imageList.push(data.secure_url)
+        setPhoto(imageList)
+        console.log(photo)
       }).catch(err => {
         alert(err.message)
       })
@@ -143,7 +145,7 @@ export const ImageActionSheet = ({actionSheetRef,photo,setPhoto}) => {
         
         size={80}
         backgroundColor={colors.flord_intro}
-        src={photo}
+        src={photo[0]}
         />
       </TouchableOpacity>
 

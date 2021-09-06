@@ -1,19 +1,24 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import { View, Text, StyleSheet,Image,TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-paper';
 import { colors } from '../../utils/colors';
 import { AccountMenuItem } from './components/AccountMenuItem';
 import UserAvatar from '@muhzi/react-native-user-avatar';
+import { fetchuser } from '../../utils/checkFirstTimeActions';
+import { getUserByID } from '../../routes/accountApi';
 export const AccountScreen = ({navigation}) => {
-    const [user, setUser] = useState("")
-    const current_user = {
-        full_name: 'Delilah Dessalegn',
-        firstName: 'Delilah',
-        lastName: 'Dessalegn',
-        phone_number: '+251923289633',
-        email_address: 'delilahdessalegn@gmail.com',
-        image: "../../assets/images/hero.png"
+    const [user, setUser] = useState([])
+    const [url,setUrl] = useState("")
+
+    const fetchData=async()=>{
+        const user = await fetchuser()
+        const userData = await getUserByID(user.id)
+        setUser(user)
+        setUrl(userData[0].profile_picture)
     }
+    useEffect(()=>{
+        fetchData()
+    },[])
     return(
         <View>
             <View style={styles.backgroundContainer}></View>
@@ -23,17 +28,16 @@ export const AccountScreen = ({navigation}) => {
                 style={styles.imageBox}
             >
                 <UserAvatar
-                userName="Delilah Dessalegn"
                 size={80}
                 backgroundColor={colors.flord_intro}
-                // url={image}
+                src={url}
                 />
             </TouchableOpacity>         
-            <Text style={styles.textContainer}>{current_user.full_name} </Text> 
+            <Text style={styles.textContainer}>{user.first_name} {user.last_name} </Text> 
             <AccountMenuItem iconName={"md-pencil"} Title={"Edit Profile"} navigation={navigation}
                 onPress={()=>navigation.navigate('EditAccountScreen'
                 ,{
-                    user:current_user
+                    user:user
                 }
                 )}
             />
@@ -43,7 +47,7 @@ export const AccountScreen = ({navigation}) => {
             <AccountMenuItem iconName={"shield-checkmark"} Title={"Change password"} navigation={navigation}/>
             <AccountMenuItem iconName={"share"} Title={"Share"} navigation={navigation}/>
             <AccountMenuItem iconName={"share"} Title={"Sign Up"} navigation={navigation} onPress={()=>navigation.navigate('SignupScreen')}/>
-            <AccountMenuItem iconName={"share"} Title={"Sign Up"} navigation={navigation} onPress={()=>navigation.navigate('LoginScreen')}/>
+            <AccountMenuItem iconName={"share"} Title={"Log In"} navigation={navigation} onPress={()=>navigation.navigate('LoginScreen')}/>
 
             <Button color={colors.black} style={styles.button} onPress={()=>{alert("Logged out")}}>Log out</Button>
         </View>

@@ -37,16 +37,19 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import PropTypes from "prop-types";
 
 import { Dropdown } from 'react-native-material-dropdown-v2-fixed';
-import { addItem } from '../../routes/itemsApi';
 
+import { addItem } from '../../routes/itemsApi';
 import { MAPBOX_KEY } from '../../utils/config';
 import AutocompletePlace from './components/SearchBox';
 import { CustomPicker } from '../../components/UI/CustomPicker';
 import { TypeSeachBox } from './components/TypeSearchBox';
 import { ImageActionSheet } from './components/ImageActionSheet';
 import { SwapTypeDropBox } from './components/SwapTypeDropBox';
+import { getLocation } from '../../routes/requestApi';
+import { getOneTypeByName } from '../../routes/TypeApi';
+import { fetchuser } from '../../utils/checkFirstTimeActions'
 
-export const addItemForm = (props) => {
+export const addItemForm = ({navigation}) => {
 
   const [dropdown, setDropdown] = useState(null);
   const [selected, setSelected] = useState([]);
@@ -54,16 +57,68 @@ export const addItemForm = (props) => {
   const [location,setLocation] = useState([])
   const [info,setInfo] = useState([])
   const [modalVisible,setModalVisible] = useState(false)
-
+  const [photo,setPhoto] = useState(["https://res.cloudinary.com/liwach/image/upload/v1630288666/b7alngy52u86tqep6iwp.png"]);
+  const [geometry, setGeometry] = useState([])
+  const [category,setCategory] = useState([])
+  const [swapTypes,setSwapTypes] = useState([])
+  const [newSwap,setNewSwap] = useState([])
+  const type = []
   const imageActionRef = createRef()
  
-
   const [items, setItems] = useState([
     {label: 'Normal', value: 'normal'},
     {label: 'Premium', value: 'banana'},
     {label: 'Gold', value: 'gold'}
   ]);
   
+  const add = async(values) => {
+    //Get User ID
+    const user = await fetchuser()
+    console.log("user",user)
+    //Get Category ID
+    const category_id = await getOneTypeByName(category)
+    // const itemType = category_id[0].id
+    // console.log("newswap",category_id[0].id) 
+    //Get Type ID
+    const source = swapTypes.map(async function(data, idx){
+      const uri = await getOneTypeByName(data);
+      type.push(uri)
+      setNewSwap(type)
+      console.log("Type in Add", JSON.stringify(type))
+      alert("Type in Add",{type})
+  })
+    //Get title
+    //Get Desc
+    //Get Address Geometry
+
+    
+    const item = {
+      "name": values.title,
+      "description":values.description,
+      "media": photo,
+      "swap_type": newSwap,
+      "address": {
+        "country": place,
+        "city": place,
+        "latitude": geometry[1],
+        "longitude":geometry[0],
+        "type": "item"
+      },
+      "type_id": category_id,
+      "user_id": user.id,
+      "status": "unbartered"
+    }
+
+    
+
+    console.log("Item ",item)
+
+    const response = await addItem(item)
+    if(response!=null && response.message == "successful"){
+        alert("Item is added.")
+        navigation.navigate("Home")
+    }
+}
 
 
   const inputStyle = {
@@ -83,14 +138,61 @@ export const addItemForm = (props) => {
        });
      
    text.length == 0 ? setLocation([]): setLocation(swap_types)
-   
   }
- 
   const clearData = () => {
         setLocation([])
-        setPlace(info)
   }
 
+  const FlatListData = ({ list, onItemClick }) => {
+
+  
+
+
+    const renderItem = ({ item }) => {
+   
+      // _replaceAddress = ({item}) => {
+      //   console.log("touched:",item)
+      // }
+      const backgroundColor = item.id === selectedId ? colors.primary : colors.peach;
+        console.log(`render:${item.data.place_name}`)
+        return(
+          <TouchableOpacity style={styles.listItem}  onPress={()=>onItemClick(item)}  >
+          <Text >{item.data.place_name}</Text>
+          </TouchableOpacity>
+        )
+      }
+  
+      return(
+        <SafeAreaView
+         style={styles.list}
+         
+         >
+        <FlatList
+         data={list}
+         renderItem={renderItem}
+         keyExtractor={(item) => item.id}
+         extraData={selectedId}
+         horizontal={false}
+         keyboardShouldPersistTaps="handled"
+         style={{
+             elevation:3,
+             zIndex: 3
+         }}
+       />
+       </SafeAreaView>
+      )
+    
+  
+  
+  }
+  const itemClick = (item) => {
+    setPlace(item.data.place_name)
+    setGeometry(item.data.geometry.coordinates)
+    clearData()
+    console.log("touched:",item.data.geometry.coordinates)
+    // console.log("touched place:",place)
+  
+  }
   const FlatListItem = ({ item, onPress }) => (
   
     <TouchableOpacity style={styles.listItem}   onPress={onPress}  >
@@ -133,7 +235,7 @@ export const addItemForm = (props) => {
     <Text style={styles.subtitle}> Add items to swap with the ones you need!</Text>
     <Text style={styles.subtitle}> Let's get you started!</Text>
     </View>
-    <ImageActionSheet actionSheetRef={imageActionRef}/>
+    <ImageActionSheet photo={photo} setPhoto={setPhoto} actionSheetRef={imageActionRef}/>
   
     <Formik
       initialValues={{ 
@@ -175,10 +277,32 @@ export const addItemForm = (props) => {
       })}
      >
       {({ values, handleChange, errors, setFieldTouched, setFieldValue, touched, isValid, handleSubmit }) => (
-        <View style={styles.formContainer}>
+        <KeyboardAvoidingView 
+        keyboardVerticalOffset={
+          Platform.select({
+             ios: () => 0,
+             android: () => -500
+          })()}
+        behavior={'padding'} 
+        style={styles.formContainer}>
 
         {/* <AutocompletePlace onSelect={place => console.log(place)} /> */}
-
+        <TextInput
+            value={place}
+            style={styles.inputStyle}
+            onChangeText={text =>{displayList(text), setPlace(text)}}
+            onBlur={() => setFieldTouched('address')}
+            placeholder="Address"
+            placeholderTextColor={colors.flord}
+            onEndEditing={clearData}
+            onChange={event => setFieldValue(event.target.value)}
+             />
+             <FlatListData list={location} onItemClick={itemClick} />
+         
+          
+          {touched.address && errors.address &&
+            <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{errors.address}</Text>
+          }
           <TextInput
             value={values.title}
             style={styles.inputStyle}
@@ -201,41 +325,15 @@ export const addItemForm = (props) => {
           {touched.title && errors.title &&
             <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.description}</Text>
           } 
-          <TypeSeachBox/> 
-          <SwapTypeDropBox/> 
-          <TextInput
-            value={place}
-            style={styles.inputStyle}
-            onChangeText={text =>displayList(text)}
-            onBlur={() => setFieldTouched('address')}
-            placeholder="Address"
-            placeholderTextColor={colors.flord}
-            onEndEditing={clearData}
-            
-             />
-             <SafeAreaView style={styles.list}>
-             <FlatList
-              data={location}
-              renderItem={renderItem}
-              keyExtractor={(item) => item.id}
-              extraData={selectedId}
-              horizontal={false}
-              style={{
-                  elevation:3,
-                  zIndex: 3
-              }}
-            />
-            </SafeAreaView>
-         
+          <TypeSeachBox value={category} setValue={setCategory}/> 
+          <SwapTypeDropBox value={swapTypes} setValue={setSwapTypes}/> 
           
-          {touched.address && errors.address &&
-            <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{errors.address}</Text>
-          }
+         
             
-          <Pressable style={styles.button} onPress={setModalVisible(true)}>
+          <TouchableOpacity style={styles.button} onPress={()=>add(values)}>
                 <Text style={styles.text}>Submit</Text>
-              </Pressable>
-        </View>
+              </TouchableOpacity>
+        </KeyboardAvoidingView>
       )}
     </Formik>
     </View>
@@ -257,6 +355,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  listItem:{
+    margin: 10,
+    borderBottomWidth:0.5,
+    alignContent:'center',
+    borderBottomColor: colors.flord_secondary,
+    
+},
   imageBox:{
     
     width:"100%",

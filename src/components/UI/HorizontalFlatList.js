@@ -15,7 +15,7 @@ import { colors } from "../../utils/colors";
 const FlatListItem = ({ item, onPress, backgroundColor, textColor }) => (
 
         <TouchableOpacity onPress={onPress} style={[styles.item]}>
-            <Text style={[styles.title]}>{item.id}</Text>
+            <Text style={[styles.title]}>{item}</Text>
         </TouchableOpacity>
     
 )
@@ -56,18 +56,18 @@ const styles = StyleSheet.create({
         
     },
     item:{
-        marginRight:10,
+        marginRight:3,
         marginLeft:10,
         padding:5,
         minWidth:80,
         borderRadius:20,
         borderWidth:1,
-        borderColor:colors.flord_secondary,
-        backgroundColor: colors.flord_secondary
+        borderColor:colors.flord_intro2,
+        backgroundColor: colors.flord_intro2
     },
     title:{
         textAlign:'center',
-        color: colors.flord,
+        color: colors.white,
     }
 
 })

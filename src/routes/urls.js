@@ -5,15 +5,24 @@ import { API_URL } from "../utils/config"
 export const getAllItems = `${API_URL}/item`
 export const getOneItem = `${API_URL}/item/search`
 export const POST_ITEM = `${API_URL}/item`
+export const EDIT_ITEM = `${API_URL}/item`
+
+//Services
+export const GET_ALL_SERVICES = `${API_URL}/service`
+export const GET_ALL_SERVICES_BY_PARAMETER = `${API_URL}/service/search`
+export const POST_SERVICE = `${API_URL}/service`
 
 //Type
 export const GET_ONE_TYPE = `${API_URL}/type/search`
 export const GET_ALL_TYPES = `${API_URL}/type`
+export const GET_ALL_CATEGORY = `${API_URL}/category`
+
 
 //Requests
 export const GET_ALL_REQUESTS =  `${API_URL}/request`
 export const GET_REQUEST_BY_STATUS = `${API_URL}/request/search`
 export const UPDATE_REQUEST_STATUS = `${API_URL}/request`
+export const POST_REQUEST =  `${API_URL}/request`
 
 //Message
 export const POST_MESSAGE = `${API_URL}/message`

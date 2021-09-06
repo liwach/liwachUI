@@ -27,6 +27,7 @@ export const BottomNavigator = ()=>{
         borderTopWidth: 0,
         backgroundColor: "#E1CCC7",
         elevation:0,
+        zIndex:0
       },
       keyboardHidesTabBar: true
       

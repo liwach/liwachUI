@@ -2,16 +2,17 @@ import React, { useState,useEffect } from "react";
 import { View, Picker, StyleSheet } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
 import { getItemsByUserID } from "../../../routes/itemsApi";
+import { getAllTypesByCategoryID } from "../../../routes/TypeApi";
 import { fetchuser } from "../../../utils/checkFirstTimeActions";
 import { colors } from "../../../utils/colors";
 
-export const ItemPicker = ({value, setValue}) => {
+export const TypePicker = ({navigation,data,value, setValue}) => {
     const [open, setOpen] = useState(false);
     const [items,setItems] = useState([])
-
+    
     const fetchItems = async() => {
         const user = await fetchuser()
-        const items = await getItemsByUserID(user.id)
+        const items = await getAllTypesByCategoryID(data.id)
         const listItems = items.map(function(data, idx){
           const name = data.name
          return(
@@ -41,7 +42,7 @@ export const ItemPicker = ({value, setValue}) => {
         open={open}
         value={value}
         items={items}
-        multiple={false}
+        multiple={true}
         style={{ 
           backgroundColor:colors.bottomNav,
           borderBottomWidth:0,

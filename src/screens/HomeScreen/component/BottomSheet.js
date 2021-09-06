@@ -6,19 +6,45 @@ import { AntDesign } from "@expo/vector-icons"
 // import { Dropdown } from 'react-native-material-dropdown-v2-fixed';
 import { Root, Popup,Toast } from 'popup-ui'
 import { ItemPicker } from './ItemPicker'
-
+import UserAvatar from '@muhzi/react-native-user-avatar'
+import { addRequest } from '../../../routes/requestApi'
+import { fetchuser } from '../../../utils/checkFirstTimeActions'
+import { getItemsById, getItemsByName } from '../../../routes/itemsApi'
+import uuid from 'react-native-uuid';
 
 
 
  
 
-export const SendButton = ({id,item}) => {
-    
-    const sendRequest = ({id,item})=> {
-        ToastAndroid.show(`Request for ${item.name} sent successfully!`, ToastAndroid.SHORT);
+export const SendButton = (value,id,item) => {
+    const itemValue = value.selectedValue
+    const sendRequest = async(value,id,item)=> {
+        const token = uuid.v4()
+        const user = await fetchuser()
+        const requester_item = await getItemsByName(value.selectedValue)
+        const singleItem = requester_item[0]
+        console.log(JSON.stringify(singleItem))
+        const request = {
+            "status": value.item.status,
+            "requester_id": user.id,
+            "requested_item_id": value.item.id,
+            "requester_item_id": singleItem.id,
+            "rating": 0,
+            "token": token,
+            "type": requester_item.post_type
+        }
+        console.log(JSON.stringify(request))
+
+        const response = await addRequest(request)
+        if(response==null){
+            alert(JSON.stringify(response))
+        }
+        if(response!==null&&response.message=="successful"){
+            ToastAndroid.show(`Request for ${value.item.name} sent successfully!`, ToastAndroid.SHORT);
+        }
     }
     return(
-        <TouchableOpacity style={[styles.selectSwap,styles.button]} onPress={()=>{sendRequest({id,item})}}>
+        <TouchableOpacity style={{width:150,height:35,alignSelf:'center',margin:10,backgroundColor:colors.flord_intro2}} onPress={()=>sendRequest(value)}>
             <Text style={[styles.swapText]}>Swap</Text>
         </TouchableOpacity>
 
@@ -56,7 +82,7 @@ export const SwapBottomSheet = ({item}) => {
             
         </View>
         <View style={[styles.horizontal,styles.descBox]}>
-            <Image style={styles.imageBox} source={require("../../../assets/images/laptop.png")}/>
+            <UserAvatar style={styles.imageBox} src={item.picture}/>
             <View >
              <Text style={[styles.header]}>{item.name}</Text>
              <Text style={styles.desc}>{item.description}</Text>
@@ -109,7 +135,8 @@ const styles = StyleSheet.create({
         margin:20,
         justifyContent:'center',
         color: colors.flord_intro,
-        alignSelf:'center'
+        alignSelf:'center',
+        height:100
     },
     textContainer:{
         flex:1,

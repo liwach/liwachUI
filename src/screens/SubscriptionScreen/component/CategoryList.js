@@ -14,9 +14,9 @@ import { colors } from "../../../utils/colors";
 import { ToastAndroid } from "react-native";
 
 export const CategoryList = ({navigation, data }) => {
-    console.log(data)
+    // alert(data)
     const [selectedId, setSelectedId] = useState(null);
-    
+    const category = data[0]
     const renderItem = ({ item }) => {
         // const backgroundColor = item.id === selectedId ? colors.white : colors.white;
         // const color = item.id === selectedId ? colors.white : colors.black;
@@ -24,7 +24,9 @@ export const CategoryList = ({navigation, data }) => {
         return(
             <CategoryItem
             item={item}
-            onPress={ ()=>ToastAndroid.show("Subscribed",ToastAndroid.LONG)
+            onPress={ ()=>navigation.navigate("TypeScreen",{
+                category:item
+            })
             }
             />
         )

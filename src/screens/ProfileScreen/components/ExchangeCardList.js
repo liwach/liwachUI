@@ -19,6 +19,7 @@ import { sendMessage } from "../../../routes/messageApi";
 import { ExchangeButton, ChatButton } from "./ActionButtons";
 import Icon  from "react-native-vector-icons/Ionicons";
 import { exchangeItem } from "../../../routes/exchangeApi";
+import UserAvatar from "@muhzi/react-native-user-avatar";
 
 
 const ModalBox = ({visible}) => {
@@ -38,24 +39,33 @@ const ModalBox = ({visible}) => {
 
 
 
-const FlatListItem = ({navigation, item, onPress, onMessagePress, backgroundColor, textColor }) => (
+const FlatListItem = ({navigation,url, item, onPress, onMessagePress, backgroundColor, textColor }) => (
 
         
     
         <TouchableOpacity style={[styles.item, backgroundColor]} >
             <View>           
-                 <Image source={require("../../../assets/images/hero.png")} style={styles.imageBox}/>
+                 <UserAvatar src={url[0]} style={styles.imageBox}/>
                  <Text style={[styles.status]}>{item.status}</Text>
             </View>
             <View>
-                <Text style={[styles.title, styles.text]}>{item.requested_item==null?"":item.requested_item.name}</Text>
-                <Text style={[styles.category]}>{item.requested_item==null?"":item.requested_item.typeId}</Text>
-                <Text style={[styles.text]}>Swap with: {item.requester_item==null?"":item.requester_item.name}</Text>
+                <Text style={[styles.title, styles.text]}>{item.name}</Text>
+                <Text style={[styles.category]}>{item.type.name}</Text>
+                <View style={{flexDirection:'row'}}>
+                <Text style={[styles.text]}>Swap with: </Text>
+                {item.item_swap_type.map(function(types, idx){
+                    return(
+                        <View>
+                       <Text style={styles.swap_with}>{types.type.name} </Text>
+                       </View>
+                    )
+                     })}
+                </View>
             </View>
             <View style={{flexDirection:'column',flex:1}}>
             <View style={[styles.time]}>
                 <Icon style={[styles.timeTexts,styles.icons]} name='time' size={10} color={colors.primary}  />
-                <Text style={styles.timeTexts}>{item.requested_item==null?"":item.created_at}</Text>
+                <Text style={styles.timeTexts}>{item.created_at}</Text>
             </View>
            {
                item.status == "open" ?
@@ -100,17 +110,30 @@ const wait = (timeout) => {
 
 export const ExchangeCardList = ({item,navigation}) => {
     const [refreshing, setRefreshing] = React.useState(false);
-    
+   
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
         wait(2000).then(() => setRefreshing(false));
     }, []);
     const renderItem = ({ item }) => {
-
+        const url = []
+        const it = item.media[0]
+        console.log("render",item.media[0])
+        if(it!==undefined){
+            url.push(it.url)
+            
+        }
+        else{
+            console.log("Undefined is for",item.name)
+            url.push("https://res.cloudinary.com/liwach/image/upload/v1630498342/gcopiey4x4uk65uvujp2.jpg")
+           
+        }
+        console.log("url",url)
         
         return(
           <FlatListItem
             item={item}
+            url={url}
             navigation={navigation}
             onPress={() => 
                 /* 1. Navigate to the Details route with params */
@@ -169,7 +192,16 @@ const styles = StyleSheet.create({
     text:{
         marginLeft:10,
         marginTop:10,
-        color:colors.primary
+        color:colors.flord_intro,
+        
+    },
+    swap_with:{
+        marginLeft:10,
+        marginTop:10,
+        color:colors.flord_intro,
+        backgroundColor:colors.bottomNav,
+        borderBottomWidth:0.5,        
+        borderRadius:5
     },
     title:{
        
@@ -186,9 +218,9 @@ const styles = StyleSheet.create({
         alignSelf:'center'
     },
     category:{
-        backgroundColor: colors.bottomNav,
+        backgroundColor: colors.flord_intro2,
         borderRadius: 20,
-        color: colors.flord_intro,
+        color: colors.white,
         textAlign: 'center',
         width: 80,
         padding:2,
@@ -207,7 +239,7 @@ const styles = StyleSheet.create({
     },
     status: {
         textTransform:"uppercase",
-        color: colors.grey,
+        color: colors.flord_intro,
         fontSize: 12,
         textAlign:'center'
     },

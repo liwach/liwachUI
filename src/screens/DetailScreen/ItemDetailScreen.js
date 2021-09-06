@@ -1,5 +1,5 @@
 import React, {useState,useEffect} from 'react'
-import {Image,View,StyleSheet,Text} from "react-native"
+import {Image,View,StyleSheet,Text,ScrollView} from "react-native"
 import { OutlinedButton } from '../../components/UI/OutlinedButton'
 import { colors } from '../../utils/colors'
 import { ProfileDetail } from './components/Profile'
@@ -9,67 +9,93 @@ import { getOneType } from '../../routes/TypeApi'
 import Ionicons from "react-native-vector-icons/Ionicons"
 import FontAwesome from "react-native-vector-icons/FontAwesome"
 import AntDesign from "react-native-vector-icons/AntDesign"
+import { fetchuser } from '../../utils/checkFirstTimeActions'
+import UserAvatar from '@muhzi/react-native-user-avatar'
+import { VerticalFlatList } from './components/VerticalFlatList'
+
 
 export const ItemDetailScreen = ({route, navigation}) => {
     const { item} = route.params;
     const [data, setData] = useState([]);
     const [swapType, setSwapType] = useState([]);
     const [loading, setLoading] = useState(true);
-  
+    const [user, setUser] = useState([])
+    const [isVisible,setVisible] = useState(false)
+    const picture_urls = item.media.map(function(data, idx){
+        const url = data.url
+       return(
+         url
+       )
+      });
+
+     const pic = picture_urls[0]
     const fetchData = async () => {
     //   const items = await getAllItems()
-      const swapTypes = {name:""}
+      const user = await fetchuser()
+      setUser(user)
+      const swapTypes = []
       
-      setData(item);
+      setData(item[0]);
     //   console.log(`Detail swap ${item.swap_type}`)
-      const getSwapTypes = async () => {
-        await item.swap_type.map(function(types, idx){
-            const type =  getOneType(types.id);
-            console.log(`Type ID ${types.id}`)
-            swapTypes.name = type.name
+      
+    const types =  item.item_swap_type.map(function(types, idx){
+            const type =  types.type
+            swapTypes.push(type.name)
            });
-      }
-      console.log(`Swap types ${swapTypes}`)
-      getSwapTypes();
-      setSwapType(swapTypes)
+      
+     setSwapType(swapTypes)
+     if(user.id == item.user.id){
+         setVisible(false)
+     }
       setLoading(false);
     };
-
+    
     useEffect(() => {
       fetchData();
     }, []);
 
-    console.log(`Detail Screen ${item}`)
 
  
     const onPressHandler = () =>{
         alert("Request Sent");
     }
     return(
-        <View>
-             <Image style={styles.imageBox} source={data.picture} />
+        <ScrollView>
              <View>
                  <View style={styles.horizontal}>
-                     <Text style={styles.header}>{data.name}</Text>
+                     <Text style={styles.header}>{item.name}</Text>
                      <Ionicons name={'location'} size={13} style={styles.icon}/>
-                     <Text style={styles.endText}>{data.location}</Text>
+                     <Text style={styles.endText}>{item.bartering_location.city}</Text>
                  </View>
-                 <OutlinedButton text={data.category}/>
+                 <OutlinedButton text={item.type.name}/>
              </View>
-             <ProfileDetail user={data.user} barter={data.number_request} time={item.time}/>
+             <ProfileDetail src={pic} user={item.user.first_name} barter={item.number_of_request} time={item.time}/>
              <View  style={styles.horizontal}>
                  <FontAwesome name={'bars'} size={13} style={styles.iconDesc}/>
                  <Text style={{fontSize:16,color:colors.flord_intro2}} >Description</Text>
-                 <Text style={styles.desc}>{data.desc}</Text>
+                 <Text style={styles.desc}>{item.description}</Text>
              </View>
              <View  style={styles.horizontal}>
                  <AntDesign name={'swap'} size={13} style={styles.iconDesc}/>
                  <Text style={{fontSize:16,color:colors.flord_intro2,marginRight:2,width:70}} >Swap with</Text>
              <HorizontalFlatList  data={swapType}/>
              </View>
-             <Button color={colors.flord_intro} style={styles.button} onPress={onPressHandler}> Send Request</Button>
-             
-        </View>
+          
+              {!isVisible?<View></View> 
+            : <Button color={colors.flord_intro2} style={styles.button} onPress={onPressHandler}>
+            send request
+           </Button>}
+           <Text style={{fontSize:16,color:colors.flord_intro2,marginLeft:10,textTransform:"uppercase"}} >Requests</Text>
+           {!isVisible?<VerticalFlatList navigation={navigation} data={item}/>:<View></View>
+           
+             }
+          </ScrollView>          
+                
+                
+          
+           
+           
+    
        
     )
 
@@ -83,8 +109,9 @@ const styles = StyleSheet.create({
     },
     horizontal:{
         flexDirection:'row',
-        marginLeft:20,
+        marginLeft:30,
         marginRight:20,
+        marginTop:20,
         marginBottom:20,
     },
     imageBox:{

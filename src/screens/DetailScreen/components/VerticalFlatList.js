@@ -16,7 +16,7 @@ import {
 import { colors } from "../../../utils/colors";
 import { AntDesign } from "@expo/vector-icons";
 import { sendMessage } from "../../../routes/messageApi";
-import { ExchangeButton, ChatButton } from "./ActionButtons";
+import { ExchangeButton, ChatButton } from "../../ProfileScreen/components/ActionButtons";
 import Icon  from "react-native-vector-icons/Ionicons";
 import { exchangeItem } from "../../../routes/exchangeApi";
 import { fetchuser } from "../../../utils/checkFirstTimeActions";
@@ -94,14 +94,13 @@ const FlatListItem = ({user,navigation, item, onPress, onMessagePress, backgroun
            }
 
 {
-               item.status == "accepted"&&user.id!=item.requester_id?
+               item.status == "accepted" ?
                  <View style={[styles.horizontal]}>
                  <ExchangeButton navigation={navigation} item={item}/>
                  <ChatButton navigation={navigation} item={item}/>
 
              </View>
-             : <View style={[styles.horizontal]}>
-             </View>
+             : <View/>
            }
 
             {
@@ -125,7 +124,7 @@ const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   }
 
-export const RequestCardList = ({navigation}) => {
+export const VerticalFlatList = ({data,navigation}) => {
     const [requestList, setRequestList] = useState("");
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState([]);
@@ -144,36 +143,14 @@ export const RequestCardList = ({navigation}) => {
         wait(500).then(() => setRefreshing(false));
     }, []);
 
-
-  const fetchRequestForEach = async(id) => {
-      const requests = await getAllRequestsByItemID(id)
-      const final = []
-      if(requests!==null){
-        const listItems = requests.map(function(data, idx){
-          final.push(data)
-      });
-      }
-      
-    console.log("listItems",final)
-    return final
-    
-  }  
+ 
 
   const fetchData = async () => {
     const user = await fetchuser()
-    const myItems = await getItemsByUserID(user.id)
-    const x = []
-    const otherRequests = await getAllRequestsBySenderID(user.id)
-    setOneFinal(otherRequests)
-    console.log("Requests: ",otherRequests)
-    setUser(user)
-    
-
-    setLoading(false);
-    console.log("data",JSON.stringify(requestList))
-
-  };
-
+  
+    const requests = await getAllRequestsByItemID(data.id)
+    setOneFinal(requests)
+  }
   useEffect(() => {
     fetchData();
   }, []);
