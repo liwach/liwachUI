@@ -74,7 +74,7 @@ export const HomeScreen = ({route,navigation}) => {
             <HeroImage navigation={navigation}/>
             <View style={styles.horizontal}>
             <Text style={styles.text}>Latest Goods</Text>
-            <Text style={[styles.text,styles.subtext]}>View All</Text>
+            <Text onPress={()=>{navigation.navigate("AllItemScreen")}} style={[styles.text,styles.subtext]}>View All</Text>
             <Ionicons name={"arrow-forward"} size={20} color={colors.flord_intro2} style={styles.icon}/>
             </View>
             
@@ -82,7 +82,7 @@ export const HomeScreen = ({route,navigation}) => {
             
             <View style={styles.horizontal}>
             <Text style={styles.text}>Latest Services</Text>
-            <Text style={[styles.text,styles.subtext]}>View All</Text>
+            <Text onPress={()=>{navigation.navigate("AllServiceScreen")}} style={[styles.text,styles.subtext]}>View All</Text>
             <Ionicons name={"arrow-forward"} size={20} color={colors.flord_intro2} style={styles.icon}/>
             </View>
 
@@ -96,11 +96,11 @@ export const HomeScreen = ({route,navigation}) => {
                 isOpen={isMenuOpen}
                 onMenuToggle={handleMenuToggle}
                 onItemPress={handleItemPress}
-                backgroundDownColor={colors.flord_intro2}
-                backgroundUpColor={colors.flord_intro2}
-                primaryColor={colors.flord_intro2}
+                backgroundDownColor={colors.water}
+                backgroundUpColor={colors.water}
+                primaryColor={colors.straw}
             
-                borderColor={colors.flord_intro2}
+                borderColor={colors.water}
                 renderMenuIcon={renderMenuIcon}
                 renderItemIcon ={renderItemIcon}
                 buttonWidth={45}

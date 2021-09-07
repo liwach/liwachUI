@@ -13,8 +13,9 @@ export const CustomPicker = ({membership,setMembership}) => {
       const item_list = await getAllMembership()
       const types = item_list.map(function(data, idx){
           const name = data.name
+          const id = data.id
           return(
-           { label:name,value:name}
+           { label:name,value:id}
           )
           })
       console.log("Item_list",types)
@@ -28,8 +29,12 @@ export const CustomPicker = ({membership,setMembership}) => {
     return (
       <DropDownPicker
         style={{
+          borderWidth:0,
+          borderRadius:10,
+          backgroundColor:colors.light_grey,
           marginBottom:20,
-          marginTop:40,
+          marginTop:20,
+          
         }}
         open={open}
         value={membership}
@@ -42,11 +47,14 @@ export const CustomPicker = ({membership,setMembership}) => {
         placeholderStyle={
           {
             fontSize:20,
+            color: colors.flord_intro
           }
         }
         dropDownContainerStyle={
             {
-               borderColor: colors.flord_secondary,
+               borderWidth:0,
+               backgroundColor:colors.light_grey,
+               
                elevation: 10
              
             }
@@ -56,6 +64,7 @@ export const CustomPicker = ({membership,setMembership}) => {
           }}
 
         customItemContainerStyle={{
+          
             width: 20
         }}
         

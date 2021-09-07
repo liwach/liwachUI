@@ -10,7 +10,7 @@ export const ProfileDetail = ({src,user,barter,time}) => {
     return(
         
         <View style={[styles.horizontal,styles.container]}>
-        <UserAvatar style={styles.imageBox} src={src} size={120}/>
+        <Image style={styles.imageBox} source={src} />
 
             <View>
                 <Text style={styles.user}>{user}</Text>

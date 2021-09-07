@@ -222,7 +222,7 @@ export const addRequest = async(item) => {
     "type": item.type
   });
 
-  console.log(params)
+  console.log("Params in request",params)
     
   try {
     try {
@@ -232,8 +232,8 @@ export const addRequest = async(item) => {
           "content-type": "application/json",
           },
           })
-      if (res.data) {
-        console.log(`Axios:${JSON.stringify(res.data)}`)
+      if (res.status==201) {
+        console.log(`Axios:${JSON.stringify(res.data.data)}`)
         return {
           message:"successful",
           data: res.data

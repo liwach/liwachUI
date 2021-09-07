@@ -33,7 +33,7 @@ export const AccountScreen = ({navigation}) => {
                 src={url}
                 />
             </TouchableOpacity>         
-            <Text style={styles.textContainer}>{user.first_name} {user.last_name} </Text> 
+            <Text style={styles.textContainer}>Ola, {user.first_name} {user.last_name} </Text> 
             <AccountMenuItem iconName={"md-pencil"} Title={"Edit Profile"} navigation={navigation}
                 onPress={()=>navigation.navigate('EditAccountScreen'
                 ,{
@@ -46,10 +46,12 @@ export const AccountScreen = ({navigation}) => {
             />
             <AccountMenuItem iconName={"shield-checkmark"} Title={"Change password"} navigation={navigation}/>
             <AccountMenuItem iconName={"share"} Title={"Share"} navigation={navigation}/>
-            <AccountMenuItem iconName={"share"} Title={"Sign Up"} navigation={navigation} onPress={()=>navigation.navigate('SignupScreen')}/>
-            <AccountMenuItem iconName={"share"} Title={"Log In"} navigation={navigation} onPress={()=>navigation.navigate('LoginScreen')}/>
+            {user==null?
+            <AccountMenuItem iconName={"share"} Title={"Log In"} navigation={navigation} onPress={()=>navigation.navigate('AuthenticationScreen')}/>
+            :<Button color={colors.white} style={styles.button} onPress={()=>{alert("Logged out")}}>Log out</Button>
 
-            <Button color={colors.black} style={styles.button} onPress={()=>{alert("Logged out")}}>Log out</Button>
+            }
+
         </View>
     );
 };
@@ -58,7 +60,7 @@ export const AccountScreen = ({navigation}) => {
 const styles = StyleSheet.create({
 
     backgroundContainer:{
-        backgroundColor: colors.bottomNav,
+        backgroundColor: colors.lighter_blue,
         height:100,
         borderBottomStartRadius:50,
         borderBottomEndRadius:50
@@ -84,10 +86,10 @@ const styles = StyleSheet.create({
     },
 
     button:{
-        backgroundColor:colors.flord_intro2,
+        backgroundColor:colors.water,
         borderRadius:20,
-        borderColor:colors.black,
-        color:colors.flord,
+        
+        color:colors.white,
         width:'40%',
         alignSelf: 'center',
         marginTop: 40

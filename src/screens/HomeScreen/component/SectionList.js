@@ -35,8 +35,8 @@ const onPressHandler = () => {
 const FlatListItem = ({actionRef, navigation, item, onPress, backgroundColor, textColor }) => (
 
         <View style={[styles.cardContainer,backgroundColor]}> 
-
-            <UserAvatar size={150} src={item.picture} style={{width:100,borderRadius:20}} rounded={false}/>
+            {console.log("FlatList",item.picture)}
+            <Image source={item.picture} style={{width:150,height:150,borderRadius:20}} />
             <View   >
               
                 <Text style={[ styles.header]}>{item.name}</Text>
@@ -113,7 +113,8 @@ export const Section = ({navigation,item,type},onPressHandler) => {
           )
          });
 
-        const pic = picture_urls[0]
+         const pic = { uri: item.picture }
+
         console.log("picture",picture_urls)
         const singleItem = {
           id: item.id,

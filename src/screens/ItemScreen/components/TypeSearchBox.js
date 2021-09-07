@@ -32,8 +32,10 @@ export const TypeSeachBox = ({value, setValue}) => {
     return (
       <DropDownPicker
       style={{ 
-        backgroundColor:"transparent",
-        borderBottomWidth:0.5,
+        backgroundColor:colors.light_grey,
+        marginTop:10,
+
+        borderBottomWidth:0,
         borderTopWidth:0,
         borderLeftWidth:0,
         borderRightWidth:0,

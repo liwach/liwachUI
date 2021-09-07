@@ -47,6 +47,7 @@ import { login } from '../../routes/accountApi';
 import { AsyncStorage } from 'react-native';
 import { saveUserToStorage } from '../../utils/checkFirstTimeActions';
 import AwesomeAlert from 'react-native-awesome-alerts';
+import { AlertModal } from '../../components/UI/AlertModal';
 
 export const LoginForm = ({navigation}) => {
 
@@ -56,7 +57,7 @@ export const LoginForm = ({navigation}) => {
     const response = await login(values.email,values.password)
     if(response.id!=null){
       await saveUserToStorage("logged_user",response)
-      navigation.navigate('Home', {
+      navigation.navigate('HomeStackScreen', {
         user:response
       })
     }
@@ -165,25 +166,7 @@ export const LoginForm = ({navigation}) => {
           } 
 
          
-              <AwesomeAlert
-              show={show}
-              showProgress={false}
-              title="AwesomeAlert"
-              message="I have a message for you!"
-              closeOnTouchOutside={true}
-              closeOnHardwareBackPress={false}
-              showCancelButton={true}
-              showConfirmButton={true}
-              cancelText="No, cancel"
-              confirmText="Yes, delete it"
-              confirmButtonColor="#DD6B55"
-              onCancelPressed={() => {
-                this.hideAlert();
-              }}
-              onConfirmPressed={() => {
-                this.hideAlert();
-              }}
-            />
+        <AlertModal show={show} setShowAlert={setShow}/>
 
        
           <Button

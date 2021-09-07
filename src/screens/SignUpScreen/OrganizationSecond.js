@@ -52,8 +52,9 @@ import { ToastAndroid } from 'react-native';
 import  {getAllMembership} from '../../routes/membershipAPI'
 import { postUser } from '../../routes/accountApi';
 import { uploadPicture } from '../../routes/utilApi';
+import { ButtonImageSheet } from './components/ButtonImageSheet';
 
-export const SignUpSecond = ({route, navigation}) => {
+export const OrganizationSecond = ({route, navigation}) => {
   const { item} = route.params;
   const imageActionRef = createRef()
  
@@ -66,7 +67,7 @@ export const SignUpSecond = ({route, navigation}) => {
   const [info,setInfo] = useState([])
   const [membership, setMembership] = useState(null);
   const [photo,setPhoto] = useState("https://res.cloudinary.com/liwach/image/upload/v1630910024/add_ujcczf.png");
-  
+  const [TINphoto,setTINPhoto] = useState("");
   const [placeerror,setPlaceError] = useState("")
   const [dateerror,setDateError] = useState("")
   const [membererror,setMemberError] = useState("")
@@ -122,10 +123,10 @@ export const SignUpSecond = ({route, navigation}) => {
         "password": item.password,
         "profile_picture": "https://res.cloudinary.com/liwach/image/upload/v1630910270/bxffla2sq3dfyi2j8ig8.jpg",
         "phone_number": values.phoneNumber ,
-        "TIN_picture": "",
+        "TIN_picture": "https://res.cloudinary.com/liwach/image/upload/v1630910270/bxffla2sq3dfyi2j8ig8.jpg",
         "status": "active",
         "birthdate": date,
-        "type": "user",
+        "type": "company",
         "address": {
           "country": place,
           "city": place,
@@ -140,7 +141,7 @@ export const SignUpSecond = ({route, navigation}) => {
           
           const response =  await postUser(user)
           if(response){
-            alert("Succesfully Registered,"+JSON.stringify(response))
+            // alert("Succesfully Registered,"+JSON.stringify(response))
             navigation.navigate('AuthScreen')
            }
          }
@@ -357,6 +358,7 @@ const itemClick = (item) => {
          
             <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{dateerror}</Text>
           
+          <ButtonImageSheet photoData={photoData} setPhotoData={setPhotoData} photo={TINphoto} setPhoto={setTINPhoto} actionSheetRef={imageActionRef}/>
 
           <CustomPicker membership={membership} setMembership={setMembership}/>
           <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{membererror}</Text>

@@ -18,7 +18,6 @@ export const HeroImage = ({navigation}) => {
             <View style={styles.HeroContainer}>
                    
                 <ImageBackground style={styles.imageBox} source={imageSource}/>
-                <CategoryList/>
                 <Text  style={[styles.AD]}>Exchange 700+</Text>
                 <Text  style={[styles.AD2]}>I T E M S A N D S E R V I C E S</Text>
             </View>
@@ -35,7 +34,7 @@ const styles = StyleSheet.create({
     },
     HeroContainer:{
         position:'relative',
-        backgroundColor: colors.flord_intro2,
+        backgroundColor: colors.water,
         width:"100%",
         marginBottom:20
     },

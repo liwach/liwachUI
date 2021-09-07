@@ -33,7 +33,7 @@ export default function App() {
     <Provider store={store}>
      
       <NavigationContainer>
-        {value? <BottomNavigator/>:<IntroductStackScreen/>}
+        {!value? <BottomNavigator/>:<IntroductStackScreen/>}
       <StatusBar style="auto" />
     </NavigationContainer>
     </Provider>

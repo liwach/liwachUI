@@ -8,7 +8,7 @@ import { MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 import { createStore } from "redux";
 import { itemReducer } from "../reducers/items";
 import { Provider } from 'react-redux';
-import { HomeStackScreen, MessageStackScreen, ProductStackScreen, ProfileStackScreen } from './DrawerNavigation';
+import { HomeStackScreen, MessageStackScreen, ProductStackScreen, ProfileStackScreen, RequestScreenStack } from './DrawerNavigation';
 import  Icon  from 'react-native-vector-icons/Ionicons';
 
 const Tab = createBottomTabNavigator();
@@ -39,6 +39,9 @@ export const BottomNavigator = ()=>{
         if (route.name === 'Home') {
           iconName = 'home-outline';
         } 
+        else if (route.name === 'Request') {
+          iconName = 'list';
+        }
         else if (route.name === 'Profile') {
           iconName = 'list';
         }
@@ -78,6 +81,13 @@ export const BottomNavigator = ()=>{
       component={MessageStackScreen}
       options={{
         tabBarLabel: 'Message',
+      }}
+      />
+        <Tab.Screen 
+      name="Request" 
+      component={RequestScreenStack}
+      options={{
+        tabBarLabel: 'Request',
       }}
       />
     </Tab.Navigator>

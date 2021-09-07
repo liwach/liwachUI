@@ -36,3 +36,6 @@ export const GET_ALL_MEMBERSHIP = `${API_URL}/membership`
 export const POST_USER =  `${API_URL}/user`
 export const LOGIN =  `${API_URL}/user/login`
 export const FIND_USER =  `${API_URL}/user/search`
+
+//Media
+export const ADD_MEDIA = `${API_URL}/media` 

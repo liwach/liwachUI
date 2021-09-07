@@ -37,13 +37,46 @@ export const getServicesByUserID = async(id) => {
 
 
 }
+export const getServicesByType = async(type,id) => {
+  
+  const params = JSON.stringify({
+    "type_id": type
+      });
+    
+   console.log(type)   
+  try {
+    try {
+  
+      const res = await axios.post(GET_ALL_SERVICES_BY_PARAMETER, params,{
+          "headers": {
+          "content-type": "application/json",
+          },
+          })
+      if (res.data) {
+        console.log(`Axios:${JSON.stringify(res.data)}`)
+        // alert(res.data)
+        return res.data
+      } else {
+        console.log('Unable to fetch');
+      }
+    }
+  catch (error) {
+    // Add custom logic to handle errors
+  }
+  } catch (error) {
+    console.log(error.message)
+  }
+
+
+}
+
 
 export const addService = async(item) => {
     
     const params = JSON.stringify({
       "name": item.name,
       "description":item.description,
-      "media": item.media,
+      "picture": item.picture,
       "swap_type": item.swap_type,
       "address": {
         "country": item.address.country,
@@ -56,7 +89,6 @@ export const addService = async(item) => {
       "user_id": item.user_id,
       "status": item.status
         });
-      
     try {
       try {
     
@@ -65,11 +97,11 @@ export const addService = async(item) => {
             "content-type": "application/json",
             },
             })
-        if (res.data) {
-          console.log(`Axios:${JSON.stringify(res.data)}`)
+        console.log(JSON.stringify(res))
+        if (res) {
           return {
             message:"successful",
-            data: res.data
+            data: res
           }
         } else {
           console.log('Unable to fetch');

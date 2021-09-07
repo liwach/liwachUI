@@ -43,7 +43,7 @@ export const ItemPicker = ({value, setValue}) => {
         items={items}
         multiple={false}
         style={{ 
-          backgroundColor:colors.bottomNav,
+          backgroundColor:colors.background,
           borderBottomWidth:0,
           borderTopWidth:0,
           borderLeftWidth:0,
@@ -51,8 +51,8 @@ export const ItemPicker = ({value, setValue}) => {
           elevation:3
         }}
         badgeTextStyle={{color:colors.white,  fontStyle: "italic"}}
-        badgeColors={[colors.flord_intro2,colors.flord_intro2]}
-        badgeDotColors={[colors.flord_intro]}
+        badgeColors={[colors.water,colors.water]}
+        badgeDotColors={[colors.white]}
         badgeStyle={{width:100}}
         setOpen={setOpen}
         setValue={setValue}

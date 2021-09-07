@@ -134,6 +134,41 @@ export const getItemsByUserID = async(id) => {
 
 }
 
+export const getItemsByType = async(type,id) => {
+  
+  const params = JSON.stringify({
+    "type_id": type
+      });
+    
+   console.log(type)   
+  try {
+    try {
+  
+      const res = await axios.post(getOneItem, params,{
+          "headers": {
+          "content-type": "application/json",
+          },
+          })
+      if (res.data) {
+        console.log(`Axios:${JSON.stringify(res.data)}`)
+        // alert(res.data)
+        return res.data
+      } else {
+        console.log('Unable to fetch');
+      }
+    }
+  catch (error) {
+    // Add custom logic to handle errors
+  }
+  } catch (error) {
+    console.log(error.message)
+  }
+
+
+}
+
+
+
 export const getItemsByStatus = async(id,status) => {
 
   const params = JSON.stringify({
@@ -171,22 +206,22 @@ export const getItemsByStatus = async(id,status) => {
 
 export const addItem = async(item) => {
     
-      const params = JSON.stringify({
-        "name": item.name,
-        "description":item.description,
-        "media": item.media,
-        "swap_type": item.swap_type,
-        "address": {
-          "country": item.address.country,
-          "city": item.address.city,
-          "latitude": item.address.latitude,
-          "longitude": item.address.longitude,
-          "type": item.address.type
-        },
-        "type_id": item.type_id,
-        "user_id": item.user_id,
-        "status": item.status
-          });
+  const params = JSON.stringify({
+      "name": item.name,
+      "description":item.description,
+      "picture": item.picture,
+      "swap_type": item.swap_type,
+      "address": {
+        "country": item.address.country,
+        "city": item.address.city,
+        "latitude": item.address.latitude,
+        "longitude": item.address.longitude,
+        "type": item.address.type
+      },
+      "type_id": item.type_id,
+      "user_id": item.user_id,
+      "status": item.status
+      });
         
       try {
         try {

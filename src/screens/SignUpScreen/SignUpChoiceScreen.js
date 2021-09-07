@@ -14,11 +14,11 @@ export const SignUpChoiceScreen = ({navigation}) => {
         <View style={styles.horizontal}>
             <TouchableOpacity style={styles.cardContainer} onPress={()=>navigation.navigate("SignupScreen")}>
                 <Fontisto name={"person"} color={colors.flord_secondary} size={80} />
-                <Text style={styles.icontext}>You</Text>
+                <Text style={styles.icontext}>User</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.cardContainer} onPress={()=>navigation.navigate("OrganizationScreen")}> 
                <FontAwesome name={"institution"} color={colors.flord_secondary} size={80} />
-               <Text style={styles.icontext}>Your company</Text>
+               <Text style={styles.icontext}>Company</Text>
             </TouchableOpacity>
         </View>
         </View>
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     },
     container:{
        
-    backgroundColor:colors.flord,
+    backgroundColor:colors.water,
  
     width: "100%",
     height: "100%"
@@ -44,18 +44,18 @@ const styles = StyleSheet.create({
     header:{
         marginTop:"20%",
         marginLeft:35,
-        color:colors.flord_secondary,
+        color:colors.white,
         fontSize: 40,
         fontWeight:'bold'
     },
     subheader:{
         marginLeft:35,
         marginBottom:25,
-        color:colors.flord_secondary,
+        color:colors.white,
         fontSize:20
     },
     icontext:{
-        color:colors.flord_secondary,
+        color:colors.white,
         fontSize:20,
         textAlign:'center'
     },

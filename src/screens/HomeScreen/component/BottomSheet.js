@@ -11,6 +11,7 @@ import { addRequest } from '../../../routes/requestApi'
 import { fetchuser } from '../../../utils/checkFirstTimeActions'
 import { getItemsById, getItemsByName } from '../../../routes/itemsApi'
 import uuid from 'react-native-uuid';
+import { AlertModal } from '../../../components/UI/AlertModal'
 
 
 
@@ -18,36 +19,56 @@ import uuid from 'react-native-uuid';
 
 export const SendButton = (value,id,item) => {
     const itemValue = value.selectedValue
+    const [showalert,setShowAlert] = useState(false)
+    const [alertMsg,setAlertMessage] = useState({msg:"",title:"",color:''})
     const sendRequest = async(value,id,item)=> {
         const token = uuid.v4()
         const user = await fetchuser()
         const requester_item = await getItemsByName(value.selectedValue)
         const singleItem = requester_item[0]
         console.log(JSON.stringify(singleItem))
-        const request = {
-            "status": value.item.status,
-            "requester_id": user.id,
-            "requested_item_id": value.item.id,
-            "requester_item_id": singleItem.id,
-            "rating": 0,
-            "token": token,
-            "type": requester_item.post_type
+        if(singleItem===undefined){
+            setShowAlert(true)
+            setAlertMessage({msg:"Please choose an item first.",title:'Request Error',color:colors.straw}) 
         }
-        console.log(JSON.stringify(request))
+        if(singleItem!==undefined){
+            const request = {
+                "status": "open",
+                "requester_id": user.id,
+                "requested_item_id": value.item.id,
+                "requester_item_id": singleItem.id,
+                "rating": 0,
+                "token": token,
+                "type": singleItem.bartering_location.type
+            }
+            try{
+                const response = await addRequest(request)
+                if(response==null){
+                    alert(JSON.stringify(response))
+                }
+                if(response!==null&&response.message=="successful"){
+                    setShowAlert(true)
+                    setAlertMessage({msg:`${value.item.name}`,title:'Request sent',color:colors.green})                }
+            }
+           catch(error){
+            setShowAlert(true)
+            setAlertMessage({msg:JSON.stringify(error.message),title:'Request Error',color:colors.red})
+           }
+           
+        }
+       
+     
 
-        const response = await addRequest(request)
-        if(response==null){
-            alert(JSON.stringify(response))
-        }
-        if(response!==null&&response.message=="successful"){
-            ToastAndroid.show(`Request for ${value.item.name} sent successfully!`, ToastAndroid.SHORT);
-        }
+       
+       
     }
     return(
-        <TouchableOpacity style={{width:150,height:35,alignSelf:'center',margin:10,backgroundColor:colors.flord_intro2}} onPress={()=>sendRequest(value)}>
+        <View>
+        <TouchableOpacity style={{width:150,height:35,alignSelf:'center',margin:10,backgroundColor:colors.water,borderRadius:10}} onPress={()=>sendRequest(value)}>
             <Text style={[styles.swapText]}>Swap</Text>
         </TouchableOpacity>
-
+            <AlertModal show={showalert} setShowAlert={setShowAlert} message={alertMsg}/>
+            </View>
     )
 }
 

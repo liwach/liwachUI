@@ -43,67 +43,13 @@ import { SearchList } from './components/SearchFlatList';
 import DatePicker from 'react-native-datepicker'
 import { CustomPicker } from './components/CustomPicker';
 import { SearchBar } from 'react-native-elements';
+import { string } from 'yup';
 
 export const SignUpForm = ({navigation}) => {
 
-  const [date, setDate] = useState(new Date(1598051730000));
-  const [firstName,setFirstName] = useState('')
-  const [lastName,setLastName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-
-  _suggestionSelect =(result, lat, lng, text) => {
-    console.log(result, lat, lng, text)
-  }
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setShow(Platform.OS === 'ios');
-    setDate(currentDate);
-  };
-
-  const showMode = (currentMode) => {
-    setShow(true);
-    setMode(currentMode);
-  };
-
-  const showDatepicker = () => {
-    showMode('date');
-  };
-
-  const showTimepicker = () => {
-    showMode('time');
-  };
 
 
-  const inputStyle = {
-    borderWidth: 1,
-    borderColor: colors.grey,
-    padding: 12,
-    marginBottom: 5,
-  };
 
-  const displayList = async(text) => {
-    const data =  await getLocation(text)
-      
-      text.length == 0 ? setPlace([]): setPlace(data.features)
-   
-      // console.log("Places",data.features)
-      // const swap_types = 
-      //     res.data.features.map(function({data, index}){
-      //       console.log(`dataswap:${data.place_name} `)
-            
-      //           return(
-                  
-      //               {
-      //               index: data.place_name,
-      //               }
-                  
-                 
-      //           )
-      //          });
-      
-  }
- 
   const storeValues = async(values) => {
     
       const item = {
@@ -142,7 +88,7 @@ export const SignUpForm = ({navigation}) => {
       onSubmit={
         values => 
          {
-           alert(values.firstName)
+           storeValues(values)
         }
       }
 
@@ -150,64 +96,60 @@ export const SignUpForm = ({navigation}) => {
       validationSchema={yup.object().shape({
         firstName: yup
           .string()
+          .matches('[A-Za-z]', "Not a name")
           .min(2, 'Too Short!')
           .max(50, 'Too Long!')
-          .required('Please, provide your title!'),
+          .required('Please, provide your firstname!'),
         lastName: yup
           .string()
+          .matches('[A-Za-z]', "Not a name")
           .min(2, 'Too Short!')
           .max(50, 'Too Long!')
-          .required('Please, provide your category!'),
+          .required('Please, provide your lastname!'),
           email: yup
           .string()
           .email('Invalid email')
-          .required('Please, provide your description!'),
+          .required('Please, provide your email!'),
           password: yup
           .string()
           .min(8)
-          .required('Please, provide your location!'),
-          phoneNumber : yup
-          .string()
-          .required('Please provide your phone number.'),
-          membership : yup
-          .string().
-          required("Please provide your membership"),
-          address : yup
-          .string()
-          .required("Please provide your location.")
+          .max(15)
+          .required('Please, provide your password!'),
+      
        
       })}
      >
       {({ values, handleChange, errors, setFieldTouched, setFieldValue, touched, isValid, handleSubmit }) => (
         <View style={styles.formContainer}>
-          <View style={styles.horizontal}>
+          
           <TextInput
             value={values.firstName}
-            style={styles.horizontalInputStyle}
+            style={styles.inputStyle}
             onChangeText={handleChange('firstName')}
             onBlur={() => setFieldTouched('firstName')}
             placeholder="First Name"
             placeholderTextColor={colors.flord}s
           />
           {touched.firstName && errors.firstName &&
-            <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{errors.firstName}</Text>
-          }            
+            <Text style={{ fontSize: 12, color: colors.water  }}>{errors.firstName}</Text>
+          }   
+          
+                
           <TextInput
             value={values.lastName}
-            style={styles.horizontalInputStyle}
+            style={styles.inputStyle}
             onChangeText={handleChange('lastName')}
             onBlur={() => setFieldTouched('lastName')}
             placeholder="Last Name"
             placeholderTextColor={colors.flord}
           />
           {touched.lastName && errors.lastName &&
-            <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{errors.lastName}</Text>
+            <Text style={{ fontSize: 12, color: colors.water  }}>{errors.lastName}</Text>
           } 
-
-           </View>
+          
           
          
-        
+      
        <TextInput
             value={values.email}
             style={styles.inputStyle}
@@ -218,7 +160,7 @@ export const SignUpForm = ({navigation}) => {
             placeholderTextColor={colors.flord}
           />
           {touched.email && errors.email &&
-            <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{errors.email}</Text>
+            <Text style={{ fontSize: 12, color: colors.water  }}>{errors.email}</Text>
           } 
 
           <TextInput
@@ -231,30 +173,18 @@ export const SignUpForm = ({navigation}) => {
             placeholderTextColor={colors.flord}
           />
           {touched.password && errors.password &&
-            <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{errors.password}</Text>
+            <Text style={{ fontSize: 12, color: colors.water  }}>{errors.password}</Text>
           } 
 
-        {/* <TextInput
-            style={styles.inputStyle}
-            value={values.password}
-            onChangeText={handleChange('password')}
-            onBlur={() => setFieldTouched('password')}
-            placeholder="Confirm Password"
-            secureTextEntry={true}
-            placeholderTextColor={colors.flord}
-          />
-          {touched.password && errors.password &&
-            <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{errors.password}</Text>
-          }  */}
-       
+ 
       
 
        
           <Button
             
-            color={colors.flord_intro2}
+            color={colors.water}
             title='Next'
-            onPress={()=>storeValues(values)}
+            onPress={handleSubmit}
             
           />
          
@@ -305,9 +235,8 @@ const styles = StyleSheet.create({
   imageBox:{
     flex:1.5,
     width:"100%",
-    backgroundColor:colors.flord_intro2,
-    borderWidth: 1,
-    borderColor:colors.flord_intro2,
+    backgroundColor:colors.water,
+
     borderBottomEndRadius: 70,
     borderBottomStartRadius: 70
   },
@@ -322,12 +251,12 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     color:colors.flord_intro,
     
-    borderColor: colors.flord,
-    borderBottomWidth: 1,
+  
     width:"100%",
-    backgroundColor: colors.white,
+    backgroundColor: colors.light_grey,
+    
     marginRight:4,
-    borderRadius: 20,
+    borderRadius: 10,
     textAlign:"center",
   },
   horizontalInputStyle:{
@@ -339,7 +268,7 @@ const styles = StyleSheet.create({
     textAlign:"center",
     width:"50%",
     marginRight:4,
-    borderRadius: 20,
+    borderRadius: 10,
   },
     postButton: {
     width: '40%',

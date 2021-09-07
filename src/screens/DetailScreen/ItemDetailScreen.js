@@ -21,14 +21,9 @@ export const ItemDetailScreen = ({route, navigation}) => {
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState([])
     const [isVisible,setVisible] = useState(false)
-    const picture_urls = item.media.map(function(data, idx){
-        const url = data.url
-       return(
-         url
-       )
-      });
+  
 
-     const pic = picture_urls[0]
+     const pic = item.picture
     const fetchData = async () => {
     //   const items = await getAllItems()
       const user = await fetchuser()
@@ -65,15 +60,15 @@ export const ItemDetailScreen = ({route, navigation}) => {
                  <View style={styles.horizontal}>
                      <Text style={styles.header}>{item.name}</Text>
                      <Ionicons name={'location'} size={13} style={styles.icon}/>
-                     <Text style={styles.endText}>{item.bartering_location.city}</Text>
+                     <Text style={styles.endText}>{item.location}</Text>
                  </View>
-                 <OutlinedButton text={item.type.name}/>
+                 <OutlinedButton text={item.category}/>
              </View>
-             <ProfileDetail src={pic} user={item.user.first_name} barter={item.number_of_request} time={item.time}/>
+             <ProfileDetail src={pic} user={item.user} barter={item.number_of_request} time={item.time}/>
              <View  style={styles.horizontal}>
                  <FontAwesome name={'bars'} size={13} style={styles.iconDesc}/>
                  <Text style={{fontSize:16,color:colors.flord_intro2}} >Description</Text>
-                 <Text style={styles.desc}>{item.description}</Text>
+                 <Text style={styles.desc}>{item.desc}</Text>
              </View>
              <View  style={styles.horizontal}>
                  <AntDesign name={'swap'} size={13} style={styles.iconDesc}/>

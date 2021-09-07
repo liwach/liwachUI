@@ -37,27 +37,41 @@ import { addItem } from '../../routes/itemsApi';
 
 import { MAPBOX_KEY } from '../../utils/config';
 
-export const OrganizationForm = (props) => {
+import  {MapboxAutocomplete}  from 'react-native-mapbox-autocomplete/mapboxAutocomplete';
+import { getLocation } from '../../routes/requestApi';
+import { SearchList } from './components/SearchFlatList';
+import DatePicker from 'react-native-datepicker'
+import { CustomPicker } from './components/CustomPicker';
+import { SearchBar } from 'react-native-elements';
+import { string } from 'yup';
 
-  const [dropdown, setDropdown] = useState(null);
-  const [selected, setSelected] = useState([]);
-  _suggestionSelect =(result, lat, lng, text) => {
-    console.log(result, lat, lng, text)
+export const OrganizationForm = ({navigation}) => {
+
+
+
+
+  const storeValues = async(values) => {
+    
+      const item = {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: values.email,
+        password: values.password
+      }
+      /* 1. Navigate to the Details route with params */
+      navigation.navigate('OrganizationSecond', {
+        item:item
+      })
   }
-  
-
-
-  const inputStyle = {
-    borderWidth: 1,
-    borderColor: colors.grey,
-    padding: 12,
-    marginBottom: 5,
-  };
-
- 
   return (
+    
     <View style={styles.contain}>
-
+    
+      <View style={styles.imageBox}>
+      <Text style={styles.header}> Register</Text>
+      </View>
+      <Text style={styles.subtitle}> Liwach would love to get to know you!</Text>
+      <Text style={styles.subtitle}> Let's get you started!</Text>
     <Formik
       initialValues={{ 
         firstName: '',
@@ -74,158 +88,106 @@ export const OrganizationForm = (props) => {
       onSubmit={
         values => 
          {
-          
-           Alert.alert("added")
-          
-          }
+           storeValues(values)
+        }
       }
+
+      
       validationSchema={yup.object().shape({
         firstName: yup
           .string()
-          .required('Please, provide your title!'),
+          .matches('[A-Za-z]', "Not a name")
+          .min(2, 'Too Short!')
+          .max(50, 'Too Long!')
+          .required('Please, provide your firstname!'),
         lastName: yup
           .string()
-          .required('Please, provide your category!'),
+          .matches('[A-Za-z]', "Not a name")
+          .min(2, 'Too Short!')
+          .max(50, 'Too Long!')
+          .required('Please, provide your lastname!'),
           email: yup
           .string()
-          .required('Please, provide your description!'),
+          .email('Invalid email')
+          .required('Please, provide your email!'),
           password: yup
           .string()
-          .required('Please, provide your location!'),
+          .min(8)
+          .max(15)
+          .required('Please, provide your password!'),
+      
        
       })}
      >
       {({ values, handleChange, errors, setFieldTouched, setFieldValue, touched, isValid, handleSubmit }) => (
         <View style={styles.formContainer}>
-
+          
           <TextInput
             value={values.firstName}
-            style={inputStyle}
+            style={styles.inputStyle}
             onChangeText={handleChange('firstName')}
             onBlur={() => setFieldTouched('firstName')}
             placeholder="First Name"
+            placeholderTextColor={colors.flord}s
           />
           {touched.firstName && errors.firstName &&
-            <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.firstName}</Text>
-          }            
+            <Text style={{ fontSize: 12, color: colors.water  }}>{errors.firstName}</Text>
+          }   
+          
+                
           <TextInput
             value={values.lastName}
-            style={inputStyle}
+            style={styles.inputStyle}
             onChangeText={handleChange('lastName')}
             onBlur={() => setFieldTouched('lastName')}
             placeholder="Last Name"
+            placeholderTextColor={colors.flord}
           />
           {touched.lastName && errors.lastName &&
-            <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.lastName}</Text>
+            <Text style={{ fontSize: 12, color: colors.water  }}>{errors.lastName}</Text>
           } 
-           <TextInput
+          
+          
+         
+      
+       <TextInput
             value={values.email}
-            style={inputStyle}
+            style={styles.inputStyle}
+
             onChangeText={handleChange('email')}
             onBlur={() => setFieldTouched('email')}
-            placeholder="email"
+            placeholder="Email"
+            placeholderTextColor={colors.flord}
           />
           {touched.email && errors.email &&
-            <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.email}</Text>
+            <Text style={{ fontSize: 12, color: colors.water  }}>{errors.email}</Text>
           } 
 
           <TextInput
+            style={styles.inputStyle}
             value={values.password}
-            style={inputStyle}
             onChangeText={handleChange('password')}
             onBlur={() => setFieldTouched('password')}
-            placeholder="password"
+            placeholder="Password"
             secureTextEntry={true}
+            placeholderTextColor={colors.flord}
           />
           {touched.password && errors.password &&
-            <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.password}</Text>
+            <Text style={{ fontSize: 12, color: colors.water  }}>{errors.password}</Text>
           } 
 
-          <TextInput
-            value={values.swap}
-            style={styles.inputStyle}
-            onChangeText={handleChange('swap')}
-            onBlur={() => setFieldTouched('swap')}
-            placeholder="swap"
-          />
-          {touched.swap && errors.swap &&
-            <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.swap}</Text>
-          }
+ 
+      
 
-          <TextInput
-            value={values.profilePicture}
-            style={styles.inputStyle}
-            onChangeText={handleChange('profilePicture')}
-            onBlur={() => setFieldTouched('profilePicture')}
-            placeholder="profilePicture"
-             />
-          {touched.profilePicture && errors.profilePicture &&
-            <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.profilePicture}</Text>
-          }
-
-        <TextInput
-            value={values.phoneNumber}
-            style={styles.inputStyle}
-            onChangeText={handleChange('phoneNumber')}
-            onBlur={() => setFieldTouched('phoneNumber')}
-            placeholder="phoneNumber"
-             />
-          {touched.phoneNumber && errors.phoneNumber &&
-            <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.phoneNumber}</Text>
-          }
-
-        <TextInput
-            value={values.birthDate}
-            style={styles.inputStyle}
-            onChangeText={handleChange('birthDate')}
-            onBlur={() => setFieldTouched('birthDate')}
-            placeholder="birthDate"
-             />
-          {touched.birthDate && errors.birthDate &&
-            <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.birthDate}</Text>
-          }
-          
-          <TextInput
-            value={values.type}
-            style={styles.inputStyle}
-            onChangeText={handleChange('type')}
-            onBlur={() => setFieldTouched('type')}
-            placeholder="type"
-             />
-          {touched.type && errors.type &&
-            <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.type}</Text>
-          }
-
-        <TextInput
-            value={values.address}
-            style={styles.inputStyle}
-            onChangeText={handleChange('address')}
-            onBlur={() => setFieldTouched('address')}
-            placeholder="address"
-             />
-          {touched.address && errors.address &&
-            <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.address}</Text>
-          }
-
-        <TextInput
-            value={values.membership}
-            style={styles.inputStyle}
-            onChangeText={handleChange('membership')}
-            onBlur={() => setFieldTouched('membership')}
-            placeholder="membership"
-             />
-          {touched.membership && errors.membership &&
-            <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.membership}</Text>
-          }
-          
-            
        
           <Button
-            color={colors.black}
-            title='Submit'
-            disabled={!isValid}
+            
+            color={colors.water}
+            title='Next'
             onPress={handleSubmit}
+            
           />
+         
         </View>
       )}
     </Formik>
@@ -239,30 +201,80 @@ export const OrganizationForm = (props) => {
 
 const styles = StyleSheet.create({
   contain:{
-    backgroundColor:colors.flord_intro,
+    
+    backgroundColor:colors.white,
     justifyContent:'center',
-    alignItems: 'center',
-    width: "100%"
+    flex:1,
+    width: "100%",
+    height:"100%"
   },
+  cover :{
+    zIndex:100,
+  },
+  horizontal:{
+      flexDirection:"row",
+  },
+  subtitle:{
+    
+    top: 30,
+    color: colors.flord,
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight:'bold',
+  },
+  header:{
+    
+    zIndex: 100,
+    top: 45,
+    color: colors.white,
+    textAlign: 'center',
+    fontSize: 30,
+    fontWeight:'bold',
+    
+  } ,
   imageBox:{
-      width: "100%",
-      height: 200,
-      
+    flex:1.5,
+    width:"100%",
+    backgroundColor:colors.water,
+
+    borderBottomEndRadius: 70,
+    borderBottomStartRadius: 70
   },
 
   formContainer: {
+    flex:5,
     padding: 50,
-    width:"100%" 
+    width:"100%",
+    height:"100%" 
   },
   inputStyle:{
-    color:colors.primary,
-    borderColor: colors.primary
+    marginBottom: 10,
+    color:colors.flord_intro,
+    
+  
+    width:"100%",
+    backgroundColor: colors.light_grey,
+    
+    marginRight:4,
+    borderRadius: 10,
+    textAlign:"center",
+  },
+  horizontalInputStyle:{
+    marginBottom: 10,
+    color:colors.black,
+    borderColor: colors.flord,
+    borderBottomWidth: 1,
+    textTransform:"capitalize",
+    textAlign:"center",
+    width:"50%",
+    marginRight:4,
+    borderRadius: 10,
   },
     postButton: {
     width: '40%',
     borderRadius: 30,
     height:40,
-    backgroundColor:colors.black,
+    backgroundColor:colors.flord_intro2,
     color: colors.white,
     alignSelf: 'center',
     margin:20,

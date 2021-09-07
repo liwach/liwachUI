@@ -35,7 +35,7 @@ export const SwapSheet = ({item,actionSheetRef}) => {
     <View style={[styles.descBox]}>
         <View style={styles.horizontal}>
             <View style={styles.horizontalItems} >
-                <UserAvatar style={styles.imageBox} src={item.picture}  size={100}/>
+                <Image style={styles.imageBox} source={item.picture} />
             
                 <Text style={[styles.header]}>{item.name}</Text>
                 <Text style={styles.desc}>{item.desc}</Text>
@@ -102,8 +102,13 @@ const [id,selectedId] = useState("");
 const styles = StyleSheet.create({
     actionsheet:{
         height: 250,
-        backgroundColor:colors.bottomNav
+        backgroundColor:colors.background
 
+    },
+    imageBox:{
+        width:100,
+        height:100,
+        margin:20
     },
     header:{
         textTransform:"uppercase",
@@ -162,8 +167,8 @@ const styles = StyleSheet.create({
         color:colors.flord_intro2
     },
     actionSheetContainer:{
-            margin: 10,
-            height:"100%"
+            marginBottom: 2,
+            
         
     },
     horizontalItems:{

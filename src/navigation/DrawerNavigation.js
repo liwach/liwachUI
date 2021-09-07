@@ -41,6 +41,10 @@ import { fetchuser } from '../utils/checkFirstTimeActions';
 import { RequestScreen } from '../screens/ProfileScreen/RequestScreen';
 import { AuthenticationPage } from '../screens/AuthScreen/AuthScreen';
 import { IntroductionScreen } from '../screens/IntroScreen.js/Introduction';
+import { OrganizationSecond } from '../screens/SignUpScreen/OrganizationSecond';
+import { AllItemScreen } from '../screens/ItemScreen/AllItemScreen';
+import { AllServiceScreen } from '../screens/ItemScreen/AllServiceScreen';
+import { LocationSearchBox } from '../screens/ItemScreen/components/LocationSearchBox';
 
 
 const ProductStack = createStackNavigator();
@@ -85,6 +89,16 @@ export const IntroductStackScreen = () => {
        component={SignupStackScreen}
        
       />
+        <IntroductionStack.Screen
+        options={({route, navigation}) => ({
+          headerShown: false,
+          title: 'Authenticate',
+          headerStyle: {backgroundColor: colors.flord_intro},
+          headerTitleStyle: {color: colors.flord_secondary, alignSelf: 'center'},
+        })}
+        name="HomeStackScreen"
+        component={HomeStackScreen}
+      />
     </IntroductionStack.Navigator>
   )
 }
@@ -103,34 +117,8 @@ export const RequestScreenStack = () => {
          component={RequestScreen}
         
         />
-     <MessageStack.Screen
-        name="Inbox"
-        
-        options={({route, navigation}) => ({
-          
-          title: 'Inbox',
-          headerRight: () => {},
-        })}
-        component={MessageScreen}
-      />
-      <MessageStack.Screen
-        name="SingleMessage"
-        options={({route, navigation}) => ({
-          headerShown:true,
-          title: 'Inbox',
-          headerTitleStyle: {alignSelf: 'center', color: colors.white},
-          headerRight: () => {},
-          headerLeft: () => {
-            return (
-              <HeaderBackButton
-                tintColor={colors.white}
-                onPress={() => navigation.goBack()}
-              />
-            );
-          },
-        })}
-        component={MessageDetailScreen}
-      />
+    
+      
     </RequestStack.Navigator>
   )
 
@@ -147,20 +135,38 @@ export const SignupStackScreen = () => {
           options={({route, navigation}) => ({
             headerShown:false
            })}
-           name="SignupScreen"
-           component={SignUpForm}
-          
-          />
-      <SignupStack.Screen
-          
-          options={({route, navigation}) => ({
-            headerShown:false
-           })}
            name="SignupChoiceScreen"
            component={SignUpChoiceScreen}
           
           />
-
+          <SignupStack.Screen
+          
+          options={({route, navigation}) => ({
+            headerShown:false
+           })}
+           name="SignupScreen"
+           component={SignUpForm}
+          
+          />
+           <SignupStack.Screen
+          
+          options={({route, navigation}) => ({
+            headerShown:false
+           })}
+           name="OrganizationScreen"
+           component={OrganizationForm}
+          
+          />
+             <SignupStack.Screen
+          
+          options={({route, navigation}) => ({
+            headerShown:false
+           })}
+           name="OrganizationSecond"
+           component={OrganizationSecond}
+          
+          />
+    
     <SignupStack.Screen
           
           options={({route, navigation}) => ({
@@ -243,7 +249,7 @@ export const IntroStackScreen = () => {
           headerShown: true,
           headerMode: 'screen',
           gestureEnabled: true,
-          headerStyle: {backgroundColor: colors.flord_intro},
+          headerStyle: {backgroundColor: colors.water},
           headerTitleStyle: {color: colors.flord_secondary, alignSelf: 'center'},
           headerRight: props => (
             <Icon
@@ -314,8 +320,8 @@ export const AccountStackScreen = () => {
     <AccountStack.Navigator>
       <AccountStack.Screen
         options={({route, navigation}) => ({
-          headerStyle: {backgroundColor: colors.flord_intro},
-          headerTitleStyle: {color: colors.flord_secondary, alignSelf: 'center'},
+          headerStyle: {backgroundColor: colors.water},
+          headerTitleStyle: {color: colors.white, alignSelf: 'center'},
           headerRight: () => {},
           headerLeft: () => {},
         })}
@@ -326,7 +332,7 @@ export const AccountStackScreen = () => {
         options={({route, navigation}) => ({
           title: 'Edit Account',
            headerShown:false,
-          headerStyle: {backgroundColor: colors.flord_intro},
+          headerStyle: {backgroundColor: colors.water},
           headerTitleStyle: {color: 'white'},
           headerRight: () => {
             return (
@@ -450,7 +456,7 @@ export const HomeStackScreen = () => {
         headerShown: true,
         headerMode: 'screen',
         gestureEnabled: true,
-        headerStyle: {backgroundColor: colors.flord_intro2},
+        headerStyle: {backgroundColor: colors.water},
           headerTitleStyle: {color: colors.white, alignSelf: 'center'},
         headerRight: props => (
           <Icon
@@ -471,11 +477,12 @@ export const HomeStackScreen = () => {
           />)
         },
       })}>
+   
       <HomeStack.Screen
         options={{headerShown:true,
         headerStyle:{
           elevation:0,
-          backgroundColor:colors.flord_intro2
+          backgroundColor:colors.water
         },
         headerTitleStyle:{
           color: colors.white,
@@ -506,13 +513,14 @@ export const HomeStackScreen = () => {
       <HomeStack.Screen name="Edit Item" component={editItemForm} />
       <AccountStack.Screen
         options={({route, navigation}) => ({
-          headerStyle: {backgroundColor: colors.flord_intro2},
+          headerShown:false,
+          headerStyle: {backgroundColor: colors.water},
           headerTitleStyle: {color: colors.flord_intro, alignSelf: 'center'},
           headerRight: () => {},
           headerLeft: () => {},
         })}
         name="AccountScreen"
-        component={AccountScreen}
+        component={AccountStackScreen}
       />
        <AccountStack.Screen
         options={({route, navigation}) => ({
@@ -587,8 +595,8 @@ export const HomeStackScreen = () => {
             );
           },
         })}
-        name="LoginScreen"
-        component={LoginForm}
+        name="AuthenticationScreen"
+        component={AuthenticationPage}
       />
       <HomeStack.Screen
         name="NotificationScreen"
@@ -606,6 +614,68 @@ export const HomeStackScreen = () => {
           },
         })}
         component={NotificationScreen}
+      />
+                <HomeStack.Screen
+       options={({route, navigation}) => ({
+        title:"",
+        headerShown:true,
+        headerStyle:{
+          elevation:0,
+          backgroundColor:colors.water
+        },
+        headerTitleStyle:{
+          color: colors.white
+        },
+       
+        headerRight: () => {
+          return(
+            <View style={{alignItems:'center',width:"100%",justifyContent:'center',zIndex:100}}>
+            <LocationSearchBox/>
+            </View>
+          )
+        },
+        headerLeft: () => {
+          return (
+            <HeaderBackButton
+              tintColor={colors.white}
+              onPress={() => navigation.goBack()}
+            />
+          );
+        },
+      })}
+        name="AllItemScreen"
+        component={AllItemScreen}
+      />
+       <HomeStack.Screen
+       options={({route, navigation}) => ({
+         title:"Services",
+        headerShown:true,
+        headerStyle:{
+          elevation:0,
+          backgroundColor:colors.water
+        },
+        headerTitleStyle:{
+          color: colors.white,
+          
+        },
+        headerRight: () => {
+          return(
+            <View style={{alignItems:'center',width:"100%",justifyContent:'center',zIndex:100}}>
+            <LocationSearchBox/>
+            </View>
+          )
+        },
+        headerLeft: () => {
+          return (
+            <HeaderBackButton
+              tintColor={colors.white}
+              onPress={() => navigation.goBack()}
+            />
+          );
+        },
+      })}
+        name="AllServiceScreen"
+        component={AllServiceScreen}
       />
        <SubscribeStack.Screen
         options={({route, navigation}) => ({
@@ -871,11 +941,11 @@ export const MessageStackScreen = ({route,navigation }) => {
 const styles = StyleSheet.create({
   drawerButton: {
     marginRight: 20,
-    color: colors.flord_intro,
+    color: colors.white,
   },
 
   leftDrawer: {
     marginLeft: 10,
-    color: colors.flord_intro,
+    color: colors.white,
   },
 });

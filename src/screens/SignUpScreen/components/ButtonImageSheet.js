@@ -9,13 +9,8 @@ import {launchCamera,launchImageLibrary} from "react-native-image-picker"
 import { ToastAndroid } from "react-native";
 import axios from "axios";
 import FormData from "form-data"
-import { addService } from "../../../routes/serviceApi";
-import { AlertModal } from "../../../components/UI/AlertModal";
-import { addItem } from "../../../routes/itemsApi";
 
-export const cloudinaryUpload =  async(photo,item,type) => {
- 
-  console.log("cloundinary",photo)
+export const cloudinaryUpload = async (photo) => {
   const data = new FormData()
   data.append('file', photo)
   data.append('upload_preset', 'liwach')
@@ -23,58 +18,23 @@ export const cloudinaryUpload =  async(photo,item,type) => {
     method: "post",
     body: data
   }).then(res => res.json()).
-    then(async(data) => {
-      const final = {
-        "name": item.name,
-        "description":item.description,
-        "picture": data.secure_url,
-        "swap_type": item.swap_type,
-        "address": {
-          "country": item.address.country,
-          "city": item.address.city,
-          "latitude": item.address.latitude,
-          "longitude":item.address.longitude,
-          "type": item.address.type
-        },
-        "type_id": item.type_id,
-        "user_id": item.user_id,
-        "status": item.status
+    then(data => {
+      console.log({
+        "message":"successful",
+        "data":data.secure_url
+      })
+      return {
+        "message":"successful",
+        "data":data.secure_url
       }
-      console.log(final)
-      if(type=="service"){
-        const response = await addService(final)
-        if(response!=null && response.message == "successful"){
-        console.log("cloundinary resp",JSON.stringify(response))
-        return {
-          "message":"successful",
-          "data":response
-        } 
-      }
-      }
-      if(type=="item"){
-        const response = await addItem(final)
-        if(response!=null && response.message == "successful"){
-        console.log("cloundinary resp",JSON.stringify(response))
-        return {
-          "message":"successful",
-          "data":response
-        } 
-      }
-      }
-    
-      
     }).catch(err => {
-      console.log(photo)
-      console.log(err.message)
       return {
         "message":err.message
       }
     })
-
-    
 }
 
-export const ImageActionSheet = ({message,setMessage,photo,setPhoto,photoData,setPhotoData,actionSheetRef}) => {
+export const ButtonImageSheet = ({actionSheetRef,photo,setPhoto,photoData,setPhotoData}) => {
   let actionSheet;
   // const [image,setImage] = useState([])
   // const [photo, setPhoto] = useState("https://res.cloudinary.com/liwach/image/upload/v1630288666/b7alngy52u86tqep6iwp.png");
@@ -119,7 +79,6 @@ export const ImageActionSheet = ({message,setMessage,photo,setPhoto,photoData,se
             }
             console.log('source', source);
             setPhoto(source.uri)
-            
             setPhotoData(source)
             // cloudinaryUpload(source)
            });
@@ -167,7 +126,6 @@ export const ImageActionSheet = ({message,setMessage,photo,setPhoto,photoData,se
             }
             console.log('source', source);
             setPhoto(source.uri)
-            setMessage("image")
             setPhotoData(source)
             // cloudinaryUpload(source)
             
@@ -190,12 +148,24 @@ export const ImageActionSheet = ({message,setMessage,photo,setPhoto,photoData,se
         }}
 
         style={{
+            flexDirection:'row',
             alignItems:'center',
             marginBottom:10,
-            marginTop:10
+            marginTop:10,
+            backgroundColor:colors.light_grey,
+            width:100,
+            padding:5,
+            borderRadius:10,
         }}
       >
-     <Image style={{borderRadius:20,width:80, height:80,marginBottom:10,marginTop:20}} source={image}  />
+          <Text style={{textAlign:"center",fontSize:15,color:colors.water,marginRight:3}}>Tin Number Picture</Text>
+          <Ionicons name={"add-circle-outline"} size={20} color={colors.water}/>
+     {image.uri!==""?
+    <Image style={{borderRadius:20,width:40, height:40,marginBottom:10}} source={image}  />:
+    <View/> 
+    }
+     
+     
       </TouchableOpacity>
 
       <ActionSheet ref={actionSheetRef} containerStyle={styles.actionsheet}>

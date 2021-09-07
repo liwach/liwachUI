@@ -63,7 +63,11 @@ export const AuthenticationPage = ({navigation}) => {
             await saveUserToStorage("logged_user",response)
             setShow(true)
             setMessage("You have logged in!")
+            navigation.navigate('HomeStackScreen', {
+                user:response
+              })
           }
+        
     }
     catch(error){
         setShow(true)
@@ -176,7 +180,7 @@ const image = { uri: "https://res.cloudinary.com/liwach/image/upload/v1630627424
        
           <Button
             
-            color={colors.flord_secondary}
+            color={colors.water}
             title='Login'
             
             onPress={handleSubmit}
@@ -252,10 +256,9 @@ const styles = StyleSheet.create({
   imageBox:{
     flex:1.5,
     width:"100%",
-    backgroundColor:colors.flord_secondary,
+    backgroundColor:colors.water,
     opacity: 0.6,
-    borderWidth: 1,
-    borderColor:colors.flord_secondary,
+ 
     borderBottomEndRadius: 70,
     borderBottomStartRadius: 70
   },

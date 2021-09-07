@@ -42,8 +42,10 @@ export const SwapTypeDropBox = ({value,setValue}) => {
         open={open}
         value={value}
         style={{ 
-            backgroundColor:colors.background,
-            borderBottomWidth:0.5,
+          backgroundColor:colors.light_grey,
+          marginTop:10,
+
+          borderBottomWidth:0,
             borderTopWidth:0,
             borderLeftWidth:0,
             borderRightWidth:0
@@ -122,7 +124,7 @@ export const SwapTypeDropBox = ({value,setValue}) => {
         customItemContainerStyle={{
             width: 10,
             marginRight:20,
-            backgroundColor:colors.bottomNav
+            backgroundColor:colors.white
         }}
         
         

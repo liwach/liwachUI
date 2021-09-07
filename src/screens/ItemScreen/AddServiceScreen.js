@@ -43,35 +43,70 @@ import { MAPBOX_KEY } from '../../utils/config';
 import AutocompletePlace from './components/SearchBox';
 import { CustomPicker } from '../../components/UI/CustomPicker';
 import { TypeSeachBox } from './components/TypeSearchBox';
-import { ImageActionSheet } from './components/ImageActionSheet';
+import { cloudinaryUpload, ImageActionSheet } from './components/ImageActionSheet';
 import { SwapTypeDropBox } from './components/SwapTypeDropBox';
 import { getLocation } from '../../routes/requestApi';
 import { getOneTypeByName } from '../../routes/TypeApi';
 import { fetchuser } from '../../utils/checkFirstTimeActions'
 import { addService } from '../../routes/serviceApi';
+import { ButtonImageSheet } from './components/ButtonImageAction';
+import { AlertModal } from '../../components/UI/AlertModal';
+import { uploadPicture } from '../../routes/utilApi';
 
 export const addServiceForm = ({navigation}) => {
 
-  const [dropdown, setDropdown] = useState(null);
-  const [selected, setSelected] = useState([]);
+
   const [place,setPlace] = useState([])
   const [location,setLocation] = useState([])
-  const [info,setInfo] = useState([])
-  const [modalVisible,setModalVisible] = useState(false)
-  const [photo,setPhoto] = useState(["https://res.cloudinary.com/liwach/image/upload/v1630288666/b7alngy52u86tqep6iwp.png"]);
+  const [photo,setPhoto] = useState("https://res.cloudinary.com/liwach/image/upload/v1630910024/add_ujcczf.png");
   const [geometry, setGeometry] = useState([])
   const [category,setCategory] = useState([])
   const [swapTypes,setSwapTypes] = useState([])
   const [newSwap,setNewSwap] = useState([])
   const type = []
+  const imageList = []
   const imageActionRef = createRef()
- 
+  const multipleImageRef = createRef()
+  const [photoData,setPhotoData] = useState("")
+  const [TINphoto,setTINPhoto] = useState([]);
+  const [placeerror,setPlaceError] = useState("")
+  const [categoryerror,setCategoryError] = useState("")
+  const [swaperror,setSwapTypeError] = useState("")
+  const [message,setMessage] = useState("noimage")
+  const [showalert,setShowAlert] = useState(false)
+  const [alertMsg,setAlertMessage] = useState({msg:"",title:""})
+
   const [items, setItems] = useState([
     {label: 'Normal', value: 'normal'},
     {label: 'Premium', value: 'banana'},
     {label: 'Gold', value: 'gold'}
   ]);
+  function wait(ms) {
+    return new Promise(r => setTimeout(r, ms));
+  }
   
+  const uploadImage = (item) => {
+    try{
+      const photo_response =  cloudinaryUpload(photoData,item,"service")
+      // const image = {
+      //   "item_id": image.id,
+      //   "type": image.type,
+      //   "url": image.url
+      //  }
+      // const addImage = await uploadPicture()
+      if(photo_response.message=="successful"){
+        setShowAlert(true)
+        setAlertMessage({msg:'Item Uploaded Successfully',title:'Successful',color:colors.green})
+      }
+      console.log("item",JSON.stringify(photo_response))
+      return photo_response
+    }
+    catch(error){
+      setShowAlert(true)
+      setAlertMessage({msg:error.message,title:"Image Error",color:colors.green})
+    }
+   
+  }
   const add = async(values) => {
     //Get User ID
     const user = await fetchuser()
@@ -103,11 +138,11 @@ export const addServiceForm = ({navigation}) => {
         "city": place,
         "latitude": geometry[1],
         "longitude":geometry[0],
-        "type": "item"
+        "type": "service"
       },
       "type_id": category_id,
       "user_id": user.id,
-      "status": "unbartered"
+      "status": "open"
     }
 
     
@@ -221,23 +256,12 @@ export const addServiceForm = ({navigation}) => {
  
   return (
     <View style={styles.container}>
-       <View style={styles.modalContainer}>
-        <Modal
-        animationType="fade"
-        transparent={true}
-        visible={false}>
-        
-          <View style={{elevation:4,position:'absolute',top:'50%',left:'25%',width:200,height:100,alignItems:'center',justifyContent:'center', backgroundColor:colors.flord_intro2}}>
-            <Text>Touched!</Text>
-          </View>
-        </Modal>
-    </View>
+      
     <View style={styles.imageBox}>
     <Text style={styles.subtitle}> Add items to swap with the ones you need!</Text>
-    <Text style={styles.subtitle}> Let's get you started!</Text>
     </View>
-    <ImageActionSheet photo={photo} setPhoto={setPhoto} actionSheetRef={imageActionRef}/>
-  
+    <ImageActionSheet message={message} setMessage={setMessage} photoData={photoData} setPhotoData={setPhotoData} photo={photo} setPhoto={setPhoto} actionSheetRef={imageActionRef} />
+    <ButtonImageSheet imageList={imageList} photoData={photoData} setPhotoData={setPhotoData} photo={TINphoto} setPhoto={setTINPhoto} actionSheetRef={multipleImageRef}/>
     <Formik
       initialValues={{ 
         title: '',
@@ -247,15 +271,77 @@ export const addServiceForm = ({navigation}) => {
         swap: '',  
       }}
       onSubmit={
-        values => 
+       async (values) => 
          {
            const name = values.title
            const description = values.description
-           const response = addItem(
-            name, 
-            description, 
-            )
-           Alert.alert(JSON.stringify(response))
+           if(place==""){
+              setPlaceError("Please add your location.")
+           }
+           if(category==""){
+            setCategoryError("Please add your category.")
+         }
+            if(swapTypes==""){
+              setSwapTypeError("Please add your swap type.")
+          }
+              if(place!=""){
+                setPlaceError("")
+            }
+            if(category!=""){
+              setCategoryError("")
+          }
+              if(swapTypes!=""){
+                setSwapTypeError("")
+            }
+            if(message=="noimage"){
+                setShowAlert(true)
+                setAlertMessage({msg:"Please add atleast one image.",title:'Featured Image'})
+            }
+            if(place!=""&&category!=""&&swapTypes!=[]&&message!="noimage"&&name!=""&&description!=""){
+              const user = await fetchuser()
+              console.log("user",user)
+              //Get Category ID
+              const category_id = await getOneTypeByName(category)
+              // const itemType = category_id[0].id
+              // console.log("newswap",category_id[0].id) 
+              //Get Type ID
+              const source = swapTypes.map(async function(data, idx){
+                const uri = await getOneTypeByName(data);
+                type.push(uri)
+                setNewSwap(type)
+                console.log("Type in Add", JSON.stringify(type))
+            })
+              const item = {
+                "name": values.title,
+                "description":values.description,
+                "picture": "",
+                "swap_type": newSwap,
+                "address": {
+                  "country": place,
+                  "city": place,
+                  "latitude": geometry[1],
+                  "longitude":geometry[0],
+                  "type": "service"
+                },
+                "type_id": category_id,
+                "user_id": user.id,
+                "status": "open"
+              }
+             try{
+              const response =  uploadImage(item)
+            
+              console.log("response",JSON.stringify(response.message))
+              if(response.message=="successful"){
+                setShowAlert(true)
+                setAlertMessage({msg:'Image Uploaded Successfully',title:'Successful',color:colors.green})
+              }
+             }
+             catch(error){
+              setShowAlert(true)
+              setAlertMessage({msg:'Item didnt upload',title:'Error',color:colors.red})
+             }
+            
+            }   
           
           }
       }
@@ -265,16 +351,16 @@ export const addServiceForm = ({navigation}) => {
           .required('Please, provide your title!'),
         category: yup
           .string()
-          .required('Please, provide your category!'),
+         ,
         description: yup
           .string()
           .required('Please, provide your description!'),
         location: yup
           .string()
-          .required('Please, provide your location!'),
+          ,
         swap: yup
           .string()
-          .required('Please, provide your swap!'),
+          
       })}
      >
       {({ values, handleChange, errors, setFieldTouched, setFieldValue, touched, isValid, handleSubmit }) => (
@@ -301,9 +387,10 @@ export const addServiceForm = ({navigation}) => {
              <FlatListData list={location} onItemClick={itemClick} />
          
           
-          {touched.address && errors.address &&
-            <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{errors.address}</Text>
-          }
+        
+            <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{placeerror}</Text>
+            <TypeSeachBox value={category} setValue={setCategory}/> 
+          <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{categoryerror}</Text>
           <TextInput
             value={values.title}
             style={styles.inputStyle}
@@ -326,12 +413,14 @@ export const addServiceForm = ({navigation}) => {
           {touched.title && errors.title &&
             <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.description}</Text>
           } 
-          <TypeSeachBox value={category} setValue={setCategory}/> 
+        
+
           <SwapTypeDropBox value={swapTypes} setValue={setSwapTypes}/> 
-          
-         
+          <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{swaperror}</Text>
+
+          <AlertModal show={showalert} message={alertMsg} setShowAlert={setShowAlert}/>
             
-          <TouchableOpacity style={styles.button} onPress={()=>add(values)}>
+          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
                 <Text style={styles.text}>Submit</Text>
               </TouchableOpacity>
         </KeyboardAvoidingView>
@@ -346,7 +435,6 @@ export const addServiceForm = ({navigation}) => {
 
 const styles = StyleSheet.create({
   modalContainer:{
-    position: "absolute",
     top: 0,
     left: 0,
     width: 100,
@@ -366,10 +454,8 @@ const styles = StyleSheet.create({
   imageBox:{
     
     width:"100%",
-    height:100,
-    backgroundColor:colors.bottomNav,
-    borderWidth: 1,
-    borderColor:colors.bottomNav,
+    backgroundColor:"transparent",
+  
     borderBottomEndRadius: 70,
     borderBottomStartRadius: 70
   },
@@ -380,7 +466,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     borderRadius: 4,
     width:200,
-    backgroundColor:colors.flord_intro2,
+    backgroundColor:colors.water,
     alignSelf:"center",
     marginTop:20
   },
@@ -392,14 +478,15 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   formContainer: {
-    padding: 50 
+    paddingLeft:30,
+    paddingRight:30,
+     
   },
   inputStyle:{
-    marginBottom: 10,
+    marginTop:10,
     color:colors.flord_intro,
     
-    borderColor: colors.flord,
-    borderBottomWidth: 1,
+    backgroundColor:colors.light_grey,
     width:"100%",
   
     marginRight:4,
@@ -419,7 +506,7 @@ const styles = StyleSheet.create({
   },
   subtitle:{
     
-    top: 30,
+    top: 15,
     color: colors.flord,
     textAlign: 'center',
     fontSize: 20,
@@ -441,7 +528,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: "100%",
         alignContent:'center', 
-        backgroundColor: colors.background
+        backgroundColor: colors.white
     },
 
     imageView:{

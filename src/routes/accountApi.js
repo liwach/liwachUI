@@ -50,12 +50,12 @@ export const postUser = async(
                 "longitude":user.address.longitude,
                 "type": user.address.type
             },
-            "membership_id": 4
+            "membership_id": user.membership_id
           } 
       ) 
        
           console.log(params)
-          alert("Params"+params)
+        
           
       try {
         try {
@@ -75,7 +75,7 @@ export const postUser = async(
         }
       catch (error) {
         // Add custom logic to handle errors
-        alert("Data"+error)
+        alert(error.message)
 
       }
       } catch (error) {

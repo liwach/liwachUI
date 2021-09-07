@@ -20,7 +20,7 @@ export const fetchuser = async() =>{
 }
 
 export const saveUserToStorage = (name, data) => {
-  alert("data:"+data.first_name)
+  // alert("data:"+data.first_name)
   AsyncStorage.setItem(
     name,
     JSON.stringify({

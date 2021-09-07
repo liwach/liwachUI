@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
       alignContent:'center',
       alignItems:'center',
       justifyContent:'center',
-      backgroundColor: "#0a2239"
+      backgroundColor: colors.water
     },
     image:{
       width:300,
