@@ -1,0 +1,47 @@
+{
+    "project_info": {
+      "project_number": "52090137173",
+      "project_id": "liwach-a1ea1",
+      "storage_bucket": "liwach-a1ea1.appspot.com"
+    },
+    "client": [
+      {
+        "client_info": {
+          "mobilesdk_app_id": "1:52090137173:android:e79a530978a10af60802dc",
+          "android_client_info": {
+            "package_name": "com.liwach"
+          }
+        },
+        "oauth_client": [
+          {
+            "client_id": "52090137173-9baup82l3tsg2gruq1v9ei364nqfk9rj.apps.googleusercontent.com",
+            "client_type": 1,
+            "android_info": {
+              "package_name": "com.liwach",
+              "certificate_hash": "ecb523744e3caf0bb2c65591299fd06ec6757abf"
+            }
+          },
+          {
+            "client_id": "52090137173-r61klv0vgeill5ap326fmh4ia4ajtmb6.apps.googleusercontent.com",
+            "client_type": 3
+          }
+        ],
+        "api_key": [
+          {
+            "current_key": "AIzaSyAu6jOIQBV_0IVpH-LQawYbiCByhFM-XOQ"
+          }
+        ],
+        "services": {
+          "appinvite_service": {
+            "other_platform_oauth_client": [
+              {
+                "client_id": "52090137173-r61klv0vgeill5ap326fmh4ia4ajtmb6.apps.googleusercontent.com",
+                "client_type": 3
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "configuration_version": "1"
+  }

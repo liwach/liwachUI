@@ -73,6 +73,7 @@ export const ItemDetailScreen = ({route, navigation}) => {
              <View  style={styles.horizontal}>
                  <AntDesign name={'swap'} size={13} style={styles.iconDesc}/>
                  <Text style={{fontSize:16,color:colors.flord_intro2,marginRight:2,width:70}} >Swap with</Text>
+            
              <HorizontalFlatList  data={swapType}/>
              </View>
           
