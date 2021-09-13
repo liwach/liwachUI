@@ -7,22 +7,44 @@ import axios from "axios";
 import { GET_ONE_TYPE } from "../../../routes/urls";
 
 
-export const TypeSeachBox = ({value, setValue}) => {
+export const TypeSeachBox = ({value, setValue,type}) => {
     const [open, setOpen] = useState(false);
     // const [value, setValue] = useState(null);
     const [items,setItems] = useState([])
     const [types,setTypes] = useState(null)
     
     const fetchData = async () => {
-        const item_list = await getAllTypes()
-        const types = item_list.map(function(data, idx){
+       if(type=="item"){
+         console.log(type)
+        const item_list = await getAllTypes(type).then((data)=>{
+         
+          const types = data.data.map(function(data, idx){
             const name = data.name
+            const id = data.id
             return(
-             { label:name,value:name}
+             { label:name,value:id}
             )
             })
         // console.log("Item_list",types)
-        setItems(types)
+            setItems(types)
+        })
+       
+       }
+       if(type=="service"){
+        const item_list = await getAllTypes(type).then((data)=>{
+         
+          const types = data.data.map(function(data, idx){
+            const name = data.name
+            const id = data.id
+            return(
+             { label:name,value:id}
+            )
+            })
+        // console.log("Item_list",types)
+            setItems(types)
+        })
+       }
+     
     }
   
       useEffect(() => {

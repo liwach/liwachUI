@@ -10,7 +10,7 @@ export const ProfileDetail = ({src,user,barter,time}) => {
     return(
         
         <View style={[styles.horizontal,styles.container]}>
-        <Image style={styles.imageBox} source={src} />
+        <Image style={styles.imageBox} source={{uri:src}} />
 
             <View>
                 <Text style={styles.user}>{user}</Text>
@@ -32,9 +32,8 @@ export const ProfileDetail = ({src,user,barter,time}) => {
 const styles = StyleSheet.create({
 
         container:{
-            marginTop:20,
             marginBottom:30,
-            marginLeft:30
+           
         },
         horizontal:{
             
@@ -42,11 +41,9 @@ const styles = StyleSheet.create({
             
         },
         imageBox:{
-            borderRadius:50,
-            width:70,
-            height:70,
-            marginLeft:20,
-            marginRight:33,
+            
+            width:"100%",
+            height:200
         },
         user:{
             fontSize:16,

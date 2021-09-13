@@ -38,51 +38,75 @@ import PropTypes from "prop-types";
 
 import { Dropdown } from 'react-native-material-dropdown-v2-fixed';
 
-import { addItem, editItem } from '../../routes/itemsApi';
+import { addItem, deleteItem, editItem } from '../../routes/itemsApi';
 import { MAPBOX_KEY } from '../../utils/config';
 import AutocompletePlace from './components/SearchBox';
 import { CustomPicker } from '../../components/UI/CustomPicker';
 import { TypeSeachBox } from './components/TypeSearchBox';
-import { ImageActionSheet } from './components/ImageActionSheet';
+import { cloudinaryEditUpload, ImageActionSheet } from './components/ImageActionSheet';
 import { SwapTypeDropBox } from './components/SwapTypeDropBox';
 import { getLocation } from '../../routes/requestApi';
 import { getOneTypeByName } from '../../routes/TypeApi';
 import { fetchuser } from '../../utils/checkFirstTimeActions'
+import { AlertModal } from '../../components/UI/AlertModal';
 
+
+
+export const delItem = async(id) => {
+  console.log(id)
+  const [showalert,setShowAlert] = useState(false)
+  const [alertMsg,setAlertMessage] = useState({msg:"",title:"",color:""})
+  const response =  await deleteItem(id)
+  if(response.message=="successful"){
+    setShowAlert(true)
+    setAlertMessage({title:'Item',msg:'Item is Deleted',color:colors.straw})
+  }
+  return(
+    <AlertModal setShowAlert={setShowAlert} show={showalert} message={alertMsg}/>
+  )
+}
 export const editItemForm = ({route, navigation}) => {
 
-  const item = route.params.item
+  const {item} = route.params
+  console.log("item",item.picture)
   const [dropdown, setDropdown] = useState(null);
   const [selected, setSelected] = useState([]);
   const [place,setPlace] = useState([])
   const [location,setLocation] = useState([])
   const [info,setInfo] = useState([])
   const [modalVisible,setModalVisible] = useState(false)
-  const [photo,setPhoto] = useState(["https://res.cloudinary.com/liwach/image/upload/v1630288666/b7alngy52u86tqep6iwp.png"]);
+  const [photo,setPhoto] = useState("https://res.cloudinary.com/liwach/image/upload/v1630910024/add_ujcczf.png");
   const [geometry, setGeometry] = useState([])
   const [category,setCategory] = useState([])
   const [swapTypes,setSwapTypes] = useState([])
   const [newSwap,setNewSwap] = useState([])
   const [title,setTitle] = useState("")
   const [desc,setDesc] = useState("")
+  const [message,setMessage] = useState("noimage")
+  const [photoData,setPhotoData] = useState("")
+  const [TINphoto,setTINPhoto] = useState([]);
+  const [showalert,setShowAlert] = useState(false)
+  const [alertMsg,setAlertMessage] = useState({msg:"",title:""})
 
   const type = []
   const imageActionRef = createRef()
 
-  useEffect(()=>{
-    const picture_urls = item.media.map(function(data, idx){
-        const url = data.url
-       return(
-         url
-       )
-      });
+ 
 
-    const pic = picture_urls[0]
-    console.log("EDIT ITEM: ",pic,picture_urls)
+  useEffect(()=>{
+    // const picture_urls = item.media.map(function(data, idx){
+    //     const url = data.url
+    //    return(
+    //      url
+    //    )
+    //   });
+
+    const pic = item.picture
+    // console.log("EDIT ITEM: ",pic,picture_urls)
     setTitle(item.name)
-    setDesc(item.description)
-    setCategory(item.type.name)
-    setPlace(item.bartering_location.city)
+    setDesc(item.desc)
+    setCategory(item.category)
+    setPlace(item.location)
     if(pic!==""){
         setPhoto(pic)
     }
@@ -113,12 +137,13 @@ export const editItemForm = ({route, navigation}) => {
     //Get title
     //Get Desc
     //Get Address Geometry
+    const pic = item.picture
     const editedItem = {
-      "id":item.id,
+      "id": item.id,
       "name": title,
       "description":desc,
-      "media": picture_urls,
-      "swap_type": newSwap ,
+      "picture" : pic,
+      "swap_type":[],
       "address": {
         "country": place,
         "city": place,
@@ -131,13 +156,18 @@ export const editItemForm = ({route, navigation}) => {
       "status": item.status
     }
 
-    console.log("Item ",editedItem)
-    console.log("Item ",editedItem)
-    const response = await editItem(editedItem)
-    if(response!=null && response.message == "successful"){
-        alert("Item is edited.")
-        navigation.navigate("Home")
+    console.log("Item ",item.id)
+   try{
+    const response = await cloudinaryEditUpload(photoData,editedItem,"item",setShowAlert)
+    if(showalert){
+        console.log("item is edited")
+        navigation.navigate("Profile")
     }
+   }
+   catch(error){
+
+   }
+   
 
 }
 
@@ -243,8 +273,7 @@ export const editItemForm = ({route, navigation}) => {
     <View style={styles.container}>
       
   
-    <ImageActionSheet photo={photo} setPhoto={setPhoto} actionSheetRef={imageActionRef}/>
-  
+    <ImageActionSheet message={message} setMessage={setMessage} photoData={photoData} setPhotoData={setPhotoData} photo={photo} setPhoto={setPhoto} actionSheetRef={imageActionRef} />
     <Formik
       initialValues={{ 
         title: '',
@@ -268,20 +297,20 @@ export const editItemForm = ({route, navigation}) => {
       }
       validationSchema={yup.object().shape({
         title: yup
-          .string()
-          .required('Please, provide your title!'),
+          .string(),
+          // .required('Please, provide your title!'),
         category: yup
           .string()
           .required('Please, provide your category!'),
         description: yup
-          .string()
-          .required('Please, provide your description!'),
+          .string(),
+          // .required('Please, provide your description!'),
         location: yup
-          .string()
-          .required('Please, provide your location!'),
+          .string(),
+          // .required('Please, provide your location!'),
         swap: yup
           .string()
-          .required('Please, provide your swap!'),
+          // .required('Please, provide your swap!'),
       })}
      >
       {({ values, handleChange, errors, setFieldTouched, setFieldValue, touched, isValid, handleSubmit }) => (
@@ -338,12 +367,14 @@ export const editItemForm = ({route, navigation}) => {
           
          
             
-          <Pressable style={styles.button} onPress={()=>save(values)}>
+          <TouchableOpacity style={styles.button} onPress={()=>save(values)}>
                 <Text style={styles.text}>Save</Text>
-              </Pressable>
+              </TouchableOpacity>
         </KeyboardAvoidingView>
       )}
     </Formik>
+    <AlertModal show={showalert} setShowAlert={setShowAlert} message={message}/>
+
     </View>
   );
 
@@ -387,7 +418,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     borderRadius: 4,
     width:200,
-    backgroundColor:colors.flord_intro2,
+    backgroundColor:colors.water,
     alignSelf:"center",
     marginTop:20
   },
@@ -402,11 +433,10 @@ const styles = StyleSheet.create({
     padding: 50 
   },
   inputStyle:{
-    marginBottom: 10,
+    marginTop:10,
     color:colors.flord_intro,
     
-    borderColor: colors.flord,
-    borderBottomWidth: 1,
+    backgroundColor:colors.light_grey,
     width:"100%",
   
     marginRight:4,
@@ -448,7 +478,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: "100%",
         alignContent:'center', 
-        backgroundColor: colors.background
+        backgroundColor: colors.white
     },
 
     imageView:{

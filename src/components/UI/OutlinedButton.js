@@ -15,15 +15,15 @@ export const OutlinedButton = ({text}) => {
 const styles = StyleSheet.create({
 
     container:{
-        borderWidth:1,
+      
         borderRadius:20,
-        borderColor: colors.flord_intro2,
         minWidth: 80,
-        padding:2,
-        width: '20%',
+        padding:4,
+        width: '40%',
+        
         marginLeft:20,
         marginBottom:20,
-        backgroundColor: colors.flord_intro2
+        backgroundColor: colors.water
     },
     textContainer:{
         color: colors.white,

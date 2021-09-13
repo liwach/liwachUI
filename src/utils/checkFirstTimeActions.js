@@ -12,11 +12,22 @@ const saveDataToStorage = (name, data) => {
 };
 
 export const fetchuser = async() =>{
-  const user = await AsyncStorage.getItem("logged_user")
-  const current = JSON.parse(user)
-  const userData = current.data
-  
-  return userData
+ 
+ 
+
+    try {    
+      const value = await AsyncStorage.getItem('logged_user');
+          if (value !== null) { 
+           
+            // console.log("data format",JSON.parse(value))
+            return JSON.parse(value)
+          } 
+         }
+         
+    catch (error) { 
+      console.log(error.message)
+    }
+
 }
 
 export const saveUserToStorage = (name, data) => {

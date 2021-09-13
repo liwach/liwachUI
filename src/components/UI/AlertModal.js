@@ -4,7 +4,7 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import { colors } from '../../utils/colors';
 
-export const AlertModal = ({show,setShowAlert,message}) => {
+export const AlertModal = ({show,setShowAlert,message,navigation}) => {
 
  
 
@@ -39,6 +39,7 @@ export const AlertModal = ({show,setShowAlert,message}) => {
             hideAlert();
           }}
           onConfirmPressed={() => {
+          navigation.navigate(message.navTitle)
            hideAlert();
           }}
         />

@@ -128,7 +128,7 @@ export const ButtonImageSheet = ({imageList,actionSheetRef,photo,setPhoto,photoD
             // imageList.push({uri:source.uri})
             // setPhoto(imageList)
             setPhoto(photo => [...photo, {uri:source.uri} ])
-            setPhotoData(source)
+            setPhotoData(photoData => [...photoData,source])
             // cloudinaryUpload(source)
             
            });

@@ -2,6 +2,7 @@ import React from 'react'
 import axios from "axios";
 import { API_URL } from '../utils/config';
 import { GET_ONE_TYPE, GET_ALL_TYPES, GET_ALL_CATEGORY } from './urls';
+import { fetchuser } from '../utils/checkFirstTimeActions';
 
 
 export const getOneType = async ({id}) => {
@@ -31,7 +32,7 @@ export const getOneType = async ({id}) => {
     }
 }
 
-export const getOneTypeByName = async (name) => {
+export const getOneTypeByName =  async(name) => {
  
   const params = JSON.stringify({
       "name": name
@@ -39,18 +40,22 @@ export const getOneTypeByName = async (name) => {
       
   try {
     try {
-      const res = await axios.post(GET_ONE_TYPE, params,{
+      const response = await axios.post(GET_ONE_TYPE, params,{
           "headers": {
           "content-type": "application/json",
           },
           })
-      if (res.data) {
-        // alert(JSON.stringify( res.data[0]))
-        return res.data[0].id
         
-      } else {
-        console.log('Unable to fetch');
-      }
+            // console.log("addItem", JSON.stringify(data))
+            
+              // console.log(`Axios:${JSON.stringify(data.data.data)}`)
+            if(response.data){
+              return response.data[0].id
+            }
+              
+            
+        
+     
     }
   catch (error) {
     // Add custom logic to handle errors
@@ -65,12 +70,14 @@ export const getAllTypesByCategoryID = async (id) => {
   const params = JSON.stringify({
       "category_id": id
       });
+  // const token = await fetchuser().then((data)=>{return data.data.token})
       
   try {
     try {
       const res = await axios.post(GET_ONE_TYPE, params,{
           "headers": {
           "content-type": "application/json",
+          "Authorization":`Bearer ${token}`
           },
           })
       if (res.data) {
@@ -91,18 +98,28 @@ export const getAllTypesByCategoryID = async (id) => {
 
 
 
-export const getAllTypes = async () => {
-    
+export const getAllTypes = async (type) => {
+    const token = await fetchuser().then((data)=>{return data.data.token})
+    const params = JSON.stringify({
+      "used_for":type
+    })
     try {
         try {
-          const res = await axios.get(GET_ALL_TYPES);
-          if (res.data) {
-            const items = res.data.data
-            return items
-          } else {
-            console.log('Unable to fetch');
-          }
-        }
+          const response = await axios.post(GET_ONE_TYPE,params,{
+            "headers": {
+            "content-type": "application/json",
+            "Authorization":`Bearer ${token}`
+            }})
+            .then((data)=>{
+              console.log(`Axios type:${JSON.stringify(data.data)}`)
+              return {
+                message:"successful",
+                data: data.data
+              }
+            })
+              
+        return response  
+      }
       catch (error) {
         // Add custom logic to handle errors
       }

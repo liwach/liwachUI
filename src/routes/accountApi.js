@@ -58,7 +58,7 @@ export const postUser = async(
         
           
       try {
-        try {
+     
       
           const res = await axios.post(POST_USER, params,{
               "headers": {
@@ -66,21 +66,22 @@ export const postUser = async(
               },
               })
           if (res.data) {
-            console.log(`Axios:${JSON.stringify(res.data)}`)
-            alert("Data"+JSON.stringify(res.data))
-            return res.data
+            // console.log(`Axios:${JSON.stringify(res.data)}`)
+            // alert("Data"+JSON.stringify(res.data))
+            return {
+              message:"successful",
+              data:res.data
+            }
           } else {
             console.log('Unable to fetch');
           }
         }
+     
       catch (error) {
-        // Add custom logic to handle errors
-        alert(error.message)
-
-      }
-      } catch (error) {
-        console.log(error.message)
-        alert(error)
+        console.log(JSON.stringify(error.message))
+        return {
+          message:"fail"
+        }
       }
 }
 
@@ -103,7 +104,8 @@ export const login = async (email,password) => {
                 first_name: res.data.first_name,
                 last_name: res.data.last_name,
                 phone_number : res.data.phone_number,
-                email : res.data.email
+                email : res.data.email,
+                token: res.data.remember_token
             }
             // alert(`Message: ${user}`)
             return user

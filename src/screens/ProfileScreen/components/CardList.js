@@ -16,6 +16,8 @@ import { colors } from "../../../utils/colors";
 import { getAllItems, getItemsByUserID } from '../../../routes/itemsApi'
 import { fetchuser } from '../../../utils/checkFirstTimeActions'
 import { getServicesByUserID } from "../../../routes/serviceApi";
+import { addItemForm } from "../../ItemScreen";
+import { ItemFilter } from "./ItemFilter";
 
 
 const FlatListItem = ({ item, onPress, backgroundColor, textColor }) => (
@@ -25,18 +27,18 @@ const FlatListItem = ({ item, onPress, backgroundColor, textColor }) => (
         <TouchableOpacity style={[styles.item, backgroundColor]} onPress={onPress}>
             <View>           
               
-                 <UserAvatar size={80} src={item.media[0]} style={styles.imageBox}/>
+                 <Image  source={{uri:item.picture}} style={styles.imageBox}/>
             </View>
             <View>
                 <Text style={[styles.title, styles.text]}>{item.name}</Text>
-                {console.log("Category in item",item.category)}
+                {/* {console.log("Category in item",item.category)} */}
                 <Text style={[styles.category]}>{item.category}</Text>
                 <View style={styles.horizontal}>
                 <Text style={[styles.text]}>Swap with:</Text>
                 {item.swap_type.map((prop, key) => {
                     
                     return (
-                      <Text style={[styles.text]}> {prop.id},</Text>
+                      <Text style={[styles.text]}>{prop}</Text>
                     );
                   })}
                 </View>
@@ -54,23 +56,38 @@ export const CardList = ({item,navigation}) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [user,setUser] = useState([])
+  const [swapTypes,setSwapTypes] = useState([])
+  const[selectedValue,setSelectedValue] = useState("")
 
   const fetchData = async () => {
     // const items = await getAllItems()
-    const user = await fetchuser()
+    const user = await fetchuser().then((data)=>{return data})
+    console.log("From Profile",selectedValue)
     setUser(user)
-    const items = await getItemsByUserID(user.id)
-    const services = await getServicesByUserID(user.id)
-    // alert(JSON.stringify(services))
-    const final = []
-    const listItems = items.map(function(data, idx){
-        final.push(data)
-    });
-    const listServ = services.map(function(data, idx){
-      final.push(data)
-  });
-    setData(final);
-    setLoading(false);
+    setData([])
+    try{
+      if(selectedValue==""||selectedValue=="all"){
+        const items = await getItemsByUserID(user.data.id,user.data.token).then((resp)=>{
+          // console.log("Response",resp)
+          const listItems = resp.map(function(item, idx){
+            setData(data => [...data,item])
+          });
+        })
+        // const services = await getServicesByUserID(user.token).then((resp)=>{
+        //   const listServ = resp.map(function(data, idx){
+        //     final.push(data)
+        // });
+        // })
+        // alert(JSON.stringify(services))
+   
+        setLoading(false);
+      }
+    
+    }
+    catch(error){
+      console.log(error.message)
+    }
+   
     
   };
 
@@ -98,30 +115,15 @@ export const CardList = ({item,navigation}) => {
         const types = []
         if(item.bartering_location.type=="item"){
           const swap_types = item.item_swap_type.map(function(data, idx){
-            types.push( {
-              id: data.type_id,
-              
-            })
-            return(
-              {
-                id: data.type_id,
-                
-              }
-            )
+            // console.log("Swap_types",data)
+            types.push(data.type.name)
            });
         }
         if(item.bartering_location.type=="service"){
           const swap_types = item.service_swap_type.map(function(data, idx){
-            types.push( {
-              id: data.type_id,
-              
-            })
-            return(
-              {
-                id: data.type_id,
-                
-              }
-            )
+            // console.log("Swap_types",data)
+            // setSwapTypes(swapTypes => [...swapTypes,data])
+            types.push(data.type.name)
            });
         }
       
@@ -131,13 +133,15 @@ export const CardList = ({item,navigation}) => {
              url
            )
           });
- 
+         const main_pic = {uri: item.picture}
          const pic = picture_urls[0]
           const editItem = item.user.id===user.id?true:false
-          console.log(editItem)
+          // console.log(editItem)
           const singleItem = {
+            id: item.id,
             name: item.name,
             location:item.bartering_location.city,
+            picture:item.picture,
             media: picture_urls,
             category: item.type.name,
             time: item.created_at,
@@ -154,8 +158,8 @@ export const CardList = ({item,navigation}) => {
             item={singleItem}
             onPress={() => 
                 /* 1. Navigate to the Details route with params */
-                navigation.navigate('Post Detail Screen', {
-                  item:item,
+                navigation.navigate('PostDetail', {
+                  item:singleItem,
                   edit:editItem
                 })
             }
@@ -164,6 +168,8 @@ export const CardList = ({item,navigation}) => {
       }
 
     return(
+      <View>           
+         <ItemFilter value={selectedValue} setValue={setSelectedValue} filteredData={data} setFilteredData={setData}/>
         <ScrollView
                 refreshControl={
                   <RefreshControl
@@ -179,6 +185,7 @@ export const CardList = ({item,navigation}) => {
               
             />
        </ScrollView>
+       </View>
     )
 };
 
@@ -187,13 +194,13 @@ const styles = StyleSheet.create({
     container:{
         marginTop: StatusBar.currentHeight || 0, 
         margin:10,
-        backgroundColor:colors.background,
+        backgroundColor:colors.white,
        
        
     },
     item:{
         flexDirection: "row",
-        backgroundColor:colors.bottomNav,
+        backgroundColor:colors.white,
         color:colors.white,
         margin:5,
         padding:5,
@@ -224,9 +231,9 @@ const styles = StyleSheet.create({
         alignSelf:'center'
     },
     category:{
-        backgroundColor: colors.flord_intro2,
+        backgroundColor: colors.water,
         borderRadius: 20,
-        color: colors.flord_intro,
+        color: colors.white,
         textAlign: 'center',
         width: 80,
         padding:2,

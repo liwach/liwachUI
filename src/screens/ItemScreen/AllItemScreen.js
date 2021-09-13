@@ -2,7 +2,7 @@ import { fetchUpdateAsync } from 'expo-updates'
 import React, { useEffect,useState,createRef } from 'react'
 import { TouchableOpacity } from 'react-native';
 import { Text, View,SafeAreaView,FlatList, TouchableHighlight, StatusBar,StyleSheet,Image } from 'react-native'
-import { getAllItems } from '../../routes/itemsApi';
+import { getAllItem, getAllItems } from '../../routes/itemsApi';
 import { colors } from '../../utils/colors';
 import { CategoryList } from '../HomeScreen/component/FlatListItem';
 import { SwapActionSheet } from '../HomeScreen/component/SwapActionSheet';
@@ -15,7 +15,7 @@ import { LocationSearchBox } from './components/LocationSearchBox';
 export const AllItemScreen = ({navigation}) => {
     const [data, setData] = useState([]);
     const fetchData = async() => {
-        const items = await getAllItems()
+        const items = await getAllItem()
         setData(items)
         console.log(items)
     }
@@ -107,7 +107,9 @@ const FlatListItem = ({actionRef,onPress, item,navigation }) => (
           <SwapActionSheet 
                      onPress={onPress}
                      item={item} 
-                     actionSheetRef={actionRef}/>
+                     actionSheetRef={actionRef}
+                     type="item"
+                     />
               
     </View>
 

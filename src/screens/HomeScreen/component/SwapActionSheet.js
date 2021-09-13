@@ -12,10 +12,10 @@ import { SendButton } from "./BottomSheet";
 import { fetchuser } from "../../../utils/checkFirstTimeActions";
 
 
-export const SwapSheet = ({item,actionSheetRef}) => {
+export const SwapSheet = ({item,actionSheetRef,type}) => {
     const [value, setValue] = useState(null);
    
-    console.log("Selected value: ",value)
+    // console.log("Selected value: ",value)
    return( 
     <ScrollView style={styles.actionSheetContainer} >
    <ActionSheet ref={actionSheetRef} containerStyle={styles.actionsheet}>
@@ -42,7 +42,7 @@ export const SwapSheet = ({item,actionSheetRef}) => {
                 
             </View>
             <View style={{width:150,height:"100%",margin:10}} >
-                    <ItemPicker value={value} setValue={setValue}/>
+                    <ItemPicker value={value} setValue={setValue} type={type}/>
             </View>
         </View>
         <SendButton selectedValue={value} item={item}/>
@@ -55,12 +55,12 @@ export const SwapSheet = ({item,actionSheetRef}) => {
 } 
 
 
-export const SwapActionSheet = ({actionSheetRef,item,onPress}) => {
+export const SwapActionSheet = ({actionSheetRef,item,onPress,type}) => {
   let actionSheet;
   const [isVisible,setVisible] = useState(false)
   const fetchData = async() => {
-      const user = await fetchuser()
-      console.log("itemmmmmm",JSON.stringify(item))
+    const user = await fetchuser().then((data)=>{return data.data})
+    //   console.log("itemmmmmm",JSON.stringify(item))
       if(user.id !== item.user_id){
           setVisible(true)
       }
@@ -71,10 +71,10 @@ export const SwapActionSheet = ({actionSheetRef,item,onPress}) => {
   const onChangeHandler = (value) => {
     selectedId(value);
     
-    console.log(`Selected value: ${id}`);
+    // console.log(`Selected value: ${id}`);
   }
 
-  console.log("Swap Action",item.name)
+//   console.log("Swap Action",item.name)
 
 
 const [id,selectedId] = useState("");
@@ -91,7 +91,7 @@ const [id,selectedId] = useState("");
        <Text  style={styles.textContainer} >Swap</Text>
           <Ionicons style={styles.iconContainer}  name={'swap-horizontal'} size={20}/>
           </TouchableOpacity>
-          <SwapSheet actionSheetRef={actionSheetRef} item={item}/>
+          <SwapSheet actionSheetRef={actionSheetRef} item={item} type={type}/>
           </View>:<View/>}
           </View>
       )

@@ -2,7 +2,7 @@ import { fetchUpdateAsync } from 'expo-updates'
 import React, { useEffect,useState,createRef } from 'react'
 import { Text, View,SafeAreaView,FlatList, TouchableHighlight, StatusBar,StyleSheet,Image } from 'react-native'
 import { getAllItems } from '../../routes/itemsApi';
-import { getAllServices } from '../../routes/serviceApi';
+import { getAllService, getAllServices } from '../../routes/serviceApi';
 import { colors } from '../../utils/colors';
 import { CategoryList } from '../HomeScreen/component/FlatListItem';
 import { SwapActionSheet } from '../HomeScreen/component/SwapActionSheet';
@@ -15,7 +15,7 @@ export const AllServiceScreen = ({navigation}) => {
     const [data, setData] = useState([]);
     const fetchData = async() => {
         try{
-            const items = await getAllServices()
+            const items = await getAllService()
             setData(items)
             console.log(items)
         }

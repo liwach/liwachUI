@@ -5,25 +5,31 @@ import { getItemsByUserID } from "../../../routes/itemsApi";
 import { fetchuser } from "../../../utils/checkFirstTimeActions";
 import { colors } from "../../../utils/colors";
 
-export const ItemPicker = ({value, setValue}) => {
+export const ItemPicker = ({value, setValue,type}) => {
     const [open, setOpen] = useState(false);
     const [items,setItems] = useState([])
 
     const fetchItems = async() => {
-        const user = await fetchuser()
-        const items = await getItemsByUserID(user.id)
-        const listItems = items.map(function(data, idx){
-          const name = data.name
-         return(
-           {
-            label:name,
-            value:name
-           }
- 
-         )
-        });
-        console.log("list",listItems)
-        setItems(listItems)
+        if(type=="item"){
+          
+          const items = await getItemsByUserID()
+          .then((data)=>{
+            const listItems = data.map(function(data, idx){
+              const name = data.name
+             return(
+               {
+                label:name,
+                value:name
+               }
+     
+             )
+            });
+           
+            setItems(listItems)
+          })
+         
+        }
+        
     }
 
     useEffect(()=>{

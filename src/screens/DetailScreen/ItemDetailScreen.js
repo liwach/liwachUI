@@ -16,24 +16,24 @@ import { VerticalFlatList } from './components/VerticalFlatList'
 
 export const ItemDetailScreen = ({route, navigation}) => {
     const { item} = route.params;
+    console.log("url",item.picture)
     const [data, setData] = useState([]);
     const [swapType, setSwapType] = useState([]);
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState([])
     const [isVisible,setVisible] = useState(false)
   
-
+    
      const pic = item.picture
     const fetchData = async () => {
     //   const items = await getAllItems()
-      const user = await fetchuser()
-      setUser(user)
+     
       const swapTypes = []
       
       setData(item[0]);
     //   console.log(`Detail swap ${item.swap_type}`)
-      
-    const types =  item.item_swap_type.map(function(types, idx){
+    try{
+        const types =  item.item_swap_type.map(function(types, idx){
             const type =  types.type
             swapTypes.push(type.name)
            });
@@ -43,8 +43,12 @@ export const ItemDetailScreen = ({route, navigation}) => {
          setVisible(false)
      }
       setLoading(false);
-    };
+    }
     
+    catch(error){
+        console.log("Something is wrong")
+    }
+}
     useEffect(() => {
       fetchData();
     }, []);
@@ -56,6 +60,8 @@ export const ItemDetailScreen = ({route, navigation}) => {
     }
     return(
         <ScrollView>
+            <ProfileDetail src={pic} user={item.user} barter={item.number_of_request} time={item.time}/>
+
              <View>
                  <View style={styles.horizontal}>
                      <Text style={styles.header}>{item.name}</Text>
@@ -64,7 +70,6 @@ export const ItemDetailScreen = ({route, navigation}) => {
                  </View>
                  <OutlinedButton text={item.category}/>
              </View>
-             <ProfileDetail src={pic} user={item.user} barter={item.number_of_request} time={item.time}/>
              <View  style={styles.horizontal}>
                  <FontAwesome name={'bars'} size={13} style={styles.iconDesc}/>
                  <Text style={{fontSize:16,color:colors.flord_intro2}} >Description</Text>
@@ -74,7 +79,7 @@ export const ItemDetailScreen = ({route, navigation}) => {
                  <AntDesign name={'swap'} size={13} style={styles.iconDesc}/>
                  <Text style={{fontSize:16,color:colors.flord_intro2,marginRight:2,width:70}} >Swap with</Text>
             
-             <HorizontalFlatList  data={swapType}/>
+             <HorizontalFlatList  data={item.swap_type}/>
              </View>
           
               {!isVisible?<View></View> 
@@ -140,19 +145,19 @@ const styles = StyleSheet.create({
     },
     button:{
         borderWidth:1,
-        backgroundColor: colors.flord_secondary,
+        backgroundColor: colors.water,
         width:150,
         color:colors.white,
         alignSelf:'center'
     },
     icon:{
         marginTop:7,
-        color:colors.flord_intro
+        color:colors.water
     },
 
     iconDesc:{
         marginTop:4,
-        color:colors.flord_intro,
+        color:colors.water,
         marginRight:3
     }
 

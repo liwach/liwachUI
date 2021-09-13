@@ -1,16 +1,15 @@
 import React from 'react'
 import axios from "axios";
 import { API_URL } from '../utils/config';
-import { POST_ITEM, getOneItem, EDIT_ITEM, GET_ALL_SERVICES_BY_PARAMETER, POST_SERVICE } from './urls';
+import {GET_ALL_SERVICES, POST_ITEM, getOneItem, EDIT_ITEM, GET_ALL_SERVICES_BY_PARAMETER, POST_SERVICE } from './urls';
 
-export const getServicesByUserID = async(id) => {
 
-  const params = JSON.stringify({
+
+
+
+export const getServicesByUserID = async(token) => {
+
   
-    "user_id": id,
-    
-    "status": "open"
-      });
       
   try {
     try {
@@ -18,6 +17,7 @@ export const getServicesByUserID = async(id) => {
       const res = await axios.post(GET_ALL_SERVICES_BY_PARAMETER, params,{
           "headers": {
           "content-type": "application/json",
+          "Authorization":`Bearer ${token}`
           },
           })
       if (res.data) {
@@ -130,6 +130,26 @@ export const getAllServices = async () => {
           })
         if (res.data) {
           const items = res.data
+          return items
+        } else {
+          console.log('Unable to fetch');
+        }
+      }
+    catch (error) {
+      // Add custom logic to handle errors
+    }
+    } catch (error) {
+      console.log(error.message)
+    }
+}
+
+export const getAllService = async () => {
+ 
+    try {
+      try {
+        const res = await axios.get(GET_ALL_SERVICES)
+        if (res.data) {
+          const items = res.data.data
           return items
         } else {
           console.log('Unable to fetch');

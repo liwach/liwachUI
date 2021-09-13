@@ -11,11 +11,29 @@ import axios from "axios";
 import FormData from "form-data"
 import { addService } from "../../../routes/serviceApi";
 import { AlertModal } from "../../../components/UI/AlertModal";
-import { addItem } from "../../../routes/itemsApi";
+import { addItem, editItem } from "../../../routes/itemsApi";
 
-export const cloudinaryUpload =  async(photo,item,type) => {
+export const cloudinaryAddUpload =  async(photo) => {
  
   console.log("cloundinary",photo)
+  const data = new FormData()
+  data.append('file', photo)
+  data.append('upload_preset', 'liwach')
+  const response =  await fetch("https://api.cloudinary.com/v1_1/liwach/image/upload", {
+    method: "post",
+    body: data
+  }).then(res => res.json()).
+        then((data) =>{
+            console.log(data.secure_url)
+            return data.secure_url
+        })
+    return response
+}
+
+export const cloudinaryEditUpload =  async(photo,item,type,setShowAlert) => {
+ 
+  console.log("cloundinary",photo)
+  console.log("cloundinary",item.id)
   const data = new FormData()
   data.append('file', photo)
   data.append('upload_preset', 'liwach')
@@ -25,6 +43,7 @@ export const cloudinaryUpload =  async(photo,item,type) => {
   }).then(res => res.json()).
     then(async(data) => {
       const final = {
+        "id":item.id,
         "name": item.name,
         "description":item.description,
         "picture": data.secure_url,
@@ -41,23 +60,14 @@ export const cloudinaryUpload =  async(photo,item,type) => {
         "status": item.status
       }
       console.log(final)
-      if(type=="service"){
-        const response = await addService(final)
-        if(response!=null && response.message == "successful"){
-        console.log("cloundinary resp",JSON.stringify(response))
-        return {
-          "message":"successful",
-          "data":response
-        } 
-      }
-      }
+    
       if(type=="item"){
-        const response = await addItem(final)
+        const response = await editItem(final,item.id)
         if(response!=null && response.message == "successful"){
         console.log("cloundinary resp",JSON.stringify(response))
+        setShowAlert(true)
         return {
-          "message":"successful",
-          "data":response
+          "message":"successful"     
         } 
       }
       }

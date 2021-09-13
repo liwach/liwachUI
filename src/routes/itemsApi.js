@@ -1,7 +1,8 @@
 import React from 'react'
 import axios from "axios";
 import { API_URL } from '../utils/config';
-import { POST_ITEM, getOneItem, EDIT_ITEM } from './urls';
+import { POST_ITEM, getOneItem,getAllItems, EDIT_ITEM } from './urls';
+import { fetchuser } from '../utils/checkFirstTimeActions';
 
 export const getItemsById= async(id) => {
 
@@ -69,64 +70,50 @@ export const getItemsByName= async(name) => {
 
 }
 
-export const getAllItems = async () => {
-  const params = JSON.stringify({
-  
-    "status": "open"
-    
-      });
+export const getAllItem = async () => {
+ 
       
-    try {
+ 
       try {
-        const res = await axios.post(`${API_URL}/item/search`, params,{
-          "headers": {
-          "content-type": "application/json",
-          },
-          })
+        const res = await axios.get(getAllItems)
         if (res.data) {
-          const items = res.data
-          console.log(items)
+          const items = res.data.data
+          // console.log("Items in api",items)
           return items
         } else {
           console.log('Unable to fetch');
         }
       }
-    catch (error) {
-      // Add custom logic to handle errors
-    }
-    } catch (error) {
+   
+  catch (error) {
       console.log(error.message)
     }
 }
 
 export const getItemsByUserID = async(id) => {
-
+  console.log("From Item",id)
+  const user = await fetchuser().then((data)=>{return data.data})
   const params = JSON.stringify({
-  
-    "user_id": id,
-    
-    "status": "open"
+    "user_id": user.id
       });
       
   try {
-    try {
+   
   
       const res = await axios.post(getOneItem, params,{
           "headers": {
           "content-type": "application/json",
-          },
+          "Authorization":`Bearer ${user.token}`
+          }
+          }).then((data)=>{
+            // console.log("From Item",JSON.stringify(data.data.data))
+            return data.data.data
           })
-      if (res.data) {
-        console.log(`Axios:${JSON.stringify(res.data)}`)
-        // alert(res.data)
-        return res.data
-      } else {
-        console.log('Unable to fetch');
-      }
-    }
-  catch (error) {
-    // Add custom logic to handle errors
-  }
+
+      return res
+      
+     
+   
   } catch (error) {
     console.log(error.message)
   }
@@ -135,7 +122,7 @@ export const getItemsByUserID = async(id) => {
 }
 
 export const getItemsByType = async(type,id) => {
-  
+  const user = await fetchuser().then((data)=>{return data.data})
   const params = JSON.stringify({
     "type_id": type
       });
@@ -147,15 +134,12 @@ export const getItemsByType = async(type,id) => {
       const res = await axios.post(getOneItem, params,{
           "headers": {
           "content-type": "application/json",
+          "Authorization":`Bearer ${user.token}`
           },
+          }).then((data)=>{
+             console.log(JSON.stringify(data.data))
           })
-      if (res.data) {
-        console.log(`Axios:${JSON.stringify(res.data)}`)
-        // alert(res.data)
-        return res.data
-      } else {
-        console.log('Unable to fetch');
-      }
+     
     }
   catch (error) {
     // Add custom logic to handle errors
@@ -169,11 +153,11 @@ export const getItemsByType = async(type,id) => {
 
 
 
-export const getItemsByStatus = async(id,status) => {
-
+export const getItemsByStatus = async(status) => {
+  const user = await fetchuser().then((data)=>{return data.data})
   const params = JSON.stringify({
   
-    "user_id": id,
+    "user_id": user.id,
     
     "status": status
       });
@@ -184,15 +168,13 @@ export const getItemsByStatus = async(id,status) => {
       const res = await axios.post(getOneItem, params,{
           "headers": {
           "content-type": "application/json",
+          "Authorization":`Bearer ${user.token}`
           },
-          })
-      if (res.data) {
-        console.log(`Axios:${JSON.stringify(res.data)}`)
-        // alert(res.data)
-        return res.data
-      } else {
-        console.log('Unable to fetch');
-      }
+          }).then((data)=>{
+            // console.log(JSON.stringify(data.data))
+            return data.data.data
+         })
+         return res
     }
   catch (error) {
     // Add custom logic to handle errors
@@ -204,12 +186,13 @@ export const getItemsByStatus = async(id,status) => {
 
 }
 
-export const addItem = async(item) => {
-    
+export const addItem = async(item,token) => {
+  console.log("Cool items",item)
   const params = JSON.stringify({
       "name": item.name,
       "description":item.description,
       "picture": item.picture,
+      "media":[],
       "swap_type": item.swap_type,
       "address": {
         "country": item.address.country,
@@ -222,64 +205,39 @@ export const addItem = async(item) => {
       "user_id": item.user_id,
       "status": item.status
       });
-        
+      console.log(item)
+      console.log(params)
       try {
-        try {
+        
       
-          const res = await axios.post(POST_ITEM, params,{
+           const response = await axios.post(POST_ITEM, params,{
               "headers": {
               "content-type": "application/json",
+              "Authorization":`Bearer ${token}`
               },
+              }).then((data)=>{
+                console.log(`Axios Add item:${JSON.stringify(data.data.data)}`)
+                return {
+                  message:"successful",
+                  data: data.data.data
+                }
               })
-          if (res.data) {
-            console.log(`Axios:${JSON.stringify(res.data)}`)
-            return {
-              message:"successful",
-              data: res.data
-            }
-          } else {
-            console.log('Unable to fetch');
-          }
-        }
-      catch (error) {
-        // Add custom logic to handle errors
+                
+          return response    
+         
       }
-      } catch (error) {
-        console.log(error.message)
+     catch (error) {
+        console.log("error",error.message)
       }
 }
 
 export const editItem = async(item) => {
-  // {
-  //   "name": "edited car",
-  //   "description": "Car is machine used to....",
-  //   "media": [
-  //     "url link",
-  //     "url link"
-  //   ],
-  //   "swap_type": [
-  //     1,
-  //     3,
-  //     2,
-  //     4
-  //   ],
-  //   "address": {
-  //     "country": "Ethiopia",
-  //     "city": "Addis Ababa",
-  //     "latitude": 3.444,
-  //     "longitude": 3.444,
-  //     "type": "user, item, service"
-  //   },
-  //   "type_id": 4,
-  //   "user_id": 43,
-  //   "status": "unbartered"
-  // }
   console.log("IDDD item",item.id)
   const body = JSON.stringify({
     "name": item.name,
     "description":item.description,
-    "media": item.picture,
-    "swap_type": item.swap_type,
+    "picture": item.picture,
+    // "swap_type": item.swap_type,
     "address": {
       "country": item.country,
       "city": item.city,
@@ -295,11 +253,7 @@ export const editItem = async(item) => {
   try {
     try {
       
-      const res = await axios.put(`${EDIT_ITEM}/${item.id}`, body,{
-          "headers": {
-          "content-type": "application/json",
-          },
-          })
+      const res = await axios.put(`${EDIT_ITEM}/${item.id}`)
       if (res.data) {
         console.log(`Axios:${JSON.stringify(res.data)}`)
         return {
@@ -307,6 +261,36 @@ export const editItem = async(item) => {
           data: res.data
         }
       } else {
+        console.log('Unable to fetch');
+      }
+    }
+  catch (error) {
+    console.log(error.message)
+  }
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+export const deleteItem = async(id) => {
+ 
+      console.log(id)
+  try {
+    try {
+      
+      const res = await axios.delete(`${EDIT_ITEM}/${id}`,{
+          "headers": {
+          "content-type": "application/json",
+          },
+          })
+
+      if (res.status==204) {
+        console.log(`Axios:${JSON.stringify(res)}`)
+        return {
+          message:"successful"
+        }
+      } 
+      else {
         console.log('Unable to fetch');
       }
     }

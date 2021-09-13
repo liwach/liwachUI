@@ -63,7 +63,7 @@ export const AuthenticationPage = ({navigation}) => {
             await saveUserToStorage("logged_user",response)
             setShow(true)
             setMessage("You have logged in!")
-            navigation.navigate('HomeStackScreen', {
+            navigation.navigate('HomeAuthScreen', {
                 user:response
               })
           }

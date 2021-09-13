@@ -7,22 +7,43 @@ import axios from "axios";
 import { GET_ONE_TYPE } from "../../../routes/urls";
 
 
-export const SwapTypeDropBox = ({value,setValue}) => {
+export const SwapTypeDropBox = ({value,setValue,type}) => {
     const [open, setOpen] = useState(false);
     // const [value, setValue] = useState(null);
     const [items,setItems] = useState([])
     const [types,setTypes] = useState(null)
     
     const fetchData = async () => {
-        const item_list = await getAllTypes()
-        const types = item_list.map(function(data, idx){
-            const name = data.name
-            return(
-             { label:name,value:name}
-            )
-            })
-        // console.log("Item_list",types)
-        setItems(types)
+      if(type=="item"){
+        console.log("Type in swap type",type)
+       const item_list = await getAllTypes(type).then((data)=>{
+        
+         const types = data.data.map(function(data, idx){
+           const name = data.name
+           const id = data.id
+           return(
+            { label:name,value:id}
+           )
+           })
+       // console.log("Item_list",types)
+           setItems(types)
+       })
+      
+      }
+      if(type=="service"){
+       const item_list = await getAllTypes(type).then((data)=>{
+        
+         const types = data.data.map(function(data, idx){
+           const name = data.name
+           const id = data.id
+           return(
+            { label:name,value:id}
+           )
+           })
+       // console.log("Item_list",types)
+           setItems(types)
+       })
+      }
     }
   
       useEffect(() => {
@@ -51,8 +72,8 @@ export const SwapTypeDropBox = ({value,setValue}) => {
             borderRightWidth:0
           }}
           badgeTextStyle={{color:colors.white, }}
-          badgeColors={[colors.flord_intro2,colors.flord_intro2]}
-          badgeDotColors={[colors.flord_intro]}
+          badgeColors={[colors.water,colors.water]}
+          badgeDotColors={[colors.white]}
           badgeStyle={{width:100}}
        
         searchablePlaceholder="Search..."
@@ -105,9 +126,9 @@ export const SwapTypeDropBox = ({value,setValue}) => {
         dropDownContainerStyle={
             {
                marginRight:20,
-               backgroundColor:colors.bottomNav,
+               backgroundColor:colors.light_grey,
                borderWidth:0.5,
-               borderColor:colors.bottomNav
+               borderColor:colors.light_grey
               
             }
         }

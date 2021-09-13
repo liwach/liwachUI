@@ -18,11 +18,11 @@ import { SwapButton } from "./SwapButton";
 import { useSelector, useDispatch } from 'react-redux';
 import { SelectAllItems } from "../../../reducers/items/itemReducer";
 import { getItems, selectAllItems } from "../../../redux/itemSlice";
-import { getAllItems } from "../../../routes/itemsApi";
+import { getAllItem, getAllItems } from "../../../routes/itemsApi";
 import Entypo from "react-native-vector-icons/Entypo";
 import { SwapActionSheet } from "./SwapActionSheet";
 import UserAvatar from "@muhzi/react-native-user-avatar";
-import { getAllServices } from "../../../routes/serviceApi";
+import { getAllService, getAllServices } from "../../../routes/serviceApi";
 
 const wait = (timeout) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
@@ -35,7 +35,7 @@ const onPressHandler = () => {
 const FlatListItem = ({actionRef, navigation, item, onPress, backgroundColor, textColor }) => (
 
         <View style={[styles.cardContainer,backgroundColor]}> 
-            {console.log("FlatList",item.picture)}
+            {/* {console.log("FlatList",item.picture)} */}
             <Image source={item.picture} style={{width:150,height:150,borderRadius:20}} />
             <View   >
               
@@ -72,8 +72,9 @@ export const Section = ({navigation,item,type},onPressHandler) => {
     const [loading, setLoading] = useState(true);
   
     const fetchData = async () => {
-      const items = await getAllItems()
-      const services = await getAllServices()
+      const items = await getAllItem()
+      // console.log("Items",items)
+      const services = await getAllService()
       if(type=="item"){
         setData(items);
       }
@@ -89,7 +90,7 @@ export const Section = ({navigation,item,type},onPressHandler) => {
     }, []);
  
     const renderItem = ({ item }) => {
-        console.log(`RenderItem: ${item}`)
+        // console.log(`RenderItem: ${item}`)
         const SwapActionRef = createRef()
 
         const swap_types = type=="item"? item.item_swap_type.map(function(data, idx){

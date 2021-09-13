@@ -45,6 +45,9 @@ import { OrganizationSecond } from '../screens/SignUpScreen/OrganizationSecond';
 import { AllItemScreen } from '../screens/ItemScreen/AllItemScreen';
 import { AllServiceScreen } from '../screens/ItemScreen/AllServiceScreen';
 import { LocationSearchBox } from '../screens/ItemScreen/components/LocationSearchBox';
+import { phoneSignin } from '../utils/phoneAuth';
+import { deleteItem } from '../routes/itemsApi';
+import { AlertModal } from '../components/UI/AlertModal';
 
 
 const ProductStack = createStackNavigator();
@@ -111,10 +114,10 @@ export const RequestScreenStack = () => {
         <RequestStack.Screen
         
         options={({route, navigation}) => ({
-          headerShown:false
+          headerShown:true
          })}
          name="RequestScreen"
-         component={RequestScreen}
+         component={phoneSignin}
         
         />
     
@@ -369,6 +372,16 @@ export const AccountStackScreen = () => {
         name="AuthScreen"
         component={AuthenticationPage}
       />
+        <AccountStack.Screen
+        options={({route, navigation}) => ({
+          headerShown: false,
+          title: 'Home',
+          headerStyle: {backgroundColor: colors.flord_intro},
+          headerTitleStyle: {color: colors.flord_secondary, alignSelf: 'center'},
+        })}
+        name="HomeAuthScreen"
+        component={HomeStackScreen}
+      />
        <SignupStack.Screen
           
           options={({route, navigation}) => ({
@@ -493,6 +506,14 @@ export const HomeStackScreen = () => {
         component={HomeScreen}
       />
       <HomeStack.Screen name="Detail Screen" component={DetailScreen} />
+      <HomeStack.Screen 
+      name="Profile" 
+      component={ProfileStackScreen}
+      options={({route, navigation}) => ({
+      headerShown:false,
+      })}
+      />
+
       <HomeStack.Screen
         name="Single Item"
         options={({route, navigation}) => ({
@@ -751,7 +772,8 @@ export const HomeStackScreen = () => {
 export const ProfileStackScreen = () => {
   const [openEdit,setOpenEdit] = useState(false)
   const [openAlert,setOpenAlert] = useState(false)
- 
+  const [showalert,setShowAlert] = useState(false)
+  const [alertMsg,setAlertMessage] = useState({msg:"",title:""})
 
   const showAlert = () =>
   alert(
@@ -778,8 +800,8 @@ export const ProfileStackScreen = () => {
       screenOptions={{
         headerShown: true,
         gestureEnabled: true,
-        headerStyle: {backgroundColor: colors.flord_intro2,elevation:0},
-        headerTitleStyle: {color: colors.flord_intro, alignSelf: 'center'},
+        headerStyle: {backgroundColor: colors.water,elevation:0},
+        headerTitleStyle: {color: colors.white, alignSelf: 'center'},
 
         headerRight: props => (
           <AntDesign
@@ -810,7 +832,7 @@ export const ProfileStackScreen = () => {
       />
       <ProfileStack.Screen
       
-        name="Post Detail Screen"
+        name="PostDetail"
         options={({route, navigation}) => ({
           title: route.params.item.name,
           headerTitleStyle:{color:colors.white,textAlign:"center"},
@@ -822,9 +844,21 @@ export const ProfileStackScreen = () => {
               <View style={{flexDirection:'row'}}>
                 {openEdit!=true?
                   <AntDesign
-                onPress={showAlert}
+                onPress={
+                  async()=>
+                  {
+                 
+                   const resp = await deleteItem(route.params.item.id)
+                   console.log(JSON.stringify(resp))
+                   setShowAlert(true)
+                   setAlertMessage({title:"Item Deleted",msg:`${route.params.item.name} is deleted`})
+                   return(
+                    resp.message=="successful"? <AlertModal show={showalert} setShowAlert={setShowAlert} message={alertMsg}/>:<View></View>
+                   )
+                  }
+                }
                 style={{marginRight:10}}
-                color={colors.flord_intro}
+                color={colors.white}
                 name="delete"
                 size={25}
               />:<View></View>}
@@ -857,7 +891,7 @@ export const ProfileStackScreen = () => {
               <View>
                 {openEdit!=true?
                    <HeaderBackButton
-                   tintColor={colors.flord_secondary}
+                   tintColor={colors.white}
                    onPress={() => navigation.goBack()}
                  />:<View></View>
                 }

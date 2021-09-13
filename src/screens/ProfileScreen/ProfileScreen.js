@@ -11,32 +11,8 @@ import { colors } from '../../utils/colors';
 
 const Tab = createMaterialTopTabNavigator();
 
-export const ProfileScreen = () => {
+export const ProfileScreen = ({navigation}) => {
   return (
-    <Tab.Navigator
-      initialRouteName="Posts"
-      tabBarOptions={{
-        activeTintColor: colors.white,
-        
-        labelStyle: { fontSize: 12 },
-        style: { backgroundColor: colors.flord_intro2,elevation:0 },
-      }}
-    >
-      <Tab.Screen
-        name="Posts"
-        component={PostScreen}
-        options={{ tabBarLabel: 'Posts',  }}
-      />
-      <Tab.Screen
-        name="Requests"
-        component={RequestScreen}
-        options={{ tabBarLabel: 'Requests' }}
-      />
-      <Tab.Screen
-        name="Exchanges"
-        component={ExchangeScreen}
-        options={{ tabBarLabel: 'Exchanges' }}
-      />
-    </Tab.Navigator>
+     <PostScreen navigation={navigation}/>
   );
 }

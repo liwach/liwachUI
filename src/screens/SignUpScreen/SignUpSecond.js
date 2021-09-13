@@ -47,11 +47,12 @@ import { SearchList } from './components/SearchFlatList';
 import DatePicker from 'react-native-datepicker'
 import { CustomPicker } from './components/CustomPicker';
 import { SearchBar } from 'react-native-elements';
-import { cloudinaryUpload, ImageActionSheet } from '../ItemScreen/components/ImageActionSheet';
+import { cloudinaryAddUpload, cloudinaryUpload, ImageActionSheet } from '../ItemScreen/components/ImageActionSheet';
 import { ToastAndroid } from 'react-native';
 import  {getAllMembership} from '../../routes/membershipAPI'
 import { postUser } from '../../routes/accountApi';
 import { uploadPicture } from '../../routes/utilApi';
+import { AlertModal } from '../../components/UI/AlertModal';
 
 export const SignUpSecond = ({route, navigation}) => {
   const { item} = route.params;
@@ -71,7 +72,9 @@ export const SignUpSecond = ({route, navigation}) => {
   const [dateerror,setDateError] = useState("")
   const [membererror,setMemberError] = useState("")
   const [photoData,setPhotoData] = useState()
-
+  const [message,setMessage] = useState("noimage")
+  const [showalert,setShowAlert] = useState(false)
+  const [alertMsg,setAlertMessage] = useState({msg:"",title:"",color:''})
 
   const displayList = async(text) => {
     const data =  await getLocation(text)
@@ -114,13 +117,45 @@ export const SignUpSecond = ({route, navigation}) => {
       }
      
     }
+    const addProfilePic = async() => {
+      setProfilePic("")
+      const photo_response =   await cloudinaryAddUpload(photoData).then((resp)=>{
+        
+        console.log("Profile pic resp", resp)
+        setProfilePic(resp)
+        
+        console.log("Profile pic", profilePic)
+        const item = { 
+          "name": values.title,
+          "description":values.description,
+          "picture": resp,
+          "media":uploadedPics,
+          "swap_type": swapTypes,
+          "address": {
+            "country": place,
+            "city": place,
+            "latitude": geometry[1],
+            "longitude": geometry[0],
+            "type": "item"
+          },
+          "type_id": category,
+          "user_id": userData.id,
+          "status": "open"
+        }
+        
+        console.log("AddItem",item)
+        return "added"
+      })
+    }
    const signUpUser = async(values) =>{
+    const photo_response =   await cloudinaryAddUpload(photoData).then(async(resp)=>{
+        
        const user = {
         "first_name": item.firstName,
         "last_name": item.lastName,
         "email": item.email,
         "password": item.password,
-        "profile_picture": "https://res.cloudinary.com/liwach/image/upload/v1630910270/bxffla2sq3dfyi2j8ig8.jpg",
+        "profile_picture": resp,
         "phone_number": values.phoneNumber ,
         "TIN_picture": "",
         "status": "active",
@@ -138,16 +173,25 @@ export const SignUpSecond = ({route, navigation}) => {
       
          try{
           
-          const response =  await postUser(user)
-          if(response){
-            alert("Succesfully Registered,"+JSON.stringify(response))
-            navigation.navigate('AuthScreen')
-           }
-         }
+          const response =  await postUser(user).then((data)=>{
+            if(data.message=="successful"){
+              
+              setShowAlert(true)
+              setAlertMessage({msg:'Signed Up Successfully!',title:'Sign Up',color:colors.green})
+          
+              navigation.navigate('AuthScreen')
+             }
+            else{
+              setShowAlert(true)
+              setAlertMessage({msg:'Please check if you have registered with this email',title:'Sign Up',color:colors.straw})
+            }
+           
+          })
+        }
          catch(error){
           alert(error.message)
          }
-      
+        })
     //  const photo_response = await uploadImage(response.id)
 
        
@@ -287,7 +331,7 @@ const itemClick = (item) => {
      >
       {({ values, handleChange, errors, setFieldTouched, setFieldValue, touched, isValid, handleSubmit }) => (
         <View style={styles.formContainer}>
-            <ImageActionSheet photoData={photoData} setPhotoData={setPhotoData} photo={photo} setPhoto={setPhoto} actionSheetRef={imageActionRef} />
+            <ImageActionSheet setMessage={setMessage} photoData={photoData} setPhotoData={setPhotoData} photo={photo} setPhoto={setPhoto} actionSheetRef={imageActionRef} />
             <TextInput
             value={place}
             style={styles.inputStyle}
@@ -361,7 +405,7 @@ const itemClick = (item) => {
           <CustomPicker membership={membership} setMembership={setMembership}/>
           <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{membererror}</Text>
 
-       
+          <AlertModal show={showalert} setShowAlert={setShowAlert} message={alertMsg}/>
           <Button
             
             color={colors.water}

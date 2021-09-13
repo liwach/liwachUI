@@ -19,13 +19,13 @@ export const BottomNavigator = ()=>{
     <Tab.Navigator
     initialRouteName="Home"
     tabBarOptions={{
-      activeTintColor: colors.flord,
+      activeTintColor: colors.water,
       inactiveTintColor:colors.flord,
       
       style:{
         fontWeight:'bold',
         borderTopWidth: 0,
-        backgroundColor: "#E1CCC7",
+        backgroundColor: colors.white,
         elevation:0,
         zIndex:0
       },
@@ -35,7 +35,7 @@ export const BottomNavigator = ()=>{
     screenOptions={({ route }) => ({
       tabBarIcon: ({ focused }) => {
         let iconName;
-        const color = focused ? colors.flord_intro2 : colors.flord_intro;
+        const color = focused ? colors.water : colors.flord_intro;
         if (route.name === 'Home') {
           iconName = 'home-outline';
         } 
