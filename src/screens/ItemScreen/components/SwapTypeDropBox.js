@@ -52,6 +52,7 @@ export const SwapTypeDropBox = ({value,setValue,type}) => {
 
     return (
       <DropDownPicker
+     
       style={{ 
         backgroundColor:"transparent",
         borderBottomWidth:0.5,

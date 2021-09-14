@@ -1,6 +1,7 @@
 import React from "react"
 import { getOneItem, GET_ALL_REQUESTS, GET_REQUEST_BY_STATUS, POST_REQUEST, UPDATE_REQUEST_STATUS } from "./urls";
 import axios from "axios";
+import { fetchuser } from "../utils/checkFirstTimeActions";
 
 
 
@@ -82,29 +83,28 @@ export const getAllRequestsByItemID = async (id) => {
     }
 }
 
-export const getAllRequestsBySenderID = async (id) => {
+export const getAllRequestsBySenderID = async () => {
+  const user = await fetchuser().then((data)=>{
+    return data.data
+  })
   const body = JSON.stringify({
-    "requester_id": id
+
   });
   try {
-    try {
+   
       const res = await axios.post(GET_REQUEST_BY_STATUS,body,{
           "headers": {
           "content-type": "application/json",
+          "Authorization":`Bearer ${user.token}`
           },
           })
-      if (res.data) {
-      console.log(`Axios Sender ID:${JSON.stringify(res.data)}`)
-      const items = res.data
-      
-      return items
-      } else {
-        console.log('Unable to fetch');
-      }
-    }
-  catch (error) {
-    // Add custom logic to handle errors
-  }
+          .then((data)=>{
+            console.log("From Request data",JSON.stringify(data.data))
+            return data.data
+          })
+
+      return res
+
   } catch (error) {
     console.log(error.message)
   }
@@ -211,7 +211,7 @@ export const acceptRequests = async (request) => {
 }
 
 export const addRequest = async(item) => {
-    
+  const user = await fetchuser().then((data)=>{return data.data})
   const params = JSON.stringify({
     "status": item.status,
     "requester_id": item.requester_id,
@@ -225,26 +225,19 @@ export const addRequest = async(item) => {
   console.log("Params in request",params)
     
   try {
-    try {
+    
   
       const res = await axios.post(POST_REQUEST, params,{
           "headers": {
           "content-type": "application/json",
+          "Authorization":`Bearer ${user.token}`
           },
-          })
-      if (res.status==201) {
-        console.log(`Axios:${JSON.stringify(res.data.data)}`)
-        return {
-          message:"successful",
-          data: res.data
-        }
-      } else {
-        console.log('Unable to fetch');
-      }
-    }
-  catch (error) {
-    console.log("Request not sent",error.message)
-  }
+          }).then((data)=>{
+            console.log("Request sent",JSON.stringify(data.data))
+            return data.data.success
+        })
+      return res
+     
   } catch (error) {
     console.log(error.message)
   }

@@ -53,10 +53,12 @@ export const TypeSeachBox = ({value, setValue,type}) => {
 
     return (
       <DropDownPicker
+      zIndex={3000}
+      zIndexInverse={1000}
       style={{ 
         backgroundColor:colors.light_grey,
         marginTop:10,
-
+        zIndex:200,
         borderBottomWidth:0,
         borderTopWidth:0,
         borderLeftWidth:0,

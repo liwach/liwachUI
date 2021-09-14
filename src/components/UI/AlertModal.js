@@ -39,8 +39,15 @@ export const AlertModal = ({show,setShowAlert,message,navigation}) => {
             hideAlert();
           }}
           onConfirmPressed={() => {
-          navigation.navigate(message.navTitle)
-           hideAlert();
+          if(message.navTitle!=""){
+            navigation.navigate(message.navTitle)
+            setShowAlert(false)
+          }  
+          else{
+            hideAlert();
+            setShowAlert(false)
+          }
+          
           }}
         />
       </View>

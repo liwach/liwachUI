@@ -16,10 +16,11 @@ export const ItemPicker = ({value, setValue,type}) => {
           .then((data)=>{
             const listItems = data.map(function(data, idx){
               const name = data.name
+              const id = data.id
              return(
                {
                 label:name,
-                value:name
+                value:id
                }
      
              )

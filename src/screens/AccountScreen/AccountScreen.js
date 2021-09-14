@@ -47,11 +47,11 @@ export const AccountScreen = ({navigation}) => {
             <AccountMenuItem iconName={"shield-checkmark"} Title={"Change password"} navigation={navigation}/>
             <AccountMenuItem iconName={"share"} Title={"Share"} navigation={navigation}/>
             <AccountMenuItem iconName={"share"} Title={"Sign Up"} navigation={navigation} onPress={()=>navigation.navigate('SignupScreen')}/>
-            {user==null?
+            
             <AccountMenuItem iconName={"share"} Title={"Log In"} navigation={navigation} onPress={()=>navigation.navigate('AuthenticationScreen')}/>
-            :<Button color={colors.white} style={styles.button} onPress={()=>{alert("Logged out")}}>Log out</Button>
+            <Button color={colors.white} style={styles.button} onPress={()=>{alert("Logged out")}}>Log out</Button>
 
-            }
+            
 
         </View>
     );

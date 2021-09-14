@@ -39,3 +39,6 @@ export const FIND_USER =  `${API_URL}/user/search`
 
 //Media
 export const ADD_MEDIA = `${API_URL}/media` 
+
+//flag
+export const FLAG = `${API_URL}/flag` 

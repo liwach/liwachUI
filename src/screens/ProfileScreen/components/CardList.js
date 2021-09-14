@@ -13,7 +13,7 @@ import {
     Image 
     } from "react-native"
 import { colors } from "../../../utils/colors";
-import { getAllItems, getItemsByUserID } from '../../../routes/itemsApi'
+import { getAllItems, getItemsByStatus, getItemsByUserID } from '../../../routes/itemsApi'
 import { fetchuser } from '../../../utils/checkFirstTimeActions'
 import { getServicesByUserID } from "../../../routes/serviceApi";
 import { addItemForm } from "../../ItemScreen";
@@ -33,7 +33,9 @@ const FlatListItem = ({ item, onPress, backgroundColor, textColor }) => (
                 <Text style={[styles.title, styles.text]}>{item.name}</Text>
                 {/* {console.log("Category in item",item.category)} */}
                 <Text style={[styles.category]}>{item.category}</Text>
-                <View style={styles.horizontal}>
+                <Text style={[styles.text]}>Requests : {item.number_request}</Text>
+                <Text style={[styles.text]}>Status : {item.status}</Text>
+                {/* <View style={styles.horizontal}>
                 <Text style={[styles.text]}>Swap with:</Text>
                 {item.swap_type.map((prop, key) => {
                     
@@ -41,7 +43,7 @@ const FlatListItem = ({ item, onPress, backgroundColor, textColor }) => (
                       <Text style={[styles.text]}>{prop}</Text>
                     );
                   })}
-                </View>
+                </View> */}
                 {/* <Text style={[styles.text]}>Swap with: {item.swap_types}</Text> */}
             </View>
             <View style={[styles.time]}>
@@ -61,18 +63,34 @@ export const CardList = ({item,navigation}) => {
 
   const fetchData = async () => {
     // const items = await getAllItems()
-    const user = await fetchuser().then((data)=>{return data})
-    console.log("From Profile",selectedValue)
+    const user = await fetchuser().then((data)=>{return data.data})
+    console.log("From Profile",user)
     setUser(user)
     setData([])
     try{
       if(selectedValue==""||selectedValue=="all"){
-        const items = await getItemsByUserID(user.data.id,user.data.token).then((resp)=>{
-          // console.log("Response",resp)
+        const items = await getItemsByUserID().then((resp)=>{
+          console.log("Response",resp)
+          if(resp!=="noitems"){
           const listItems = resp.map(function(item, idx){
             setData(data => [...data,item])
           });
-        })
+
+          }})
+          const service = await getServicesByUserID().then((resp)=>{
+            console.log("Response",resp)
+            if(resp!=="noitems"){
+            const listItems = resp.map(function(item, idx){
+              setData(data => [...data,item])
+            });
+            
+            }})
+        }
+      
+    
+      else{
+        setData([])
+      }
         // const services = await getServicesByUserID(user.token).then((resp)=>{
         //   const listServ = resp.map(function(data, idx){
         //     final.push(data)
@@ -81,11 +99,11 @@ export const CardList = ({item,navigation}) => {
         // alert(JSON.stringify(services))
    
         setLoading(false);
-      }
+      
     
     }
     catch(error){
-      console.log(error.message)
+      console.log("Error from cardlist",error.message)
     }
    
     
@@ -168,8 +186,7 @@ export const CardList = ({item,navigation}) => {
       }
 
     return(
-      <View>           
-         <ItemFilter value={selectedValue} setValue={setSelectedValue} filteredData={data} setFilteredData={setData}/>
+               
         <ScrollView
                 refreshControl={
                   <RefreshControl
@@ -185,7 +202,7 @@ export const CardList = ({item,navigation}) => {
               
             />
        </ScrollView>
-       </View>
+      
     )
 };
 

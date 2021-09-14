@@ -33,7 +33,7 @@ export const getOneType = async ({id}) => {
 }
 
 export const getOneTypeByName =  async(name) => {
- 
+  const token = await fetchuser().then((data)=>{return data.data.token})
   const params = JSON.stringify({
       "name": name
       });
@@ -43,18 +43,41 @@ export const getOneTypeByName =  async(name) => {
       const response = await axios.post(GET_ONE_TYPE, params,{
           "headers": {
           "content-type": "application/json",
+          "Authorization":`Bearer ${token}`
           },
+          }).then((data)=>{
+              // console.log("Catgory Data",data.data.data[0])
+              return data.data.data[0]
           })
-        
-            // console.log("addItem", JSON.stringify(data))
-            
-              // console.log(`Axios:${JSON.stringify(data.data.data)}`)
-            if(response.data){
-              return response.data[0].id
-            }
-              
-            
-        
+          return response
+     
+    }
+  catch (error) {
+    // Add custom logic to handle errors
+  }
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+export const getOneTypeByID =  async(id) => {
+  const token = await fetchuser().then((data)=>{return data.data.token})
+  const params = JSON.stringify({
+      "id": id
+      });
+      
+  try {
+    try {
+      const response = await axios.post(GET_ONE_TYPE, params,{
+          "headers": {
+          "content-type": "application/json",
+          "Authorization":`Bearer ${token}`
+          },
+          }).then((data)=>{
+              // console.log("Catgory Data",data.data.data[0])
+              return data.data.data[0]
+          })
+          return response
      
     }
   catch (error) {
@@ -103,7 +126,7 @@ export const getAllTypes = async (type) => {
     const params = JSON.stringify({
       "used_for":type
     })
-    try {
+   
         try {
           const response = await axios.post(GET_ONE_TYPE,params,{
             "headers": {
@@ -114,16 +137,14 @@ export const getAllTypes = async (type) => {
               console.log(`Axios type:${JSON.stringify(data.data)}`)
               return {
                 message:"successful",
-                data: data.data
+                data: data.data.data
               }
             })
               
         return response  
       }
-      catch (error) {
-        // Add custom logic to handle errors
-      }
-      } catch (error) {
+    
+   catch (error) {
         console.log(error.message)
       }
 }

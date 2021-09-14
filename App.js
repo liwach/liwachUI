@@ -22,17 +22,10 @@ import AppIntroSlider from 'react-native-app-intro-slider';
 import { colors } from './src/utils/colors';
 import { IntroductionScreen } from './src/screens/IntroScreen.js/Introduction';
 import { IntroScreen } from './src/screens/IntroScreen.js/IntroScreen';
-import messaging from '@react-native-firebase/messaging';
 export default function App() {
 
   const [value, setValue] = useState(false);
-  useEffect(() => {
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
-      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-    });
 
-    return unsubscribe;
-  }, []);
 
   return (
   

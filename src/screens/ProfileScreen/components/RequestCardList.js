@@ -68,7 +68,7 @@ const FlatListItem = ({user,navigation, item, onPress, onMessagePress, backgroun
             </View>
             <View>
                 <Text style={[styles.title, styles.text]}>{item.requested_item==null?"":item.requested_item.name}</Text>
-                <Text style={[styles.category]}>{item.requested_item==null?"":item.requested_item.type_id}</Text>
+                <Text style={[styles.category]}>{item.requested_item==null?"":item.requested_item.type.name}</Text>
                 <Text style={[styles.text]}>Swap with: {item.requester_item==null?"":item.requester_item.name}</Text>
             </View>
             <View style={{flexDirection:'column',flex:1}}>
@@ -160,10 +160,14 @@ export const RequestCardList = ({navigation}) => {
   }  
 
   const fetchData = async () => {
-    const user = await fetchuser()
-    const myItems = await getItemsByUserID(user.id)
-    const x = []
-    const otherRequests = await getAllRequestsBySenderID(user.id)
+    const user = await fetchuser().then((data)=>{return data.data})
+    // const myItems = await getItemsByUserID().then((data)=>{
+    //    return data.data
+    // })
+   
+    const otherRequests = await getAllRequestsBySenderID().then((data)=>{
+      return data
+    })
     setOneFinal(otherRequests)
     console.log("Requests: ",otherRequests)
     setUser(user)
@@ -229,7 +233,7 @@ const styles = StyleSheet.create({
     },
     item:{
         flexDirection: "row",
-        backgroundColor:colors.bottomNav,
+        backgroundColor:colors.white,
         color:colors.white,
         margin:5,
         padding:5,
@@ -259,7 +263,7 @@ const styles = StyleSheet.create({
         alignSelf:'center'
     },
     category:{
-        backgroundColor: colors.flord_intro2,
+        backgroundColor: colors.water,
         borderRadius: 20,
         color: colors.white,
         textAlign: 'center',

@@ -43,12 +43,13 @@ import { MAPBOX_KEY } from '../../utils/config';
 import AutocompletePlace from './components/SearchBox';
 import { CustomPicker } from '../../components/UI/CustomPicker';
 import { TypeSeachBox } from './components/TypeSearchBox';
-import { cloudinaryEditUpload, ImageActionSheet } from './components/ImageActionSheet';
+import { cloudinaryAddUpload, cloudinaryEditUpload, ImageActionSheet } from './components/ImageActionSheet';
 import { SwapTypeDropBox } from './components/SwapTypeDropBox';
 import { getLocation } from '../../routes/requestApi';
-import { getOneTypeByName } from '../../routes/TypeApi';
+import { getOneTypeByID, getOneTypeByName } from '../../routes/TypeApi';
 import { fetchuser } from '../../utils/checkFirstTimeActions'
 import { AlertModal } from '../../components/UI/AlertModal';
+import { editService } from '../../routes/serviceApi';
 
 
 
@@ -93,7 +94,7 @@ export const editItemForm = ({route, navigation}) => {
 
  
 
-  useEffect(()=>{
+  useEffect(async()=>{
     // const picture_urls = item.media.map(function(data, idx){
     //     const url = data.url
     //    return(
@@ -102,6 +103,18 @@ export const editItemForm = ({route, navigation}) => {
     //   });
 
     const pic = item.picture
+    setNewSwap([])
+    
+    const source = item.swap_type.map(async function(data, idx){
+      setSwapTypes([])
+      const category_id = await getOneTypeByName(data).then((resp)=>{
+        console.log(resp.id)
+        
+        setSwapTypes(swapTypes => [...swapTypes,resp.id])
+
+      })
+  })
+    console.log("Removed",swapTypes)
     // console.log("EDIT ITEM: ",pic,picture_urls)
     setTitle(item.name)
     setDesc(item.desc)
@@ -118,55 +131,91 @@ export const editItemForm = ({route, navigation}) => {
     {label: 'Premium', value: 'banana'},
     {label: 'Gold', value: 'gold'}
   ]);
+ 
+
   
+
   const save = async(values) => {
-      
-    //Get User ID
-    const user = await fetchuser()
-    console.log("user",user)
-    //Get Category ID
-    const category_id = await getOneTypeByName(category)
-    // const itemType = category_id[0].id
-    // console.log("newswap",category_id[0].id) 
-    //Get Type ID
-    const source = swapTypes.map(async function(data, idx){
-      const uri = await getOneTypeByName(data);
-      type.push(uri)
-      setNewSwap(type)
-  })
-    //Get title
-    //Get Desc
-    //Get Address Geometry
-    const pic = item.picture
-    const editedItem = {
-      "id": item.id,
-      "name": title,
-      "description":desc,
-      "picture" : pic,
-      "swap_type":[],
-      "address": {
-        "country": place,
-        "city": place,
-        "latitude": geometry[1],
-        "longitude":geometry[0],
-        "type": "item"
-      },
-      "type_id": category_id,
-      "user_id": user.id,
-      "status": item.status
-    }
-
-    console.log("Item ",item.id)
-   try{
-    const response = await cloudinaryEditUpload(photoData,editedItem,"item",setShowAlert)
-    if(showalert){
-        console.log("item is edited")
-        navigation.navigate("Profile")
-    }
-   }
-   catch(error){
-
-   }
+    const user = await fetchuser().then((data)=>{return data.data})
+      //Get Category ID
+      console.log("in save",category)
+  
+    
+    const photo_response =   await cloudinaryAddUpload(photoData).then(async(resp)=>{
+  
+      if(item.post_type=="item"){
+        const editedItem = {
+          "id": item.id,
+          "name": title,
+          "description":desc,
+          "picture" : resp,
+          "swap_type":{
+            "removed": swapTypes,
+            "added": newSwap
+          },
+          "address": {
+            "country": place,
+            "city": place,
+            "latitude": geometry[1],
+            "longitude":geometry[0],
+            "type": "item"
+          },
+          "type_id": category,
+          "user_id": user.id,
+          "status": item.status
+        }
+        console.log(editedItem)
+        const response = await editItem(editedItem).then((data)=>{
+          if(data){
+            setShowAlert(true)
+            setAlertMessage({msg:"Item is edited Successfully",title:"Item",color:colors.green,navTitle:'Profile'})
+        }
+        else{
+          setShowAlert(true)
+          setAlertMessage({msg:"Item is not edited",title:"Item",color:colors.straw,navTitle:''})
+     
+        }
+        })
+      }
+      if(item.post_type=="service"){
+        const editedItem = {
+          "id": item.id,
+          "name": title,
+          "description":desc,
+          "picture" : resp,
+          "swap_type":{
+            "removed": swapTypes,
+            "added": newSwap
+          },
+          "address": {
+            "country": place,
+            "city": place,
+            "latitude": geometry[1],
+            "longitude":geometry[0],
+            "type": "service"
+          },
+          "type_id": category,
+          "user_id": user.id,
+          "status": item.status
+        }
+        console.log(editedItem)
+        const response = await editService(editedItem).then((data)=>{
+          if(data){
+            setShowAlert(true)
+            setAlertMessage({msg:"Service is edited Successfully",title:"Service",color:colors.green,navTitle:'Profile'})
+        }
+        else{
+          setShowAlert(true)
+          setAlertMessage({msg:"Service is not edited",title:"Service",color:colors.straw,navTitle:''})
+     
+        }
+        })
+      }
+         
+          return "edited"
+        })
+    
+  
    
 
 }
@@ -362,8 +411,9 @@ export const editItemForm = ({route, navigation}) => {
           {touched.title && errors.title &&
             <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.description}</Text>
           } 
-          <TypeSeachBox value={category} setValue={setCategory}/> 
-          <SwapTypeDropBox value={swapTypes} setValue={setSwapTypes}/> 
+          <TypeSeachBox value={category} setValue={setCategory} type={item.post_type}/> 
+          <View style={{height:50}}></View>
+          <SwapTypeDropBox value={newSwap} setValue={setNewSwap} type={item.post_type}/> 
           
          
             
@@ -373,7 +423,7 @@ export const editItemForm = ({route, navigation}) => {
         </KeyboardAvoidingView>
       )}
     </Formik>
-    <AlertModal show={showalert} setShowAlert={setShowAlert} message={message}/>
+    <AlertModal show={showalert} setShowAlert={setShowAlert} message={alertMsg} navigation={navigation}/>
 
     </View>
   );
@@ -404,7 +454,7 @@ const styles = StyleSheet.create({
   imageBox:{
     
     width:"100%",
-    height:100,
+    height:50,
     backgroundColor:colors.bottomNav,
     borderWidth: 1,
     borderColor:colors.bottomNav,

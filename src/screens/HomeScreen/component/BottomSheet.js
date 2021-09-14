@@ -17,14 +17,14 @@ import { AlertModal } from '../../../components/UI/AlertModal'
 
  
 
-export const SendButton = (value,id,item) => {
+export const SendButton = (value,id,item,navigation) => {
     const itemValue = value.selectedValue
     const [showalert,setShowAlert] = useState(false)
-    const [alertMsg,setAlertMessage] = useState({msg:"",title:"",color:''})
+    const [alertMsg,setAlertMessage] = useState({msg:"",title:"",color:'',navTitle:''})
     const sendRequest = async(value,id,item)=> {
         const token = uuid.v4()
         const user = await fetchuser()
-        const requester_item = await getItemsByName(value.selectedValue)
+        const requester_item = await getItemsById(value.selectedValue)
         const singleItem = requester_item[0]
         console.log(JSON.stringify(singleItem))
         if(singleItem===undefined){
@@ -42,17 +42,21 @@ export const SendButton = (value,id,item) => {
                 "type": singleItem.bartering_location.type
             }
             try{
-                const response = await addRequest(request)
-                if(response==null){
-                    alert(JSON.stringify(response))
-                }
-                if(response!==null&&response.message=="successful"){
+                const response = await addRequest(request).then((data)=>{
+                    if(data){
+                      setShowAlert(true)
+                      setAlertMessage({msg:"Request sent",title:"Request",color:colors.green,navTitle:''})
+                  }
+                  else{
                     setShowAlert(true)
-                    setAlertMessage({msg:`${value.item.name}`,title:'Request sent',color:colors.green})                }
-            }
-           catch(error){
+                    setAlertMessage({msg:"Request is not sent",title:"Service",color:colors.straw,navTitle:''})
+               
+                  }
+                  })
+                }
+            catch(error){
             setShowAlert(true)
-            setAlertMessage({msg:JSON.stringify(error.message),title:'Request Error',color:colors.red})
+            setAlertMessage({msg:JSON.stringify(error.message),title:'Request Error',color:colors.red,navTitle:''})
            }
            
         }
@@ -67,7 +71,7 @@ export const SendButton = (value,id,item) => {
         <TouchableOpacity style={{width:150,height:35,alignSelf:'center',margin:10,backgroundColor:colors.water,borderRadius:10}} onPress={()=>sendRequest(value)}>
             <Text style={[styles.swapText]}>Swap</Text>
         </TouchableOpacity>
-            <AlertModal show={showalert} setShowAlert={setShowAlert} message={alertMsg}/>
+            <AlertModal show={showalert} setShowAlert={setShowAlert} message={alertMsg} navigation={navigation}/>
             </View>
     )
 }

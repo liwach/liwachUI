@@ -99,7 +99,7 @@ export const AllServiceScreen = ({navigation}) => {
 
 }
 
-const FlatListItem = ({actionRef,onPress, item }) => (
+const FlatListItem = ({actionRef,onPress, item,navigation }) => (
 
     <View style={styles.listItem}> 
             <Image source={item.picture} style={{width:180,height:180,borderRadius:10}} />
@@ -108,7 +108,10 @@ const FlatListItem = ({actionRef,onPress, item }) => (
           <SwapActionSheet 
                      onPress={onPress}
                      item={item} 
-                     actionSheetRef={actionRef}/>
+                     actionSheetRef={actionRef}
+                     type="service"
+                     navigation={navigation}
+                     />
               
     </View>
 

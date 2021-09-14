@@ -13,7 +13,7 @@ import {ProfileScreen} from '../screens/ProfileScreen/ProfileScreen';
 import {MessageScreen} from '../screens/MessageScreen/MessageScreen';
 import {colors} from '../utils/colors';
 import {DrawerButton} from '../screens/HomeScreen/component/DrawerButton';
-import {Button, StyleSheet, View} from 'react-native';
+import {Button, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {NotificationScreen} from '../screens/NotificationScreen/NotificationScreen';
 import {AccountScreen} from '../screens/AccountScreen/AccountScreen';
 import {ItemDetailScreen} from '../screens/DetailScreen/ItemDetailScreen';
@@ -46,8 +46,9 @@ import { AllItemScreen } from '../screens/ItemScreen/AllItemScreen';
 import { AllServiceScreen } from '../screens/ItemScreen/AllServiceScreen';
 import { LocationSearchBox } from '../screens/ItemScreen/components/LocationSearchBox';
 import { phoneSignin } from '../utils/phoneAuth';
-import { deleteItem } from '../routes/itemsApi';
+import { deleteItem, flagItem } from '../routes/itemsApi';
 import { AlertModal } from '../components/UI/AlertModal';
+import { deleteService, flagService } from '../routes/serviceApi';
 
 
 const ProductStack = createStackNavigator();
@@ -114,10 +115,15 @@ export const RequestScreenStack = () => {
         <RequestStack.Screen
         
         options={({route, navigation}) => ({
-          headerShown:true
+          headerShown: true,
+          headerMode: 'screen',
+          gestureEnabled: true,
+          headerStyle: {backgroundColor: colors.water},
+          headerTitleStyle: {color: colors.white, alignSelf: 'center'},
+        
          })}
          name="RequestScreen"
-         component={phoneSignin}
+         component={RequestScreen}
         
         />
     
@@ -462,7 +468,10 @@ export const ProductStackScreen = () => {
 };
 
 export const HomeStackScreen = () => {
-  
+  const [openEdit,setOpenEdit] = useState(false)
+  const [openAlert,setOpenAlert] = useState(false)
+  const [showalert,setShowAlert] = useState(false)
+  const [alertMsg,setAlertMessage] = useState({msg:"",title:"",color:'',navTitle:''})
   return (
     <HomeStack.Navigator
       screenOptions={({route,navigation}) => ({
@@ -667,6 +676,195 @@ export const HomeStackScreen = () => {
         name="AllItemScreen"
         component={AllItemScreen}
       />
+      <ProfileStack.Screen
+      
+      name="PostDetail"
+      options={({route, navigation}) => ({
+        title: route.params.item.name,
+        headerTitleStyle:{color:colors.white,textAlign:"center"},
+        headerRight: () => {
+         console.log("from profile nav",route.params.edit)
+          if(route.params.edit==true)
+               return(
+                 
+            <View style={{flexDirection:'row'}}>
+              {openEdit!=true?
+                <AntDesign
+              onPress={
+                async()=>
+                {
+                 if(route.params.item.post_type=="item"){
+                  const resp = await deleteItem(route.params.item.id).then((data)=>{
+                    console.log("in resp",data)
+                    return data
+                  })
+                  if(resp){
+                   setShowAlert(true)
+                   setAlertMessage({
+                     title:"Item Deleted",
+                     msg:`${route.params.item.name} is deleted`,
+                     color:colors.green,
+                     navTitle:"Profile"
+                   })
+                  }
+                  else{
+                   setShowAlert(true)
+                   setAlertMessage({
+                     title:"Item is not deleted",
+                     msg:`${route.params.item.name} is deleted`,
+                     color:colors.straw,
+                     navTitle:""
+                   })
+                
+                  }
+                 }
+                 
+                 if(route.params.item.post_type=="service"){
+                  const resp = await deleteService(route.params.item.id).then((data)=>{
+                    console.log("in resp",data)
+                    return data
+                  })
+                  if(resp){
+                   setShowAlert(true)
+                   setAlertMessage({
+                     title:"Item Deleted",
+                     msg:`${route.params.item.name} is deleted`,
+                     color:colors.green,
+                     navTitle:"Profile"
+                   })
+                  }
+                  else{
+                   setShowAlert(true)
+                   setAlertMessage({
+                     title:"Item is not deleted",
+                     msg:`${route.params.item.name} is deleted`,
+                     color:colors.straw,
+                     navTitle:""
+                   })
+                
+                  }
+                 }
+                 }
+              }
+              style={{marginRight:10}}
+              color={colors.white}
+              name="delete"
+              size={25}
+            />
+           
+            
+            :<View>
+              
+              </View>}
+          {openEdit!=true?
+             <Entypo
+             onPress={() => setOpenEdit(true)}
+             style={styles.drawerButton}
+             color={colors.white}
+             name="edit"
+             size={25}
+              
+           />:
+           <Entypo
+           onPress={() => setOpenEdit(false)}
+           style={styles.drawerButton}
+           color={colors.white}
+           name="cross"
+           size={30}
+            
+         />
+          }
+          <AlertModal show={showalert} setShowAlert={setShowAlert} message={alertMsg} navigation={navigation}/>
+         </View>
+          
+          
+       )
+
+       if(route.params.edit==false){
+          return(
+            <View style={{backgroundColor:colors.water,height:25}}>
+            <TouchableOpacity onPress={
+              async()=>
+              {
+               if(route.params.item.post_type=="item"){
+                const resp = await flagItem(route.params.item.id).then((data)=>{
+                  console.log("in resp",data)
+                  return data
+                })
+                if(resp){
+                 setShowAlert(true)
+                 setAlertMessage({
+                   title:"Item Flagged",
+                   msg:`${route.params.item.name} is flagged`,
+                   color:colors.green,
+                   navTitle:""
+                 })
+                }
+                else{
+                 setShowAlert(true)
+                 setAlertMessage({
+                   title:"Item is not Flagged",
+                   msg:`${route.params.item.name} is Flagged`,
+                   color:colors.straw,
+                   navTitle:""
+                 })
+              
+                }
+               }
+               
+               if(route.params.item.post_type=="service"){
+                const resp = await flagService(route.params.item.id).then((data)=>{
+                  console.log("in resp",data)
+                  return data
+                })
+                if(resp){
+                 setShowAlert(true)
+                 setAlertMessage({
+                   title:"Item Deleted",
+                   msg:`${route.params.item.name} is deleted`,
+                   color:colors.green,
+                   navTitle:""
+                 })
+                }
+                else{
+                 setShowAlert(true)
+                 setAlertMessage({
+                   title:"Item is not deleted",
+                   msg:`${route.params.item.name} is deleted`,
+                   color:colors.straw,
+                   navTitle:""
+                 })
+              
+                }
+               }
+               }
+            }
+            >
+            <Ionicons name={"flag-outline"} size={25} color={colors.white} style={styles.drawerButton}/>
+            </TouchableOpacity>
+              <AlertModal show={showalert} setShowAlert={setShowAlert} message={alertMsg} navigation={navigation}/>
+              </View>
+          )
+       }
+          
+            },
+        headerLeft: () => {
+          return (
+            <View>
+              {openEdit!=true?
+                 <HeaderBackButton
+                 tintColor={colors.white}
+                 onPress={() => navigation.goBack()}
+               />:<View></View>
+              }
+           
+            </View>
+          );
+        },
+      })}
+      
+      component={openEdit==false?ItemDetailScreen:editItemForm}
+    />
        <HomeStack.Screen
        options={({route, navigation}) => ({
          title:"Services",
@@ -773,7 +971,7 @@ export const ProfileStackScreen = () => {
   const [openEdit,setOpenEdit] = useState(false)
   const [openAlert,setOpenAlert] = useState(false)
   const [showalert,setShowAlert] = useState(false)
-  const [alertMsg,setAlertMessage] = useState({msg:"",title:""})
+  const [alertMsg,setAlertMessage] = useState({msg:"",title:"",color:'',navTitle:''})
 
   const showAlert = () =>
   alert(
@@ -794,6 +992,10 @@ export const ProfileStackScreen = () => {
         ),
     }
   );
+
+  const deletePosts = async() => {
+
+  }
 
   return (
     <ProfileStack.Navigator
@@ -837,7 +1039,7 @@ export const ProfileStackScreen = () => {
           title: route.params.item.name,
           headerTitleStyle:{color:colors.white,textAlign:"center"},
           headerRight: () => {
-           
+           console.log("from profile nav",route.params.edit)
             if(route.params.edit==true)
                  return(
                    
@@ -847,21 +1049,67 @@ export const ProfileStackScreen = () => {
                 onPress={
                   async()=>
                   {
-                 
-                   const resp = await deleteItem(route.params.item.id)
-                   console.log(JSON.stringify(resp))
-                   setShowAlert(true)
-                   setAlertMessage({title:"Item Deleted",msg:`${route.params.item.name} is deleted`})
-                   return(
-                    resp.message=="successful"? <AlertModal show={showalert} setShowAlert={setShowAlert} message={alertMsg}/>:<View></View>
-                   )
-                  }
+                   if(route.params.item.post_type=="item"){
+                    const resp = await deleteItem(route.params.item.id).then((data)=>{
+                      console.log("in resp",data)
+                      return data
+                    })
+                    if(resp){
+                     setShowAlert(true)
+                     setAlertMessage({
+                       title:"Item Deleted",
+                       msg:`${route.params.item.name} is deleted`,
+                       color:colors.green,
+                       navTitle:"Profile"
+                     })
+                    }
+                    else{
+                     setShowAlert(true)
+                     setAlertMessage({
+                       title:"Item is not deleted",
+                       msg:`${route.params.item.name} is deleted`,
+                       color:colors.straw,
+                       navTitle:""
+                     })
+                  
+                    }
+                   }
+                   
+                   if(route.params.item.post_type=="service"){
+                    const resp = await deleteService(route.params.item.id).then((data)=>{
+                      console.log("in resp",data)
+                      return data
+                    })
+                    if(resp){
+                     setShowAlert(true)
+                     setAlertMessage({
+                       title:"Item Deleted",
+                       msg:`${route.params.item.name} is deleted`,
+                       color:colors.green,
+                       navTitle:"Profile"
+                     })
+                    }
+                    else{
+                     setShowAlert(true)
+                     setAlertMessage({
+                       title:"Item is not deleted",
+                       msg:`${route.params.item.name} is deleted`,
+                       color:colors.straw,
+                       navTitle:""
+                     })
+                  
+                    }
+                   }
+                   }
                 }
                 style={{marginRight:10}}
                 color={colors.white}
                 name="delete"
                 size={25}
-              />:<View></View>}
+              />
+             
+              
+              :<View></View>}
             {openEdit!=true?
                <Entypo
                onPress={() => setOpenEdit(true)}
@@ -880,7 +1128,7 @@ export const ProfileStackScreen = () => {
               
            />
             }
-           
+            <AlertModal show={showalert} setShowAlert={setShowAlert} message={alertMsg} navigation={navigation}/>
            </View>
             
             

@@ -12,7 +12,7 @@ import { SendButton } from "./BottomSheet";
 import { fetchuser } from "../../../utils/checkFirstTimeActions";
 
 
-export const SwapSheet = ({item,actionSheetRef,type}) => {
+export const SwapSheet = ({item,actionSheetRef,type,navigation}) => {
     const [value, setValue] = useState(null);
    
     // console.log("Selected value: ",value)
@@ -45,7 +45,7 @@ export const SwapSheet = ({item,actionSheetRef,type}) => {
                     <ItemPicker value={value} setValue={setValue} type={type}/>
             </View>
         </View>
-        <SendButton selectedValue={value} item={item}/>
+        <SendButton navigation={navigation} selectedValue={value} item={item}/>
 
     </View>
    
@@ -55,7 +55,7 @@ export const SwapSheet = ({item,actionSheetRef,type}) => {
 } 
 
 
-export const SwapActionSheet = ({actionSheetRef,item,onPress,type}) => {
+export const SwapActionSheet = ({actionSheetRef,item,onPress,type,navigation}) => {
   let actionSheet;
   const [isVisible,setVisible] = useState(false)
   const fetchData = async() => {
@@ -91,7 +91,7 @@ const [id,selectedId] = useState("");
        <Text  style={styles.textContainer} >Swap</Text>
           <Ionicons style={styles.iconContainer}  name={'swap-horizontal'} size={20}/>
           </TouchableOpacity>
-          <SwapSheet actionSheetRef={actionSheetRef} item={item} type={type}/>
+          <SwapSheet actionSheetRef={actionSheetRef} item={item} type={type} navigation={navigation}/>
           </View>:<View/>}
           </View>
       )

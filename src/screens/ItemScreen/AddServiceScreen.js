@@ -43,7 +43,7 @@ import { MAPBOX_KEY } from '../../utils/config';
 import AutocompletePlace from './components/SearchBox';
 import { CustomPicker } from '../../components/UI/CustomPicker';
 import { TypeSeachBox } from './components/TypeSearchBox';
-import { cloudinaryUpload, ImageActionSheet } from './components/ImageActionSheet';
+import { cloudinaryAddUpload, cloudinaryUpload, ImageActionSheet } from './components/ImageActionSheet';
 import { SwapTypeDropBox } from './components/SwapTypeDropBox';
 import { getLocation } from '../../routes/requestApi';
 import { getOneTypeByName } from '../../routes/TypeApi';
@@ -52,6 +52,7 @@ import { addService } from '../../routes/serviceApi';
 import { ButtonImageSheet } from './components/ButtonImageAction';
 import { AlertModal } from '../../components/UI/AlertModal';
 import { uploadPicture } from '../../routes/utilApi';
+import { addMedia } from '../../routes/mediaApi';
 
 export const addServiceForm = ({navigation}) => {
 
@@ -69,100 +70,23 @@ export const addServiceForm = ({navigation}) => {
   const multipleImageRef = createRef()
   const [photoData,setPhotoData] = useState("")
   const [TINphoto,setTINPhoto] = useState([]);
+  const [TINphotoData,setTINPhotoData] = useState([]);
   const [placeerror,setPlaceError] = useState("")
   const [categoryerror,setCategoryError] = useState("")
   const [swaperror,setSwapTypeError] = useState("")
   const [message,setMessage] = useState("noimage")
   const [showalert,setShowAlert] = useState(false)
-  const [alertMsg,setAlertMessage] = useState({msg:"",title:""})
+  const [alertMsg,setAlertMessage] = useState({msg:"",title:"",color:"",navTitle:''})
+  const [uploadedPics,setUploadedPics] = useState([])
+  const [userData,setUserData] = useState({id:""})
+  const [profilePic,setProfilePic] = useState("")
 
-  const [items, setItems] = useState([
-    {label: 'Normal', value: 'normal'},
-    {label: 'Premium', value: 'banana'},
-    {label: 'Gold', value: 'gold'}
-  ]);
   function wait(ms) {
     return new Promise(r => setTimeout(r, ms));
   }
   
-  const uploadImage = (item) => {
-    try{
-      const photo_response =  cloudinaryUpload(photoData,item,"service")
-      // const image = {
-      //   "item_id": image.id,
-      //   "type": image.type,
-      //   "url": image.url
-      //  }
-      // const addImage = await uploadPicture()
-      if(photo_response.message=="successful"){
-        setShowAlert(true)
-        setAlertMessage({msg:'Item Uploaded Successfully',title:'Successful',color:colors.green})
-      }
-      console.log("item",JSON.stringify(photo_response))
-      return photo_response
-    }
-    catch(error){
-      setShowAlert(true)
-      setAlertMessage({msg:error.message,title:"Image Error",color:colors.green})
-    }
-   
-  }
-  const add = async(values) => {
-    //Get User ID
-    const user = await fetchuser()
-    console.log("user",user)
-    //Get Category ID
-    const category_id = await getOneTypeByName(category)
-    // const itemType = category_id[0].id
-    // console.log("newswap",category_id[0].id) 
-    //Get Type ID
-    const source = swapTypes.map(async function(data, idx){
-      const uri = await getOneTypeByName(data);
-      type.push(uri)
-      setNewSwap(type)
-      console.log("Type in Add", JSON.stringify(type))
-      alert("Type in Add",{type})
-  })
-    //Get title
-    //Get Desc
-    //Get Address Geometry
-
-    
-    const item = {
-      "name": values.title,
-      "description":values.description,
-      "media": photo,
-      "swap_type": newSwap,
-      "address": {
-        "country": place,
-        "city": place,
-        "latitude": geometry[1],
-        "longitude":geometry[0],
-        "type": "service"
-      },
-      "type_id": category_id,
-      "user_id": user.id,
-      "status": "open"
-    }
-
-    
-
-    console.log("Item ",item)
-
-    const response = await addService(item)
-    if(response!=null && response.message == "successful"){
-        alert("Service is added.")
-        navigation.navigate("Home")
-    }
-}
-
-
-  const inputStyle = {
-    borderWidth: 1,
-    borderColor: colors.grey,
-    padding: 12,
-    marginBottom: 5,
-  };
+  
+ 
   const displayList = async(text) => {
     const data =  await getLocation(text)
     const swap_types = data.features.map(function(data, idx){
@@ -261,7 +185,6 @@ export const addServiceForm = ({navigation}) => {
     <Text style={styles.subtitle}> Add items to swap with the ones you need!</Text>
     </View>
     <ImageActionSheet message={message} setMessage={setMessage} photoData={photoData} setPhotoData={setPhotoData} photo={photo} setPhoto={setPhoto} actionSheetRef={imageActionRef} />
-    <ButtonImageSheet imageList={imageList} photoData={photoData} setPhotoData={setPhotoData} photo={TINphoto} setPhoto={setTINPhoto} actionSheetRef={multipleImageRef}/>
     <Formik
       initialValues={{ 
         title: '',
@@ -271,7 +194,7 @@ export const addServiceForm = ({navigation}) => {
         swap: '',  
       }}
       onSubmit={
-       async (values) => 
+        (values) => 
          {
            const name = values.title
            const description = values.description
@@ -298,53 +221,72 @@ export const addServiceForm = ({navigation}) => {
                 setAlertMessage({msg:"Please add atleast one image.",title:'Featured Image'})
             }
             if(place!=""&&category!=""&&swapTypes!=[]&&message!="noimage"&&name!=""&&description!=""){
-              const user = await fetchuser()
-              console.log("user",user)
-              //Get Category ID
-              const category_id = await getOneTypeByName(category)
-              // const itemType = category_id[0].id
-              // console.log("newswap",category_id[0].id) 
-              //Get Type ID
-              const source = swapTypes.map(async function(data, idx){
-                const uri = await getOneTypeByName(data);
-                type.push(uri)
-                setNewSwap(type)
-                console.log("Type in Add", JSON.stringify(type))
-            })
-              const item = {
-                "name": values.title,
-                "description":values.description,
-                "picture": "",
-                "swap_type": newSwap,
-                "address": {
-                  "country": place,
-                  "city": place,
-                  "latitude": geometry[1],
-                  "longitude":geometry[0],
-                  "type": "service"
-                },
-                "type_id": category_id,
-                "user_id": user.id,
-                "status": "open"
+              
+      
+              // Upload a picture
+              const addProfilePic = async() => {
+                const user = await fetchuser().then((data)=>{return data.data})
+                setProfilePic("")
+                const photo_response =   await cloudinaryAddUpload(photoData).then(async(resp)=>{
+                  
+                  const item = { 
+                    "name": values.title,
+                    "description":values.description,
+                    "picture": resp,
+                    "media":[],
+                    "swap_type": swapTypes,
+                    "address": {
+                      "country": place,
+                      "city": place,
+                      "latitude": geometry[1],
+                      "longitude": geometry[0],
+                      "type": "service"
+                    },
+                    "type_id": category,
+                    "user_id": user.id,
+                    "status": "open"
+                  }
+                  // console.log(item)
+                  const response = await addService(item).then((data)=>{
+                    if(data.success){
+                      setShowAlert(true)
+                      setAlertMessage({msg:"Service is Added Successfully",title:"Service",color:colors.green,navTitle:'Profile'})
+                    TINphotoData.map(async(prop, key) => {
+                      console.log("Multiple Image",prop)
+                      const photo_response =  await cloudinaryAddUpload(prop).then(async(resp)=>{
+                            const media = {
+                              id: data.data.id,
+                              type:'service',
+                              url:resp
+                            }
+                            const response = await addMedia(media,user.data.token)
+                            console.log(response)
+                        })
+                        
+                  })
+                   
+                    // console.log(data)
+                  }
+                  else{
+                    setShowAlert(true)
+                    setAlertMessage({msg:data.error,title:"Service",color:colors.straw,navTitle:''})
+               
+                  }
+                  })
+                  return "added"
+                })
               }
-             try{
-              const response =  uploadImage(item)
             
-              console.log("response",JSON.stringify(response.message))
-              if(response.message=="successful"){
-                setShowAlert(true)
-                setAlertMessage({msg:'Image Uploaded Successfully',title:'Successful',color:colors.green})
-              }
-             }
-             catch(error){
-              setShowAlert(true)
-              setAlertMessage({msg:'Item didnt upload',title:'Error',color:colors.red})
-             }
+              addProfilePic()
             
-            }   
+        
+
+            
           
-          }
+          
       }
+    }
+    }
       validationSchema={yup.object().shape({
         title: yup
           .string()
@@ -389,7 +331,7 @@ export const addServiceForm = ({navigation}) => {
           
         
             <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{placeerror}</Text>
-            <TypeSeachBox value={category} setValue={setCategory}/> 
+            <TypeSeachBox value={category} setValue={setCategory} type="service"/> 
           <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{categoryerror}</Text>
           <TextInput
             value={values.title}
@@ -415,10 +357,10 @@ export const addServiceForm = ({navigation}) => {
           } 
         
 
-          <SwapTypeDropBox value={swapTypes} setValue={setSwapTypes}/> 
+          <SwapTypeDropBox value={swapTypes} setValue={setSwapTypes} type="service"/> 
           <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{swaperror}</Text>
 
-          <AlertModal show={showalert} message={alertMsg} setShowAlert={setShowAlert}/>
+          <AlertModal show={showalert} message={alertMsg} setShowAlert={setShowAlert} navigation={navigation}/>
             
           <TouchableOpacity style={styles.button} onPress={handleSubmit}>
                 <Text style={styles.text}>Submit</Text>

@@ -226,7 +226,7 @@ export const addItemForm = ({navigation}) => {
       
               // Upload a picture
               const addProfilePic = async() => {
-                const user = await fetchuser().then((data)=>{return data})
+                const user = await fetchuser().then((data)=>{return data.data})
                 setProfilePic("")
                 const photo_response =   await cloudinaryAddUpload(photoData).then(async(resp)=>{
                   
@@ -244,12 +244,12 @@ export const addItemForm = ({navigation}) => {
                       "type": "item"
                     },
                     "type_id": category,
-                    "user_id": user.data.id,
+                    "user_id": user.id,
                     "status": "open"
                   }
                   // console.log(item)
-                  const response = await addItem(item,user.data.token).then((data)=>{
-                    if(data.message=="successful"){
+                  const response = await addItem(item).then((data)=>{
+                    if(data.success){
                       setShowAlert(true)
                       setAlertMessage({msg:"Item is Added Successfully",title:"Item",color:colors.green,navTitle:'Profile'})
                     TINphotoData.map(async(prop, key) => {
@@ -266,7 +266,13 @@ export const addItemForm = ({navigation}) => {
                         
                   })
                    
-                    console.log(data)}
+                    // console.log(data)
+                  }
+                  else{
+                    setShowAlert(true)
+                    setAlertMessage({msg:data.error,title:"Item",color:colors.straw,navTitle:''})
+               
+                  }
                   })
                   return "added"
                 })

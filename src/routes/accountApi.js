@@ -91,27 +91,28 @@ export const login = async (email,password) => {
             "email": email,
             "password": password 
     });
+    console.log(params)
       try {
         try {
             const res = await axios.post(LOGIN, params,{
                 "headers": {
                 "content-type": "application/json",
                 },
+                }).then((data)=>{
+                  
+                    const user = {
+                        id: data.data.data.id,
+                        first_name: data.data.data.first_name,
+                        last_name: data.data.data.last_name,
+                        phone_number :data.data.data.phone_number,
+                        email : data.data.data.email,
+                        token: data.data.data.remember_token
+                    }
+                    console.log("user",JSON.stringify(data.data.data))
+                    return user
                 })
-          if (res.data) {
-            const user = {
-                id: res.data.id,
-                first_name: res.data.first_name,
-                last_name: res.data.last_name,
-                phone_number : res.data.phone_number,
-                email : res.data.email,
-                token: res.data.remember_token
-            }
-            // alert(`Message: ${user}`)
-            return user
-          } else {
-            console.log('Unable to fetch');
-          }
+          return res
+          
         }
       catch (error) {
         // Add custom logic to handle errors

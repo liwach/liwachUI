@@ -1,5 +1,5 @@
-import React, {useState,useEffect} from 'react'
-import {Image,View,StyleSheet,Text,ScrollView} from "react-native"
+import React, {useState,useEffect,createRef} from 'react'
+import {Image,View,StyleSheet,Text,ScrollView, TouchableOpacity} from "react-native"
 import { OutlinedButton } from '../../components/UI/OutlinedButton'
 import { colors } from '../../utils/colors'
 import { ProfileDetail } from './components/Profile'
@@ -12,6 +12,7 @@ import AntDesign from "react-native-vector-icons/AntDesign"
 import { fetchuser } from '../../utils/checkFirstTimeActions'
 import UserAvatar from '@muhzi/react-native-user-avatar'
 import { VerticalFlatList } from './components/VerticalFlatList'
+import { SwapActionSheet } from '../HomeScreen/component/SwapActionSheet'
 
 
 export const ItemDetailScreen = ({route, navigation}) => {
@@ -22,16 +23,18 @@ export const ItemDetailScreen = ({route, navigation}) => {
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState([])
     const [isVisible,setVisible] = useState(false)
-  
+    const SwapActionRef = createRef()
     
      const pic = item.picture
     const fetchData = async () => {
     //   const items = await getAllItems()
-     
+     const user = await fetchuser().then((data)=>{return data.data})
+    
       const swapTypes = []
       
       setData(item[0]);
-    //   console.log(`Detail swap ${item.swap_type}`)
+
+      console.log("user",user.id)
     try{
         const types =  item.item_swap_type.map(function(types, idx){
             const type =  types.type
@@ -39,9 +42,13 @@ export const ItemDetailScreen = ({route, navigation}) => {
            });
       
      setSwapType(swapTypes)
-     if(user.id == item.user.id){
+     if(user.id == item.user_id){
          setVisible(false)
      }
+     if(user.id !== item.user_id){
+         console.log("Not equal")
+        setVisible(true)
+    }
       setLoading(false);
     }
     
@@ -65,10 +72,29 @@ export const ItemDetailScreen = ({route, navigation}) => {
              <View>
                  <View style={styles.horizontal}>
                      <Text style={styles.header}>{item.name}</Text>
-                     <Ionicons name={'location'} size={13} style={styles.icon}/>
-                     <Text style={styles.endText}>{item.location}</Text>
+                     {!isVisible? 
+                   
+                        
+                     <SwapActionSheet 
+                     
+                     onPress={() => {
+                        SwapActionRef.current?.setModalVisible();
+                      }}
+                     item={item} 
+                     actionSheetRef={SwapActionRef}
+                     type="item"
+                     navigation={navigation}
+                     />
+                    
+                 
+                     :<View></View>
+                    }
                  </View>
                  <OutlinedButton text={item.category}/>
+                 <View style={styles.horizontal}>
+                 <Ionicons name={'location'} size={13} style={styles.icon}/>
+                 <Text style={styles.endText}>{item.location}</Text>
+                 </View>
              </View>
              <View  style={styles.horizontal}>
                  <FontAwesome name={'bars'} size={13} style={styles.iconDesc}/>
@@ -90,6 +116,7 @@ export const ItemDetailScreen = ({route, navigation}) => {
            {!isVisible?<VerticalFlatList navigation={navigation} data={item}/>:<View></View>
            
              }
+               
           </ScrollView>          
                 
                 

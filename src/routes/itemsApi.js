@@ -1,13 +1,12 @@
 import React from 'react'
 import axios from "axios";
 import { API_URL } from '../utils/config';
-import { POST_ITEM, getOneItem,getAllItems, EDIT_ITEM } from './urls';
+import { POST_ITEM, getOneItem,getAllItems, EDIT_ITEM, FLAG } from './urls';
 import { fetchuser } from '../utils/checkFirstTimeActions';
 
 export const getItemsById= async(id) => {
-
+  const user = await fetchuser().then((data)=>{return data.data})
   const params = JSON.stringify({
-  
     "id": id
       });
       
@@ -17,15 +16,15 @@ export const getItemsById= async(id) => {
       const res = await axios.post(getOneItem, params,{
           "headers": {
           "content-type": "application/json",
+          "Authorization":`Bearer ${user.token}`
           },
+          }).then((data)=>{
+            // console.log("From Item data",JSON.stringify(data))
+            return data.data.data
           })
-      if (res.data) {
-        console.log(`By ID Axios:${JSON.stringify(res.data)}`)
-        // alert(res.data)
-        return res.data
-      } else {
-        console.log('Unable to fetch');
-      }
+
+      return res
+    
     }
   catch (error) {
     // Add custom logic to handle errors
@@ -38,7 +37,7 @@ export const getItemsById= async(id) => {
 }
 
 export const getItemsByName= async(name) => {
-
+  const user = await fetchuser().then((data)=>{return data.data})
   const params = JSON.stringify({
   
     "name": name
@@ -90,28 +89,38 @@ export const getAllItem = async () => {
     }
 }
 
-export const getItemsByUserID = async(id) => {
-  console.log("From Item",id)
-  const user = await fetchuser().then((data)=>{return data.data})
+export const getItemsByUserID = async() => {
+  // console.log("From Item",id)
+  const user = await fetchuser().then((data)=>{
+    if(data==null){
+      return "nouser"
+    }
+    else{
+      return data.data
+    }
+
+  })
   const params = JSON.stringify({
-    "user_id": user.id
+    
       });
-      
+      console.log("From Item",user.token)
   try {
    
-  
-      const res = await axios.post(getOneItem, params,{
-          "headers": {
-          "content-type": "application/json",
+  if(user!="nouser"){
+      const res = await axios.post(getOneItem, params, {
+          headers: {
           "Authorization":`Bearer ${user.token}`
           }
           }).then((data)=>{
-            // console.log("From Item",JSON.stringify(data.data.data))
+            // console.log("From Item data",JSON.stringify(data))
             return data.data.data
           })
 
       return res
-      
+        }
+   else{
+      return "noitems"
+   }  
      
    
   } catch (error) {
@@ -156,9 +165,7 @@ export const getItemsByType = async(type,id) => {
 export const getItemsByStatus = async(status) => {
   const user = await fetchuser().then((data)=>{return data.data})
   const params = JSON.stringify({
-  
-    "user_id": user.id,
-    
+
     "status": status
       });
       
@@ -188,6 +195,7 @@ export const getItemsByStatus = async(status) => {
 
 export const addItem = async(item,token) => {
   console.log("Cool items",item)
+  const user = await fetchuser().then((data)=>{return data.data})
   const params = JSON.stringify({
       "name": item.name,
       "description":item.description,
@@ -213,14 +221,11 @@ export const addItem = async(item,token) => {
            const response = await axios.post(POST_ITEM, params,{
               "headers": {
               "content-type": "application/json",
-              "Authorization":`Bearer ${token}`
+              "Authorization":`Bearer ${user.token}`
               },
               }).then((data)=>{
                 console.log(`Axios Add item:${JSON.stringify(data.data.data)}`)
-                return {
-                  message:"successful",
-                  data: data.data.data
-                }
+                return data.data
               })
                 
           return response    
@@ -232,72 +237,97 @@ export const addItem = async(item,token) => {
 }
 
 export const editItem = async(item) => {
-  console.log("IDDD item",item.id)
+  // console.log("IDDD item",item.id)
+  const user = await fetchuser().then((data)=>{return data.data})
   const body = JSON.stringify({
     "name": item.name,
     "description":item.description,
     "picture": item.picture,
-    // "swap_type": item.swap_type,
+    "swap_type": item.swap_type,
     "address": {
-      "country": item.country,
-      "city": item.city,
-      "latitude": item.latitude,
-      "longitude": item.longitude,
-      "type": item.type
+      "country": item.address.country,
+      "city": item.address.city,
+      "latitude": item.address.latitude,
+      "longitude": item.address.longitude,
+      "type": item.address.type
     },
     "type_id": item.type_id,
     "user_id": item.user_id,
     "status": item.status
     });
-      
-  try {
+     console.log(body) 
+ 
     try {
       
-      const res = await axios.put(`${EDIT_ITEM}/${item.id}`)
-      if (res.data) {
-        console.log(`Axios:${JSON.stringify(res.data)}`)
-        return {
-          message:"successful",
-          data: res.data
-        }
-      } else {
-        console.log('Unable to fetch');
-      }
+      const res = await axios.put(`${EDIT_ITEM}/${item.id}`,
+      body,{
+        "headers": {
+        "content-type": "application/json",
+        "Authorization":`Bearer ${user.token}`
+        },
+      }).then((data)=>{
+       
+          // console.log(`Axios:${JSON.stringify(data.data.data.item_swap_type)}`)
+          return data.data.success
+          
+      })
+     return res
     }
-  catch (error) {
-    console.log(error.message)
-  }
-  } catch (error) {
+ 
+ catch (error) {
     console.log(error.message)
   }
 }
 
+export const flagItem = async(id) => {
+      console.log("in delete",id)
+      const user = await fetchuser().then((data)=>{return data.data})
+      const params = JSON.stringify({
+        "reason_id": 13,
+        "flagged_item_id": id,
+        "flagged_by_id": user.id,
+        "type": "item"
+      })
+      try {
+      
+      
+      const res = await axios.post(FLAG,params,{
+          "headers": {
+          "content-type": "application/json",
+          "Authorization":`Bearer ${user.token}`
+          },
+          }).then((data)=>{
+              console.log("Deleted Item",JSON.stringify(data.data))
+              return data.data.success
+          })
+    return res
+
+  } catch (error) {
+    console.log("hello",error.message)
+  }
+}
+
 export const deleteItem = async(id) => {
- 
-      console.log(id)
+  console.log("in delete",id)
+  const user = await fetchuser().then((data)=>{return data.data})
+  const params = JSON.stringify({
+
+      })
   try {
-    try {
+  
       
       const res = await axios.delete(`${EDIT_ITEM}/${id}`,{
           "headers": {
           "content-type": "application/json",
+          "Authorization":`Bearer ${user.token}`
           },
+          }).then((data)=>{
+              console.log("Deleted Item",JSON.stringify(data.data))
+              return data.data.success
           })
+    return res
 
-      if (res.status==204) {
-        console.log(`Axios:${JSON.stringify(res)}`)
-        return {
-          message:"successful"
-        }
-      } 
-      else {
-        console.log('Unable to fetch');
-      }
-    }
-  catch (error) {
-    console.log(error.message)
-  }
   } catch (error) {
-    console.log(error.message)
+    console.log("hello",error.message)
   }
 }

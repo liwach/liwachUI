@@ -74,7 +74,7 @@ export const SignUpSecond = ({route, navigation}) => {
   const [photoData,setPhotoData] = useState()
   const [message,setMessage] = useState("noimage")
   const [showalert,setShowAlert] = useState(false)
-  const [alertMsg,setAlertMessage] = useState({msg:"",title:"",color:''})
+  const [alertMsg,setAlertMessage] = useState({msg:"",title:"",color:'',navTitle:''})
 
   const displayList = async(text) => {
     const data =  await getLocation(text)
@@ -177,13 +177,13 @@ export const SignUpSecond = ({route, navigation}) => {
             if(data.message=="successful"){
               
               setShowAlert(true)
-              setAlertMessage({msg:'Signed Up Successfully!',title:'Sign Up',color:colors.green})
+              setAlertMessage({msg:'Signed Up Successfully!',title:'Sign Up',color:colors.green,navTitle:"AuthScreen"})
           
-              navigation.navigate('AuthScreen')
+              // navigation.navigate('AuthScreen')
              }
             else{
               setShowAlert(true)
-              setAlertMessage({msg:'Please check if you have registered with this email',title:'Sign Up',color:colors.straw})
+              setAlertMessage({msg:'Please check if you have registered with this email',title:'Sign Up',color:colors.straw,navTitle:""})
             }
            
           })
