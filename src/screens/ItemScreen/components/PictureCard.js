@@ -328,9 +328,6 @@ export const addItemForm = ({navigation}) => {
             onChange={event => setFieldValue(event.target.value)}
              />
              <FlatListData list={location} onItemClick={itemClick} />
-         
-          
-        
             <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{placeerror}</Text>
             <TypeSeachBox value={category} setValue={setCategory} type="item"/> 
           <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{categoryerror}</Text>
@@ -356,9 +353,7 @@ export const addItemForm = ({navigation}) => {
           {touched.title && errors.title &&
             <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.description}</Text>
           } 
-        
-
-          <SwapTypeDropBox value={swapTypes} setValue={setSwapTypes} type="item"/> 
+        <SwapTypeDropBox value={swapTypes} setValue={setSwapTypes} type="item"/> 
           <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{swaperror}</Text>
 
           <AlertModal show={showalert} message={alertMsg} setShowAlert={setShowAlert} navigation={navigation}/>
@@ -377,154 +372,154 @@ export const addItemForm = ({navigation}) => {
 
 
 const styles = StyleSheet.create({
-  modalContainer:{
-    top: 0,
-    left: 0,
-    width: 100,
-    height: 100,
-    backgroundColor: colors.bottomNav,
-    
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  listItem:{
-    margin: 10,
-    borderBottomWidth:0.5,
-    alignContent:'center',
-    borderBottomColor: colors.flord_secondary,
-    
-},
-  imageBox:{
-    
-    width:"100%",
-    backgroundColor:"transparent",
-  
-    borderBottomEndRadius: 70,
-    borderBottomStartRadius: 70
-  },
-  button: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 4,
-    width:200,
-    backgroundColor:colors.water,
-    alignSelf:"center",
-    marginTop:20
-  },
-  text: {
-    fontSize: 16,
-    lineHeight: 21,
-    fontWeight: 'bold',
-    letterSpacing: 0.25,
-    color: 'white',
-  },
-  formContainer: {
-    paddingLeft:30,
-    paddingRight:30,
-     
-  },
-  inputStyle:{
-    marginTop:10,
-    color:colors.flord_intro,
-    
-    backgroundColor:colors.light_grey,
-    width:"100%",
-  
-    marginRight:4,
-    borderRadius: 20,
-    textAlign:"center",
-  },
-  horizontalInputStyle:{
-    marginBottom: 10,
-    color:colors.black,
-    borderColor: colors.flord,
-    borderBottomWidth: 1,
-    textTransform:"capitalize",
-    textAlign:"center",
-    width:"50%",
-    marginRight:4,
-    borderRadius: 20,
-  },
-  subtitle:{
-    
-    top: 15,
-    color: colors.flord,
-    textAlign: 'center',
-    fontSize: 20,
-    fontWeight:'bold',
-  },
-    postButton: {
-    width: '40%',
-    borderRadius: 30,
-    height:40,
-    backgroundColor:colors.black,
-    color: colors.white,
-    alignSelf: 'center',
-    margin:20,
-    alignItems: 'center',
-    justifyContent: 'center',
+    modalContainer:{
+      top: 0,
+      left: 0,
+      width: 100,
+      height: 100,
+      backgroundColor: colors.bottomNav,
+      
+      alignItems: "center",
+      justifyContent: "center",
     },
-
-    container:{
-        width: '100%',
-        height: "100%",
-        alignContent:'center', 
-        backgroundColor: colors.white
-    },
-
-    imageView:{
-     
-    },
-
-    imageContainer:{
-
-    },
-    dropdown: {
-      backgroundColor: 'white',
-      borderBottomColor: 'gray',
-      borderBottomWidth: 0.5,
-      marginTop: 20,
+    listItem:{
+      margin: 10,
+      borderBottomWidth:0.5,
+      alignContent:'center',
+      borderBottomColor: colors.flord_secondary,
+      
   },
-  icon: {
-      marginRight: 5,
-      width: 18,
-      height: 18,
-  },
-  header:{
+    imageBox:{
+      
+      width:"100%",
+      backgroundColor:"transparent",
     
-    zIndex: 100,
-    top: 45,
-    color: colors.flord,
-    textAlign: 'center',
-    fontSize: 30,
-    fontWeight:'bold',
-    
-  } ,
-  item: {
-      paddingVertical: 17,
-      paddingHorizontal: 4,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
+      borderBottomEndRadius: 70,
+      borderBottomStartRadius: 70
+    },
+    button: {
       alignItems: 'center',
-  },
-  textItem: {
-      flex: 1,
+      justifyContent: 'center',
+      paddingVertical: 12,
+      paddingHorizontal: 32,
+      borderRadius: 4,
+      width:200,
+      backgroundColor:colors.water,
+      alignSelf:"center",
+      marginTop:20
+    },
+    text: {
       fontSize: 16,
-  },
-  shadow: {
-      shadowColor: '#000',
-      shadowOffset: {
-      width: 0,
-      height: 1,
+      lineHeight: 21,
+      fontWeight: 'bold',
+      letterSpacing: 0.25,
+      color: 'white',
+    },
+    formContainer: {
+      paddingLeft:30,
+      paddingRight:30,
+      
+    },
+    inputStyle:{
+      marginTop:10,
+      color:colors.flord_intro,
+      
+      backgroundColor:colors.light_grey,
+      width:"100%",
+    
+      marginRight:4,
+      borderRadius: 20,
+      textAlign:"center",
+    },
+    horizontalInputStyle:{
+      marginBottom: 10,
+      color:colors.black,
+      borderColor: colors.flord,
+      borderBottomWidth: 1,
+      textTransform:"capitalize",
+      textAlign:"center",
+      width:"50%",
+      marginRight:4,
+      borderRadius: 20,
+    },
+    subtitle:{
+      
+      top: 15,
+      color: colors.flord,
+      textAlign: 'center',
+      fontSize: 20,
+      fontWeight:'bold',
+    },
+      postButton: {
+      width: '40%',
+      borderRadius: 30,
+      height:40,
+      backgroundColor:colors.black,
+      color: colors.white,
+      alignSelf: 'center',
+      margin:20,
+      alignItems: 'center',
+      justifyContent: 'center',
       },
-      shadowOpacity: 0.2,
-      shadowRadius: 1.41,
-      elevation: 2,
-  },
 
-}   
+      container:{
+          width: '100%',
+          height: "100%",
+          alignContent:'center', 
+          backgroundColor: colors.white
+      },
+
+      imageView:{
+      
+      },
+
+      imageContainer:{
+
+      },
+      dropdown: {
+        backgroundColor: 'white',
+        borderBottomColor: 'gray',
+        borderBottomWidth: 0.5,
+        marginTop: 20,
+    },
+    icon: {
+        marginRight: 5,
+        width: 18,
+        height: 18,
+    },
+    header:{
+      
+      zIndex: 100,
+      top: 45,
+      color: colors.flord,
+      textAlign: 'center',
+      fontSize: 30,
+      fontWeight:'bold',
+      
+    } ,
+    item: {
+        paddingVertical: 17,
+        paddingHorizontal: 4,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    textItem: {
+        flex: 1,
+        fontSize: 16,
+    },
+    shadow: {
+        shadowColor: '#000',
+        shadowOffset: {
+        width: 0,
+        height: 1,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 1.41,
+        elevation: 2,
+    },
+
+  }   
 );
 
 
