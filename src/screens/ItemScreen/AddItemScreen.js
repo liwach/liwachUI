@@ -185,7 +185,7 @@ export const addItemForm = ({navigation}) => {
     <Text style={styles.subtitle}> Add items to swap with the ones you need!</Text>
     </View>
     <ImageActionSheet message={message} setMessage={setMessage} photoData={photoData} setPhotoData={setPhotoData} photo={photo} setPhoto={setPhoto} actionSheetRef={imageActionRef} />
-    <ButtonImageSheet imageList={imageList} photoData={TINphotoData} setPhotoData={setTINPhotoData} photo={TINphoto} setPhoto={setTINPhoto} actionSheetRef={multipleImageRef}/>
+    {/* <ButtonImageSheet imageList={imageList} photoData={TINphotoData} setPhotoData={setTINPhotoData} photo={TINphoto} setPhoto={setTINPhoto} actionSheetRef={multipleImageRef}/> */}
     <Formik
       initialValues={{ 
         title: '',
@@ -197,98 +197,11 @@ export const addItemForm = ({navigation}) => {
       onSubmit={
         (values) => 
          {
-           const name = values.title
-           const description = values.description
-           if(place==""){
-              setPlaceError("Please add your location.")
-           }
-           if(category==""){
-            setCategoryError("Please add your category.")
-         }
-            if(swapTypes==""){
-              setSwapTypeError("Please add your swap type.")
-          }
-              if(place!=""){
-                setPlaceError("")
-            }
-            if(category!=""){
-              setCategoryError("")
-          }
-              if(swapTypes!=""){
-                setSwapTypeError("")
-            }
-            if(message=="noimage"){
-                setShowAlert(true)
-                setAlertMessage({msg:"Please add atleast one image.",title:'Featured Image'})
-            }
-            if(place!=""&&category!=""&&swapTypes!=[]&&message!="noimage"&&name!=""&&description!=""){
-              
-      
-              // Upload a picture
-              const addProfilePic = async() => {
-                const user = await fetchuser().then((data)=>{return data.data})
-                setProfilePic("")
-                const photo_response =   await cloudinaryAddUpload(photoData).then(async(resp)=>{
-                  
-                  const item = { 
-                    "name": values.title,
-                    "description":values.description,
-                    "picture": resp,
-                    "media":[],
-                    "swap_type": swapTypes,
-                    "address": {
-                      "country": place,
-                      "city": place,
-                      "latitude": geometry[1],
-                      "longitude": geometry[0],
-                      "type": "item"
-                    },
-                    "type_id": category,
-                    "user_id": user.id,
-                    "status": "open"
-                  }
-                  // console.log(item)
-                  const response = await addItem(item).then((data)=>{
-                    if(data.success){
-                      setShowAlert(true)
-                      setAlertMessage({msg:"Item is Added Successfully",title:"Item",color:colors.green,navTitle:'Profile'})
-                    TINphotoData.map(async(prop, key) => {
-                      console.log("Multiple Image",prop)
-                      const photo_response =  await cloudinaryAddUpload(prop).then(async(resp)=>{
-                            const media = {
-                              id: data.data.id,
-                              type:'item',
-                              url:resp
-                            }
-                            const response = await addMedia(media,user.data.token)
-                            console.log(response)
-                        })
-                        
-                  })
-                   
-                    // console.log(data)
-                  }
-                  else{
-                    setShowAlert(true)
-                    setAlertMessage({msg:data.error,title:"Item",color:colors.straw,navTitle:''})
-               
-                  }
-                  })
-                  return "added"
-                })
-              }
-            
-              addProfilePic()
-            
-        
-
-            
           
           
-      }
-    }
-    }
-      validationSchema={yup.object().shape({
+        }
+        }
+          validationSchema={yup.object().shape({
         title: yup
           .string()
           .required('Please, provide your title!'),
@@ -317,24 +230,9 @@ export const addItemForm = ({navigation}) => {
         style={styles.formContainer}>
 
         {/* <AutocompletePlace onSelect={place => console.log(place)} /> */}
-        <TextInput
-            value={place}
-            style={styles.inputStyle}
-            onChangeText={text =>{displayList(text), setPlace(text)}}
-            onBlur={() => setFieldTouched('address')}
-            placeholder="Address"
-            placeholderTextColor={colors.flord}
-            onEndEditing={clearData}
-            onChange={event => setFieldValue(event.target.value)}
-             />
-             <FlatListData list={location} onItemClick={itemClick} />
+       
          
-          
-        
-            <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{placeerror}</Text>
-            <TypeSeachBox value={category} setValue={setCategory} type="item"/> 
-          <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{categoryerror}</Text>
-          <TextInput
+        <TextInput
             value={values.title}
             style={styles.inputStyle}
             onChangeText={handleChange('title')}
@@ -357,14 +255,16 @@ export const addItemForm = ({navigation}) => {
             <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.description}</Text>
           } 
         
+            <TypeSeachBox value={category} setValue={setCategory} type="item"/> 
+          <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{categoryerror}</Text>
+         
+        
 
-          <SwapTypeDropBox value={swapTypes} setValue={setSwapTypes} type="item"/> 
-          <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{swaperror}</Text>
 
           <AlertModal show={showalert} message={alertMsg} setShowAlert={setShowAlert} navigation={navigation}/>
             
           <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-                <Text style={styles.text}>Submit</Text>
+                <Text style={styles.text}>Next</Text>
               </TouchableOpacity>
         </KeyboardAvoidingView>
       )}

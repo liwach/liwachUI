@@ -1,28 +1,28 @@
-import { fetchUpdateAsync } from 'expo-updates'
 import React, { useEffect,useState,createRef } from 'react'
+import { TouchableOpacity } from 'react-native';
 import { Text, View,SafeAreaView,FlatList, TouchableHighlight, StatusBar,StyleSheet,Image } from 'react-native'
-import { getAllItems } from '../../routes/itemsApi';
-import { getAllService, getAllServices } from '../../routes/serviceApi';
+import { getAllItem, getAllItems } from '../../routes/itemsApi';
 import { colors } from '../../utils/colors';
 import { CategoryList } from '../HomeScreen/component/FlatListItem';
 import { SwapActionSheet } from '../HomeScreen/component/SwapActionSheet';
+import { LocationSearchBox } from './components/LocationSearchBox';
+import { fetchuser } from '../../utils/checkFirstTimeActions';
+import { getAllService } from '../../routes/serviceApi';
 
 
 
 
 
 export const AllServiceScreen = ({navigation}) => {
+    
     const [data, setData] = useState([]);
+    const [user,setUser] = useState([])
     const fetchData = async() => {
-        try{
-            const items = await getAllService()
-            setData(items)
-            console.log(items)
-        }
-        catch(error){
-            console.log(error.message)
-        }
-       
+        const user = await fetchuser().then((data)=>{return data.data})
+        setUser(user)
+        const items = await getAllService()
+        setData(items)
+        console.log(items)
     }
    
 
@@ -31,39 +31,32 @@ export const AllServiceScreen = ({navigation}) => {
     },[])
     const Item = ({ item }) => {
         const SwapActionRef = createRef()
+        const types = []
         const swap_types = item.service_swap_type.map(function(data, idx){
-            return(
-              {
-                id: data.type_id,
-              }
-            )
-           })
+          // console.log("Swap_types",data)
+          types.push(data.type.name)
+         });
   
-           const picture_urls = item.media.map(function(data, idx){
-             const url = data.url
-            return(
-              url
-            )
-           });
+         
   
            const pic = { uri: item.picture }
-  
+           const editItem = item.user.id===user.id?true:false
           console.log("picture",pic)
           const singleItem = {
             id: item.id,
             name: item.name,
             location:item.bartering_location.city,
-            picture: pic,
-            category: item.type == null ? "No Type": item.type.name,
+            picture:item.picture,
+           
+            category: item.type.name,
             time: item.created_at,
-            swap_type: swap_types,
+            swap_type: types,
             number_request: item.number_of_request,
-            user: item.user == null? "":item.user.first_name,
+            user:item.user.first_name,
             status: item.status,
             desc: item.description,
+            post_type: item.bartering_location.type,
             user_id:item.user_id,
-            post_type: item.bartering_location.type
-      
           }
         return(
             
@@ -73,8 +66,16 @@ export const AllServiceScreen = ({navigation}) => {
 
                 onPress={() => {
                     SwapActionRef.current?.setModalVisible();
-                    
                   }}
+
+                onCardPress={
+                  () => 
+                /* 1. Navigate to the Details route with params */
+                navigation.navigate('PostDetail', {
+                  item:singleItem,
+                  edit:editItem
+                })
+                }
                 
                 navigation={navigation}
               />
@@ -84,7 +85,7 @@ export const AllServiceScreen = ({navigation}) => {
       }
     return(
         <SafeAreaView style={styles.container}>
-            <CategoryList filteredData={data} setFilteredData={setData} type={"service"}/>
+            <CategoryList filteredData={data} setFilteredData={setData} type={"item"}/>
             <FlatList
               data={data}
               renderItem={Item}
@@ -99,10 +100,12 @@ export const AllServiceScreen = ({navigation}) => {
 
 }
 
-const FlatListItem = ({actionRef,onPress, item,navigation }) => (
+const FlatListItem = ({actionRef,onPress, item,navigation,onCardPress }) => (
 
     <View style={styles.listItem}> 
-            <Image source={item.picture} style={{width:180,height:180,borderRadius:10}} />
+            <TouchableOpacity onPress={onCardPress}>
+            <Image source={ {uri: item.picture}} style={{width:180,height:180,borderRadius:10}} />
+            </TouchableOpacity>
           <Text style={styles.title}>{item.name}</Text> 
           <Text style={styles.desc}>{item.desc}</Text> 
           <SwapActionSheet 
@@ -148,7 +151,6 @@ const styles = StyleSheet.create({
     desc: {
         fontSize: 15,
         margin:2,
-        color:colors.water,
-        width:180
+        color:colors.water
       }
   });

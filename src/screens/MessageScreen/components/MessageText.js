@@ -9,7 +9,7 @@ import { colors } from "../../../utils/colors"
 
 export const TextBox = ({item, type,user,logged_user}) => {
         //  alert(item.sender_id)
-        const backgroundColor = type === "send" ? colors.white : colors.primary;
+        const backgroundColor = type === "send" ? colors.white : colors.water;
         const color = type === "send" ? colors.primary : colors.white;
         const [username,setUser] = useState("")
 
@@ -18,8 +18,10 @@ export const TextBox = ({item, type,user,logged_user}) => {
                 setUser(logged_user.first_name)
             }
             else{
-                const getUser = await getUserByID(user)
-                setUser(getUser[0].first_name)
+                const getUser = await getUserByID(user).then((data)=>{
+                    setUser(data.first_name)
+                })
+                
                
             }
            

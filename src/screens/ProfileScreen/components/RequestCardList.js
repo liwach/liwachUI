@@ -51,7 +51,7 @@ const acceptRequest = async(item) => {
       }
 
     const requestResponse = await acceptRequests(request)
-   alert(requestResponse)
+  
 
 }
 
@@ -133,11 +133,7 @@ export const RequestCardList = ({navigation}) => {
     const [refreshing, setRefreshing] = React.useState(false);
     const  [userData,setUserData] = useState([]) 
     const [req,setReq] = useState([])
-    const fetchUser = async() => {
-        const user = await fetchuser();
-        setUserData(user)
-    }
-    fetchUser()
+ 
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
         fetchData()       
@@ -146,6 +142,7 @@ export const RequestCardList = ({navigation}) => {
 
 
   const fetchRequestForEach = async(id) => {
+    
       const requests = await getAllRequestsByItemID(id)
       const final = []
       if(requests!==null){
@@ -154,7 +151,7 @@ export const RequestCardList = ({navigation}) => {
       });
       }
       
-    console.log("listItems",final)
+    // console.log("listItems",final)
     return final
     
   }  
@@ -169,12 +166,12 @@ export const RequestCardList = ({navigation}) => {
       return data
     })
     setOneFinal(otherRequests)
-    console.log("Requests: ",otherRequests)
+    // console.log("Requests: ",otherRequests)
     setUser(user)
     
 
     setLoading(false);
-    console.log("data",JSON.stringify(requestList))
+    // console.log("data",JSON.stringify(requestList))
 
   };
 

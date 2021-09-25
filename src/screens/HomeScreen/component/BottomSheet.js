@@ -12,18 +12,22 @@ import { fetchuser } from '../../../utils/checkFirstTimeActions'
 import { getItemsById, getItemsByName } from '../../../routes/itemsApi'
 import uuid from 'react-native-uuid';
 import { AlertModal } from '../../../components/UI/AlertModal'
+import { getServiceById } from '../../../routes/serviceApi'
 
 
 
  
 
-export const SendButton = (value,id,item,navigation) => {
+export const SendButton = (value,id,item,type,navigation) => {
+    console.log("Send button",item)
     const itemValue = value.selectedValue
     const [showalert,setShowAlert] = useState(false)
     const [alertMsg,setAlertMessage] = useState({msg:"",title:"",color:'',navTitle:''})
     const sendRequest = async(value,id,item)=> {
         const token = uuid.v4()
         const user = await fetchuser()
+        
+        if(value.type=="item"){
         const requester_item = await getItemsById(value.selectedValue)
         const singleItem = requester_item[0]
         console.log(JSON.stringify(singleItem))
@@ -35,7 +39,7 @@ export const SendButton = (value,id,item,navigation) => {
             const request = {
                 "status": "open",
                 "requester_id": user.id,
-                "requested_item_id": value.item.id,
+                "requested_item_id": value.item,
                 "requester_item_id": singleItem.id,
                 "rating": 0,
                 "token": token,
@@ -60,7 +64,45 @@ export const SendButton = (value,id,item,navigation) => {
            }
            
         }
-       
+    }
+    if(value.type=="service"){
+        const requester_item = await getServiceById(value.selectedValue)
+        const singleItem = requester_item[0]
+        console.log(JSON.stringify(singleItem))
+        if(singleItem===undefined){
+            setShowAlert(true)
+            setAlertMessage({msg:"Please choose an item first.",title:'Request Error',color:colors.straw}) 
+        }
+        if(singleItem!==undefined){
+            const request = {
+                "status": "open",
+                "requester_id": user.id,
+                "requested_item_id": value.item,
+                "requester_item_id": singleItem.id,
+                "rating": 0,
+                "token": token,
+                "type": singleItem.bartering_location.type
+            }
+            try{
+                const response = await addRequest(request).then((data)=>{
+                    if(data){
+                      setShowAlert(true)
+                      setAlertMessage({msg:"Request sent",title:"Request",color:colors.green,navTitle:''})
+                  }
+                  else{
+                    setShowAlert(true)
+                    setAlertMessage({msg:"Request is not sent",title:"Service",color:colors.straw,navTitle:''})
+               
+                  }
+                  })
+                }
+            catch(error){
+            setShowAlert(true)
+            setAlertMessage({msg:JSON.stringify(error.message),title:'Request Error',color:colors.red,navTitle:''})
+           }
+           
+        }
+    }
      
 
        

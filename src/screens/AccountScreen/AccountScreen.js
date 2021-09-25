@@ -11,10 +11,12 @@ export const AccountScreen = ({navigation}) => {
     const [url,setUrl] = useState("")
 
     const fetchData=async()=>{
-        const user = await fetchuser()
-        const userData = await getUserByID(user.id)
-        setUser(user)
-        setUrl(userData[0].profile_picture)
+        const user = await fetchuser().then((data)=>{return data.data})
+        const userData = await getUserByID(user.id).then((data)=>{
+            setUser(data)
+        })
+      
+        setUrl(user.pic)
     }
     useEffect(()=>{
         fetchData()
@@ -30,26 +32,23 @@ export const AccountScreen = ({navigation}) => {
                 <UserAvatar
                 size={80}
                 backgroundColor={colors.flord_intro}
+                
+                userName={user.first_name}
                 src={url}
                 />
             </TouchableOpacity>         
             <Text style={styles.textContainer}>Ola, {user.first_name} {user.last_name} </Text> 
-            <AccountMenuItem iconName={"md-pencil"} Title={"Edit Profile"} navigation={navigation}
+            {/* <AccountMenuItem iconName={"md-pencil"} Title={"Edit Profile"} navigation={navigation}
                 onPress={()=>navigation.navigate('EditAccountScreen'
                 ,{
                     user:user
                 }
                 )}
-            />
+            /> */}
             <AccountMenuItem iconName={"add-circle-outline"} Title={"Subscribe"} navigation={navigation}
                 onPress={()=>navigation.navigate('SubscribeScreen')}
             />
-            <AccountMenuItem iconName={"shield-checkmark"} Title={"Change password"} navigation={navigation}/>
-            <AccountMenuItem iconName={"share"} Title={"Share"} navigation={navigation}/>
-            <AccountMenuItem iconName={"share"} Title={"Sign Up"} navigation={navigation} onPress={()=>navigation.navigate('SignupScreen')}/>
-            
-            <AccountMenuItem iconName={"share"} Title={"Log In"} navigation={navigation} onPress={()=>navigation.navigate('AuthenticationScreen')}/>
-            <Button color={colors.white} style={styles.button} onPress={()=>{alert("Logged out")}}>Log out</Button>
+           <Button color={colors.white} style={styles.button} onPress={()=>navigation.navigate("AuthScreen")}>Log out</Button>
 
             
 

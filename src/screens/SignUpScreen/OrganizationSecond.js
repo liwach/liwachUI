@@ -53,6 +53,7 @@ import  {getAllMembership} from '../../routes/membershipAPI'
 import { postUser } from '../../routes/accountApi';
 import { uploadPicture } from '../../routes/utilApi';
 import { ButtonImageSheet } from './components/ButtonImageSheet';
+import { AlertModal } from '../../components/UI/AlertModal';
 
 export const OrganizationSecond = ({route, navigation}) => {
   const { item} = route.params;
@@ -72,7 +73,8 @@ export const OrganizationSecond = ({route, navigation}) => {
   const [dateerror,setDateError] = useState("")
   const [membererror,setMemberError] = useState("")
   const [photoData,setPhotoData] = useState()
-
+  const [showalert,setShowAlert] = useState(false)
+  const [alertMsg,setAlertMessage] = useState({msg:"",title:"",color:'',navTitle:''})
 
   const displayList = async(text) => {
     const data =  await getLocation(text)
@@ -126,7 +128,7 @@ export const OrganizationSecond = ({route, navigation}) => {
         "TIN_picture": "https://res.cloudinary.com/liwach/image/upload/v1630910270/bxffla2sq3dfyi2j8ig8.jpg",
         "status": "active",
         "birthdate": date,
-        "type": "company",
+        "type": "organization",
         "address": {
           "country": place,
           "city": place,
@@ -142,11 +144,15 @@ export const OrganizationSecond = ({route, navigation}) => {
           const response =  await postUser(user)
           if(response){
             // alert("Succesfully Registered,"+JSON.stringify(response))
+            setShowAlert(true)
+            setAlertMessage({msg:'Signed Up Successfully!',title:'Sign Up',color:colors.green,navTitle:"AuthScreen"})
             navigation.navigate('AuthScreen')
            }
          }
          catch(error){
-          alert(error.message)
+          setShowAlert(true)
+          setAlertMessage({msg:'Please check if you have registered with this email',title:'Sign Up',color:colors.straw,navTitle:""})
+   
          }
       
     //  const photo_response = await uploadImage(response.id)
@@ -363,7 +369,8 @@ const itemClick = (item) => {
           <CustomPicker membership={membership} setMembership={setMembership}/>
           <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{membererror}</Text>
 
-       
+          <AlertModal show={showalert} setShowAlert={setShowAlert} message={alertMsg} navigation={navigation}/>
+
           <Button
             
             color={colors.water}

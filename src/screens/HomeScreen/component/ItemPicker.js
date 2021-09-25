@@ -2,6 +2,7 @@ import React, { useState,useEffect } from "react";
 import { View, Picker, StyleSheet } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
 import { getItemsByUserID } from "../../../routes/itemsApi";
+import { getServicesByUserID } from "../../../routes/serviceApi";
 import { fetchuser } from "../../../utils/checkFirstTimeActions";
 import { colors } from "../../../utils/colors";
 
@@ -13,6 +14,26 @@ export const ItemPicker = ({value, setValue,type}) => {
         if(type=="item"){
           
           const items = await getItemsByUserID()
+          .then((data)=>{
+            const listItems = data.map(function(data, idx){
+              const name = data.name
+              const id = data.id
+             return(
+               {
+                label:name,
+                value:id
+               }
+     
+             )
+            });
+           
+            setItems(listItems)
+          })
+         
+        }
+        if(type=="service"){
+          
+          const items = await getServicesByUserID()
           .then((data)=>{
             const listItems = data.map(function(data, idx){
               const name = data.name

@@ -1,6 +1,7 @@
 import React from "react"
 import axios from "axios"
 import { EDIT_ITEM, UPDATE_REQUEST_STATUS } from "./urls";
+import { fetchuser } from "../utils/checkFirstTimeActions";
 
 export const getRequestByStatus = async (id,status) => {
   const body = JSON.stringify({
@@ -38,32 +39,32 @@ export const getRequestByStatus = async (id,status) => {
 }
 
 
-export const exchangeItem = async(id,status) => {
+export const exchangeItem = async(id) => {
 
-
+  const user = await fetchuser().then((data)=>{return data.data})
+    console.log("id in exc",id)
     const body = JSON.stringify({
         "status": "bartered"
       });
         
     try {
-      try {
         
-        const res = await axios.put(`${EDIT_ITEM}/${id}`, body,{
+          const res = await axios.put(`${EDIT_ITEM}/${id}`,
+          body,{
             "headers": {
             "content-type": "application/json",
+            "Authorization":`Bearer ${user.token}`
             },
-            })
-        
-        if (res.data) {
-          console.log(`Axios:${JSON.stringify(res.data)}`)
-        } else {
-          console.log('Unable to fetch');
-        }
-      }
+          }).then((data)=>{
+          
+              // console.log(`Axios:${JSON.stringify(data.data.data.item_swap_type)}`)
+              return data.data.success
+              
+          })
+        return res
+    
+    } 
     catch (error) {
-      // Add custom logic to handle errors
-    }
-    } catch (error) {
       console.log(error.message)
     }
 }

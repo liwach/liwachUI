@@ -23,7 +23,7 @@ import { fetchuser } from "../../../utils/checkFirstTimeActions";
 import { OutlinedButton } from "../../../components/UI/OutlinedButton";
 import UserAvatar from "@muhzi/react-native-user-avatar";
 import { acceptRequests, getAllRequestsByItemID, getAllRequestsBySenderID } from "../../../routes/requestApi";
-import { getItemsByUserID } from "../../../routes/itemsApi";
+import { getItemsById, getItemsByUserID } from "../../../routes/itemsApi";
 
 
 
@@ -47,17 +47,20 @@ const acceptRequest = async(item) => {
     const request = {
         "id": item.id,
         "status": "accepted",
-       
       }
 
-    const requestResponse = await acceptRequests(request)
-   alert(requestResponse)
+    const requestResponse = await acceptRequests(request).then((data)=>{
+        if(data.status=="accepted"){
+            return true
+        }
+    })
+    return requestResponse
 
 }
 
 
 
-const FlatListItem = ({user,navigation, item, onPress, onMessagePress, backgroundColor, textColor }) => (
+const FlatListItem = ({fetch,requester_item,status,setStatus,user,navigation, item, onPress, onMessagePress, backgroundColor, textColor }) => (
 
         
     
@@ -67,53 +70,54 @@ const FlatListItem = ({user,navigation, item, onPress, onMessagePress, backgroun
                  <Text style={[styles.status]}>{item.status}</Text>
             </View>
             <View>
-                <Text style={[styles.title, styles.text]}>{item.requested_item==null?"":item.requested_item.name}</Text>
-                <Text style={[styles.category]}>{item.requested_item==null?"":item.requested_item.type_id}</Text>
-                <Text style={[styles.text]}>Swap with: {item.requester_item==null?"":item.requester_item.name}</Text>
+                {/* {console.log("Requester",item)} */}
+                <Text style={[styles.title, styles.text]}>{item.requester_item_id}</Text>
+                {/* <Text style={[styles.category]}>{item.requested_item==null?"":item.requested_item.type_id}</Text> */}
+                <Text style={[styles.text]}>Requester:{item.requester_id}</Text>
             </View>
             <View style={{flexDirection:'column',flex:1}}>
             <View style={[styles.time]}>
                 <Icon style={[styles.timeTexts,styles.icons]} name='time' size={10} color={colors.primary}  />
-                <Text style={styles.timeTexts}>{item.requested_item==null?"":item.created_at}</Text>
+                <Text style={styles.timeTexts}>{item.created_at}</Text>
             </View>
-           {
-               item.status == "open"&&user.id!=item.requester_id ?
+          
+            {
+               status == "open"&&user.id!=item.requester_id ?
                  <View style={[styles.horizontal]}>
-                 <Icon style={[styles.timeTexts,styles.icons]} name='close-circle' size={30} color={colors.primary}  />
-                 <Icon style={[styles.timeTexts,styles.icons]} onPress={()=>acceptRequest(item)} name='checkmark-circle-sharp' size={30} color={colors.primary}  />
-             </View>
-             : <View/>
-           }
-
-{
-               item.status == "open"&&user.id==item.requester_id ?
-                 <View style={[styles.horizontal]}>
-                 {/* <Text style={[styles.req,styles.icons]}>Requests: {item.requested_item.number_of_request}</Text>     */}
-                 </View>
-             : <View/>
-           }
-
-{
-               item.status == "accepted" ?
-                 <View style={[styles.horizontal]}>
-                 <ExchangeButton navigation={navigation} item={item}/>
-                 <ChatButton navigation={navigation} item={item}/>
-
+                 <Icon style={[styles.timeTexts,styles.icons]} name='close-circle' size={30} color={colors.water}  />
+                 <Icon style={[styles.timeTexts,styles.icons]} onPress={()=>acceptRequest(item)} name='checkmark-circle-sharp' size={30} color={colors.water}  />
              </View>
              : <View/>
            }
 
             {
-               item.status == "expired"&&user.id!=item.requester_id ?
+               item.status == "pending"&&user.id!=item.requester_id ?
                  <View style={[styles.horizontal]}>
-                <Icon style={[styles.timeTexts,styles.icons]} name='arrow-undo-circle' size={25} color={colors.primary} onPress={()=>{
-                              alert("reverse")          
-                    }}  />
-
-
+                 <Icon style={[styles.timeTexts,styles.icons]} name='close-circle' size={40} color={colors.water}  />
+                 <Icon style={[styles.timeTexts,styles.icons]} onPress={async()=>{
+                     const isAccepted = await acceptRequest(item).then((data)=>{
+                            return data
+                     })
+                     if(isAccepted){
+                     
+                         fetch()
+                     }
+                }} name='checkmark-circle-sharp' size={40} color={colors.water}  />
              </View>
              : <View/>
            }
+{
+               item.status == "accepted"&&user.id!=item.requester_id?
+                 <View style={[styles.horizontal]}>
+                 <ExchangeButton navigation={navigation} item={item} fetch={fetch}/>
+                 <ChatButton navigation={navigation} item={item}/>
+
+             </View>
+             : <View style={[styles.horizontal]}>
+             </View>
+           }
+
+          
            
             </View>
         </TouchableOpacity>
@@ -124,7 +128,8 @@ const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   }
 
-export const VerticalFlatList = ({data,navigation}) => {
+export const VerticalFlatList = ({data,requests,navigation,type}) => {
+    
     const [requestList, setRequestList] = useState("");
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState([]);
@@ -132,11 +137,8 @@ export const VerticalFlatList = ({data,navigation}) => {
     const [refreshing, setRefreshing] = React.useState(false);
     const  [userData,setUserData] = useState([]) 
     const [req,setReq] = useState([])
-    const fetchUser = async() => {
-        const user = await fetchuser();
-        setUserData(user)
-    }
-    fetchUser()
+    const [requestStatus,setRequestStatus] = useState("pending")
+    
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
         fetchData()       
@@ -146,20 +148,38 @@ export const VerticalFlatList = ({data,navigation}) => {
  
 
   const fetchData = async () => {
-    const user = await fetchuser()
-  
-    const requests = await getAllRequestsByItemID(data.id)
-    setOneFinal(requests)
+    const user = await fetchuser().then((data)=>{return data.data})
+    setUserData(user)
+      setReq([])
+    const reques = requests.map(async(reqst, idx)=>{
+        console.log(reqst.requester_item_id)
+        const requestsItems = await getItemsById(reqst.requester_item_id).then((data)=>{
+            // console.log("data in requester",data)
+            setReq(req => [...req,data] );
+            return data
+        })
+       }); 
+
+    
+
   }
   useEffect(() => {
     fetchData();
   }, []);
     const renderItem = ({ item }) => {
+        
+
+        console.log("Render ",item.type)
       
+       
         return(
           <FlatListItem
             item={item}
+            status={requestStatus}
+            setStatus={setRequestStatus}
+            fetch={fetchData}
             user={userData}
+            requester_item={req}
             navigation={navigation}
             onPress={() => 
                 /* 1. Navigate to the Details route with params */
@@ -182,7 +202,7 @@ export const VerticalFlatList = ({data,navigation}) => {
                 />}
             >
             <FlatList
-              data={oneFinal}
+              data={requests}
               renderItem={renderItem}
               keyExtractor={(item) => item.id}
               
@@ -206,7 +226,7 @@ const styles = StyleSheet.create({
     },
     item:{
         flexDirection: "row",
-        backgroundColor:colors.bottomNav,
+        backgroundColor:colors.white,
         color:colors.white,
         margin:5,
         padding:5,

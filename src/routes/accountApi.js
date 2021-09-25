@@ -2,6 +2,7 @@ import React from 'react'
 import axios from "axios";
 import { API_URL } from '../utils/config';
 import { POST_MESSAGE, GET_MESSAGE_BY_REQUEST,POST_USER, LOGIN, FIND_USER } from './urls';
+import { fetchuser } from '../utils/checkFirstTimeActions';
 
 
 export const getMessageByRequest = async ({token}) => {
@@ -123,34 +124,36 @@ export const login = async (email,password) => {
   }
   
   export const getUserByID = async (id) => {
+    const user = await fetchuser().then((data)=>{return data.data})
     const params = JSON.stringify({
        
             "id": id
     });
       try {
-        try {
+      
             const res = await axios.post(FIND_USER, params,{
                 "headers": {
                 "content-type": "application/json",
+                "Authorization":`Bearer ${user.token}`
                 },
+                }).then((data)=>{
+                    console.log("user in message",data.data[0])
+                    const userData = data.data[0]
+                    const user = {
+                        id: userData.id,
+                        first_name: userData.first_name,
+                        last_name: userData.last_name,
+                        phone_number : userData.phone_number,
+                        email : userData.email,
+                        pic : userData.profile_picture
+                    }
+                    // alert(`Message: ${JSON.stringify(res.data)}`)
+                    return user
+                
                 })
-          if (res.data) {
-            const user = {
-                id: res.data.id,
-                first_name: res.data.first_name,
-                last_name: res.data.last_name,
-                phone_number : res.data.phone_number,
-                email : res.data.email
-            }
-            // alert(`Message: ${JSON.stringify(res.data)}`)
-            return res.data
-          } else {
-            console.log('Unable to fetch');
-          }
-        }
-      catch (error) {
-        // Add custom logic to handle errors
-      }
+         return res
+        
+     
       } catch (error) {
         console.log(error.message)
       }

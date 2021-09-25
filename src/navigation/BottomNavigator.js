@@ -73,21 +73,15 @@ export const BottomNavigator = ()=>{
       name="Profile" 
       component={ProfileStackScreen}
       options={{
-        tabBarLabel: 'Profile',
+        tabBarLabel: 'Posts',
       }}
       />
-      <Tab.Screen 
-      name="Message" 
-      component={MessageStackScreen}
-      options={{
-        tabBarLabel: 'Message',
-      }}
-      />
+    
         <Tab.Screen 
       name="Request" 
       component={RequestScreenStack}
       options={{
-        tabBarLabel: 'Request',
+        tabBarLabel: 'Requests',
       }}
       />
     </Tab.Navigator>

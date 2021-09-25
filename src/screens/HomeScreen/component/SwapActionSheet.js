@@ -14,8 +14,9 @@ import { fetchuser } from "../../../utils/checkFirstTimeActions";
 
 export const SwapSheet = ({item,actionSheetRef,type,navigation}) => {
     const [value, setValue] = useState(null);
-   
-    // console.log("Selected value: ",value)
+    const itemValue = item
+    const type_value = type
+    // console.log("Selected value: ",type)
    return( 
     <ScrollView style={styles.actionSheetContainer} >
    <ActionSheet ref={actionSheetRef} containerStyle={styles.actionsheet}>
@@ -35,7 +36,7 @@ export const SwapSheet = ({item,actionSheetRef,type,navigation}) => {
     <View style={[styles.descBox]}>
         <View style={styles.horizontal}>
             <View style={styles.horizontalItems} >
-                <Image style={styles.imageBox} source={item.picture} />
+                <Image style={styles.imageBox} source={{uri:item.picture}} />
             
                 <Text style={[styles.header]}>{item.name}</Text>
                 <Text style={styles.desc}>{item.desc}</Text>
@@ -45,7 +46,8 @@ export const SwapSheet = ({item,actionSheetRef,type,navigation}) => {
                     <ItemPicker value={value} setValue={setValue} type={type}/>
             </View>
         </View>
-        <SendButton navigation={navigation} selectedValue={value} item={item}/>
+        
+        <SendButton navigation={navigation} value={value} type={type} item={itemValue}/>
 
     </View>
    

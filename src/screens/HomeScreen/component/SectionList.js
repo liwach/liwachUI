@@ -43,7 +43,9 @@ const FlatListItem = ({actionRef, navigation, item, onPress, backgroundColor, te
                 <SwapActionSheet 
                      onPress={onPress}
                      item={item} 
-                     actionSheetRef={actionRef}/>
+                     actionSheetRef={actionRef}
+                     type={item.post_type}
+                     />
               
               <Text style={[styles.title]}>{item.desc}</Text> 
               {/* <View style={styles.horizontalContainer}>

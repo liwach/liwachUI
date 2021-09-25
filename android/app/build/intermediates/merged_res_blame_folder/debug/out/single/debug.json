@@ -1,42 +1,266 @@
 [
     {
-        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_ic_launcher_round.png.flat",
-        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_round.png"
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_reactnativevectoricons_glyphmaps_fontisto.json.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_reactnativevectoricons_glyphmaps_fontisto.json"
     },
     {
-        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_fontawesome.json.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_fontawesome.json"
     },
     {
-        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.png"
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_zocial.ttf.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_zocial.ttf"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_node_modules_reactnativedropdownpicker_src_themes_light_icons_arrowup.png.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\drawable-mdpi\\node_modules_reactnativedropdownpicker_src_themes_light_icons_arrowup.png"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_foundation.ttf.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_foundation.ttf"
     },
     {
         "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_ic_launcher.png.flat",
         "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png"
     },
     {
-        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_ic_launcher_round.png.flat",
-        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_round.png"
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_node_modules_reactnativedatepicker_date_icon.png.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\drawable-mdpi\\node_modules_reactnativedatepicker_date_icon.png"
     },
     {
-        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.png"
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_materialicons.ttf.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_materialicons.ttf"
     },
     {
-        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_ic_launcher_round.png.flat",
-        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_round.png"
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_foundation.json.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_foundation.json"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_materialicons.json.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_materialicons.json"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_fontawesome5free.json.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_fontawesome5free.json"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_node_modules_reactnativedropdownpicker_src_themes_light_icons_close.png.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\drawable-mdpi\\node_modules_reactnativedropdownpicker_src_themes_light_icons_close.png"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_evilicons.json.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_evilicons.json"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontawesome5_brands.ttf.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontawesome5_brands.ttf"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_ionicons.json.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_ionicons.json"
     },
     {
         "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher_round.png.flat",
         "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_round.png"
     },
     {
-        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher_round.png.flat",
-        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_round.png"
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_feather.json.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_feather.json"
     },
     {
         "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_ic_launcher.png.flat",
         "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_evilicons.ttf.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_evilicons.ttf"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_node_modules_reactnativedropdownpicker_src_themes_dark_icons_arrowup.png.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\drawable-mdpi\\node_modules_reactnativedropdownpicker_src_themes_dark_icons_arrowup.png"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_reactnativevectoricons_glyphmaps_ionicons.json.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_reactnativevectoricons_glyphmaps_ionicons.json"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_reactnativevectoricons_glyphmaps_materialcommunityicons.json.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_reactnativevectoricons_glyphmaps_materialcommunityicons.json"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_antdesign.json.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_antdesign.json"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_src_assets_images_signup.png.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\drawable-mdpi\\src_assets_images_signup.png"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_entypo.ttf.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_entypo.ttf"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_simplelineicons.ttf.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_simplelineicons.ttf"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_octicons.ttf.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_octicons.ttf"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_node_modules_reactnavigation_stack_src_views_assets_backiconmask.png.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\drawable-mdpi\\node_modules_reactnavigation_stack_src_views_assets_backiconmask.png"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_node_modules_reactnativedropdownpicker_src_themes_light_icons_tick.png.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\drawable-mdpi\\node_modules_reactnativedropdownpicker_src_themes_light_icons_tick.png"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_node_modules_reactnavigation_stack_src_views_assets_backicon.png.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\drawable-mdpi\\node_modules_reactnavigation_stack_src_views_assets_backicon.png"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_ic_launcher_round.png.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_reactnativevectoricons_glyphmaps_fontawesome.json.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_reactnativevectoricons_glyphmaps_fontawesome.json"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_ionicons.ttf.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_ionicons.ttf"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi_node_modules_reactnavigation_stack_src_views_assets_backicon.png.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\drawable-xxxhdpi\\node_modules_reactnavigation_stack_src_views_assets_backicon.png"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_zocial.json.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_zocial.json"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_node_modules_reactnativepaper_src_assets_backchevron.png.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\drawable-mdpi\\node_modules_reactnativepaper_src_assets_backchevron.png"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_node_modules_reactnavigation_stack_src_views_assets_backicon.png.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\drawable-xhdpi\\node_modules_reactnavigation_stack_src_views_assets_backicon.png"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_ic_launcher_round.png.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_app.json.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\app.json"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_fontisto.json.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_fontisto.json"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_src_assets_images_starter1.png.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\drawable-mdpi\\src_assets_images_starter1.png"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_node_modules_reactnavigation_stack_src_views_assets_backicon.png.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\drawable-hdpi\\node_modules_reactnavigation_stack_src_views_assets_backicon.png"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontawesome5_regular.ttf.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontawesome5_regular.ttf"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_node_modules_reactnativedropdownpicker_src_themes_dark_icons_tick.png.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\drawable-mdpi\\node_modules_reactnativedropdownpicker_src_themes_dark_icons_tick.png"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_node_modules_reactnativedropdownpicker_src_themes_dark_icons_arrowdown.png.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\drawable-mdpi\\node_modules_reactnativedropdownpicker_src_themes_dark_icons_arrowdown.png"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_node_modules_reactnativedropdownpicker_src_themes_dark_icons_close.png.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\drawable-mdpi\\node_modules_reactnativedropdownpicker_src_themes_dark_icons_close.png"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_octicons.json.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_octicons.json"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi_node_modules_reactnavigation_stack_src_views_assets_backicon.png.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\drawable-xxhdpi\\node_modules_reactnavigation_stack_src_views_assets_backicon.png"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_fontawesome5free_meta.json.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_fontawesome5free_meta.json"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontawesome5_solid.ttf.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontawesome5_solid.ttf"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_node_modules_reactnativedropdownpicker_src_themes_light_icons_arrowdown.png.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\drawable-mdpi\\node_modules_reactnativedropdownpicker_src_themes_light_icons_arrowdown.png"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_reactnativevectoricons_glyphmaps_antdesign.json.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_reactnativevectoricons_glyphmaps_antdesign.json"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_materialcommunityicons.ttf.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_materialcommunityicons.ttf"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_reactnativevectoricons_glyphmaps_entypo.json.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_reactnativevectoricons_glyphmaps_entypo.json"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontisto.ttf.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontisto.ttf"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_feather.ttf.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_feather.ttf"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_entypo.json.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_entypo.json"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_simplelineicons.json.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_simplelineicons.json"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_ic_launcher_round.png.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher_round.png.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_materialcommunityicons.json.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_materialcommunityicons.json"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontawesome.ttf.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontawesome.ttf"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_antdesign.ttf.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_antdesign.ttf"
     }
 ]

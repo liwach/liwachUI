@@ -9,9 +9,9 @@ export const getItemsById= async(id) => {
   const params = JSON.stringify({
     "id": id
       });
-      
+  // console.log(params)
   try {
-    try {
+   
   
       const res = await axios.post(getOneItem, params,{
           "headers": {
@@ -19,17 +19,15 @@ export const getItemsById= async(id) => {
           "Authorization":`Bearer ${user.token}`
           },
           }).then((data)=>{
-            // console.log("From Item data",JSON.stringify(data))
+            // console.log("From Item data",JSON.stringify(data.data.data))
             return data.data.data
           })
 
       return res
     
     }
-  catch (error) {
-    // Add custom logic to handle errors
-  }
-  } catch (error) {
+
+   catch (error) {
     console.log(error.message)
   }
 
@@ -146,7 +144,7 @@ export const getItemsByType = async(type,id) => {
           "Authorization":`Bearer ${user.token}`
           },
           }).then((data)=>{
-             console.log(JSON.stringify(data.data))
+            //  console.log(JSON.stringify(data.data))
           })
      
     }

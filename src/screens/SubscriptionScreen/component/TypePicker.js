@@ -12,19 +12,22 @@ export const TypePicker = ({navigation,data,value, setValue}) => {
     
     const fetchItems = async() => {
         const user = await fetchuser()
-        const items = await getAllTypesByCategoryID(data.id)
-        const listItems = items.map(function(data, idx){
-          const name = data.name
-         return(
-           {
-            label:name,
-            value:name
-           }
- 
-         )
-        });
-        console.log("list",listItems)
-        setItems(listItems)
+        const items = await getAllTypesByCategoryID(data.id).then((response)=>{
+          const listItems = response.map(function(data, idx){
+            const name = data.name
+           return(
+             {
+              label:name,
+              value:id
+             }
+   
+           )
+          });
+          return listItems
+        })
+       
+        setItems(items)
+       
     }
 
     useEffect(()=>{
@@ -44,7 +47,7 @@ export const TypePicker = ({navigation,data,value, setValue}) => {
         items={items}
         multiple={true}
         style={{ 
-          backgroundColor:colors.bottomNav,
+          backgroundColor:colors.white,
           borderBottomWidth:0,
           borderTopWidth:0,
           borderLeftWidth:0,

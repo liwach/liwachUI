@@ -168,7 +168,8 @@ export const CardList = ({item,navigation}) => {
             user:item.user.first_name,
             status: item.status,
             desc: item.description,
-            post_type: item.bartering_location.type 
+            post_type: item.bartering_location.type, 
+            requests: item.request
       
           }
         return(

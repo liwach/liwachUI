@@ -49,6 +49,7 @@ import { phoneSignin } from '../utils/phoneAuth';
 import { deleteItem, flagItem } from '../routes/itemsApi';
 import { AlertModal } from '../components/UI/AlertModal';
 import { deleteService, flagService } from '../routes/serviceApi';
+import { BottomNavigator } from './BottomNavigator';
 
 
 const ProductStack = createStackNavigator();
@@ -101,7 +102,7 @@ export const IntroductStackScreen = () => {
           headerTitleStyle: {color: colors.flord_secondary, alignSelf: 'center'},
         })}
         name="HomeStackScreen"
-        component={HomeStackScreen}
+        component={BottomNavigator}
       />
     </IntroductionStack.Navigator>
   )
@@ -115,6 +116,7 @@ export const RequestScreenStack = () => {
         <RequestStack.Screen
         
         options={({route, navigation}) => ({
+          title:"Requests",
           headerShown: true,
           headerMode: 'screen',
           gestureEnabled: true,
@@ -126,7 +128,25 @@ export const RequestScreenStack = () => {
          component={RequestScreen}
         
         />
-    
+      <MessageStack.Screen
+        name="ProfileInbox"
+        options={({route, navigation}) => ({
+          headerShown:true,
+          headerStyle: {backgroundColor: colors.water},
+          title: route.params.item.requested_item.name,
+          headerTitleStyle: { color: colors.white},
+          headerRight: () => {},
+          headerLeft: () => {
+            return (
+              <HeaderBackButton
+                tintColor={colors.white}
+                onPress={() => navigation.goBack()}
+              />
+            );
+          },
+        })}
+        component={MessageDetailScreen}
+      />
       
     </RequestStack.Navigator>
   )
@@ -290,11 +310,11 @@ export const SubscribeStackScreen = () => {
       <SubscribeStack.Screen
         options={({route, navigation}) => ({
           title: 'Subscribe',
-          headerStyle: {backgroundColor: colors.flord_intro},
+          headerStyle: {backgroundColor: colors.water},
           headerTitleStyle: {
-            color: colors.flord_secondary,
+            color: colors.white,
             alignSelf: 'center',
-            marginRight: 10,
+            marginRight: 60,
           },
         })}
         name="SubscribeScreen"
@@ -303,18 +323,10 @@ export const SubscribeStackScreen = () => {
       <SubscribeStack.Screen
         options={({route, navigation}) => ({
           title: 'Subscribe to Type',
-          headerStyle: {backgroundColor: colors.flord_intro},
-          headerTitleStyle: {color: colors.flord_secondary},
+          headerStyle: {backgroundColor: colors.water},
+          headerTitleStyle: {color: colors.white},
           headerRight: () => {
-            return (
-              <Icon
-                onPress={() => alert(route.params.item.name)}
-                style={styles.drawerButton}
-                name="checkcircleo"
-                size={25}
-                color={colors.flord_secondary}
-              />
-            );
+           
           },
         })}
         name="TypeScreen"
@@ -362,8 +374,8 @@ export const AccountStackScreen = () => {
         options={({route, navigation}) => ({
           headerShown: false,
           title: 'Subscribe',
-          headerStyle: {backgroundColor: colors.flord_intro},
-          headerTitleStyle: {color: colors.flord_secondary, alignSelf: 'center'},
+          headerStyle: {backgroundColor: colors.water},
+          headerTitleStyle: {color: colors.white, alignSelf: 'center'},
         })}
         name="SubscribeScreen"
         component={SubscribeStackScreen}
@@ -1026,7 +1038,7 @@ export const ProfileStackScreen = () => {
       <ProfileStack.Screen
         name="Profile"
         options={({route, navigation}) => ({
-          title: 'Profile',
+          title: 'Posts',
           headerRight: () => {},
           headerLeft: () => {},
         })}
@@ -1156,15 +1168,11 @@ export const ProfileStackScreen = () => {
       <MessageStack.Screen
         name="ProfileInbox"
         options={({route, navigation}) => ({
-          title:
-            route.params.item.requester == null
-              ? ''
-              : route.params.item.requester.first_name +
-                ' ' +
-                route.params.item.requester.last_name,
-          headerTitleStyle: {alignSelf: 'center', color: colors.white},
+          title: route.params.item.requester_item_id,
+          headerTitleStyle: { color: colors.white},
           headerRight: () => {},
           headerLeft: () => {
+            console.log(route.params.item)
             return (
               <HeaderBackButton
                 tintColor={colors.white}
@@ -1190,14 +1198,14 @@ export const MessageStackScreen = ({route,navigation }) => {
         headerTitleStyle: {color: colors.flord_intro, alignSelf: 'center'},
         
       }}>
-      <MessageStack.Screen
+      {/* <MessageStack.Screen
         name="Inbox"
         options={({route, navigation}) => ({
           title: 'Inbox',
           headerRight: () => {},
         })}
         component={MessageScreen}
-      />
+      /> */}
       <MessageStack.Screen
         name="SingleMessage"
         options={({route, navigation}) => ({

@@ -14,7 +14,7 @@ export const TypeScreen = ({navigation, route}) => {
     const subscribe = async(values) => {
 
     }
-    // alert(category.id)
+    console.log(category.id)
   
     const fetchData = async () => {
       const items = await getAllTypesByCategoryID(category.id)

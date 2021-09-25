@@ -6,6 +6,35 @@ import { fetchuser } from '../utils/checkFirstTimeActions';
 
 
 
+export const getServiceById= async(id) => {
+  const user = await fetchuser().then((data)=>{return data.data})
+  const params = JSON.stringify({
+    "id": id
+      });
+  // console.log(params)
+  try {
+   
+  
+      const res = await axios.post(GET_ALL_SERVICES_BY_PARAMETER, params,{
+          "headers": {
+          "content-type": "application/json",
+          "Authorization":`Bearer ${user.token}`
+          },
+          }).then((data)=>{
+            // console.log("From Item data",JSON.stringify(data.data.data))
+            return data.data.data
+          })
+
+      return res
+    
+    }
+
+   catch (error) {
+    console.log(error.message)
+  }
+
+
+}
 
 
 export const getServicesByUserID = async(token) => {

@@ -88,32 +88,29 @@ export const getOneTypeByID =  async(id) => {
   }
 }
 
-export const getAllTypesByCategoryID = async (id) => {
- alert(id)
+export const getAllTypesByCategoryID = async(id) => {
+  const token = await fetchuser().then((data)=>{return data.data.token})
+
   const params = JSON.stringify({
       "category_id": id
       });
   // const token = await fetchuser().then((data)=>{return data.data.token})
       
   try {
-    try {
+   
       const res = await axios.post(GET_ONE_TYPE, params,{
           "headers": {
           "content-type": "application/json",
           "Authorization":`Bearer ${token}`
           },
-          })
-      if (res.data) {
-        // alert(JSON.stringify( res.data[0]))
-        return res.data
-        
-      } else {
-        console.log('Unable to fetch');
-      }
-    }
-  catch (error) {
-    // Add custom logic to handle errors
-  }
+          }).then((data)=>{
+            console.log("Catgory Data",data.data.data)
+            return data.data.data
+        })
+        return res
+   
+    
+  
   } catch (error) {
     console.log(error.message)
   }

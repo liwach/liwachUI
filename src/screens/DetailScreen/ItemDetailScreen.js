@@ -17,7 +17,7 @@ import { SwapActionSheet } from '../HomeScreen/component/SwapActionSheet'
 
 export const ItemDetailScreen = ({route, navigation}) => {
     const { item} = route.params;
-    console.log("url",item.picture)
+    console.log("url",item.type)
     const [data, setData] = useState([]);
     const [swapType, setSwapType] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -34,7 +34,7 @@ export const ItemDetailScreen = ({route, navigation}) => {
       
       setData(item[0]);
 
-      console.log("user",user.id)
+    //   console.log("Requests in item",item.requests)
     try{
         const types =  item.item_swap_type.map(function(types, idx){
             const type =  types.type
@@ -72,7 +72,7 @@ export const ItemDetailScreen = ({route, navigation}) => {
              <View>
                  <View style={styles.horizontal}>
                      <Text style={styles.header}>{item.name}</Text>
-                     {!isVisible? 
+                     {isVisible? 
                    
                         
                      <SwapActionSheet 
@@ -113,7 +113,7 @@ export const ItemDetailScreen = ({route, navigation}) => {
             send request
            </Button>}
            <Text style={{fontSize:16,color:colors.flord_intro2,marginLeft:10,textTransform:"uppercase"}} >Requests</Text>
-           {!isVisible?<VerticalFlatList navigation={navigation} data={item}/>:<View></View>
+           {!isVisible?<VerticalFlatList navigation={navigation} data={item} requests={item.requests}/>:<View></View>
            
              }
                

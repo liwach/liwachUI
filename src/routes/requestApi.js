@@ -88,7 +88,7 @@ export const getAllRequestsBySenderID = async () => {
     return data.data
   })
   const body = JSON.stringify({
-
+    
   });
   try {
    
@@ -99,7 +99,7 @@ export const getAllRequestsBySenderID = async () => {
           },
           })
           .then((data)=>{
-            console.log("From Request data",JSON.stringify(data.data))
+            // console.log("From Request data",JSON.stringify(data))
             return data.data
           })
 
@@ -176,37 +176,33 @@ export const getRequestByStatusByID = async (id,status) => {
 }
 
 export const acceptRequests = async (request) => {
+  const user = await fetchuser().then((data)=>{
+    return data.data
+  })
   const body = JSON.stringify({
         "id":request.id,
         "status": request.status,
-       
   });
   
   try {
-    try {
+  
    
       const res = await axios.put(`${GET_ALL_REQUESTS}/${request.id}`, body,{
           "headers": {
           "content-type": "application/json",
+          "Authorization":`Bearer ${user.token}`
           },
+          }).then((data)=>{
+            console.log("From Request data",JSON.stringify(data.data.data))
+            return data.data.data
           })
-      if (res.data) {
-      //console.log(`Axios:${JSON.stringify(res.data)}`)
-      const items = res.data
-      
-      return items
-      } else {
-        console.log('Unable to fetch');
-        alert("Can't")
-      }
-    }
-  catch (error) {
-    // Add custom logic to handle errors
-    alert("Can't")
-  }
+
+      return res
+     
+   
   } catch (error) {
     console.log(error.message)
-    alert("Can't")
+    
   }
 }
 
@@ -215,7 +211,7 @@ export const addRequest = async(item) => {
   const params = JSON.stringify({
     "status": item.status,
     "requester_id": item.requester_id,
-    "requested_item_id": item.requested_item_id,
+    "requested_item_id": item.requested_item_id.id,
     "requester_item_id": item.requester_item_id,
     "rating": item.rating,
     "token": item.token,
@@ -244,9 +240,7 @@ export const addRequest = async(item) => {
 }
 
 export const expire = async(id) => {
-  
-  alert("exchange",id)
-
+  const user = await fetchuser().then((data)=>{return data.data})
   const body = JSON.stringify({
       "status": "expired"
     });
@@ -255,16 +249,15 @@ export const expire = async(id) => {
     try {
       
       const res = await axios.put(`${UPDATE_REQUEST_STATUS}/${id}`, body,{
-          "headers": {
-          "content-type": "application/json",
-          },
-          })
-      
-      if (res.data) {
-        console.log(`Axios:${JSON.stringify(res.data)}`)
-      } else {
-        console.log('Unable to fetch');
-      }
+        "headers": {
+        "content-type": "application/json",
+        "Authorization":`Bearer ${user.token}`
+        },
+        }).then((data)=>{
+          // console.log("Request sent",JSON.stringify(data.data))
+          return data.data.success
+      })
+        return res
     }
   catch (error) {
     // Add custom logic to handle errors

@@ -32,16 +32,22 @@ export const MessageDetailScreen = ({route,navigation}) => {
     //Get chat_id -- which is chatId
     //Get type -- which is mostly a text
     
-    const response = await sendMessage(value,"text",item.token,user.id)
-    alert(JSON.stringify(response))
+    const response = await sendMessage(value,"text",item.token,user.id).then((data)=>{
+      console.log(data)
+       return data
+    })
+    
     fetchData()
 
   }
 
   const fetchData = async () => {
-    const user = await fetchuser()
+    const user = await fetchuser().then((data)=>{return data.data})
     setUser(user)
-    const items = await getAllMessagesByChatID(item.token)
+    const items = await getAllMessagesByChatID(item.token).then((data)=>{
+        // console.log("Messages",data)
+        return data
+    })
      //alert("fetch"+JSON.stringify(items))
     setData(items);
     setLoading(false);
@@ -53,13 +59,14 @@ export const MessageDetailScreen = ({route,navigation}) => {
     
   }, []);
   const list = () => {
+    if(data!==undefined){
     return data.map((element) => {
-     
       return (
         user.id===element.sender_id?
         <TextBox logged_user={user} item={element} type={"send"}/>:<TextBox user={element.sender_id} item={element} type={"recieve"}/>
       );
     });
+  }
   };
     return(
         <View  style={styles.container}>

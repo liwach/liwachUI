@@ -405,7 +405,7 @@ const itemClick = (item) => {
           <CustomPicker membership={membership} setMembership={setMembership}/>
           <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{membererror}</Text>
 
-          <AlertModal show={showalert} setShowAlert={setShowAlert} message={alertMsg}/>
+          <AlertModal show={showalert} setShowAlert={setShowAlert} message={alertMsg} navigation={navigation}/>
           <Button
             
             color={colors.water}

@@ -5,6 +5,7 @@ import { getAllRequests, getAllRequestsByItemID, getAllRequestsBySenderID } from
 import { getItemsByUserID } from '../../routes/itemsApi'
 import { fetchuser } from '../../utils/checkFirstTimeActions'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+import { RecievedRequestCard } from './components/RecievedRequestCard'
 
 
 
@@ -16,7 +17,7 @@ export const RequestScreen = ({navigation}) => {
     return (
         <Tab.Navigator>
           <Tab.Screen name="Sent" component={RequestCardList} />
-          <Tab.Screen name="Recieved" component={RequestCardList} />
+         
         </Tab.Navigator>
       );
 
