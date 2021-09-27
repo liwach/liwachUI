@@ -1,4 +1,4 @@
-import React,{useState} from "react"
+import React,{useState,useEffect} from "react"
 import { CategoryItem } from "./CategoryItem"
 import { 
     View,
@@ -8,19 +8,32 @@ import {
     StyleSheet, 
     Text, 
     TouchableOpacity ,
-    Image 
+    Image, 
+    ScrollView
     } from "react-native"
 import { colors } from "../../../utils/colors";
 import { ToastAndroid } from "react-native";
+import { getSubscriptions } from "../../../routes/accountApi";
 
 export const CategoryList = ({navigation, data }) => {
+    const [subscriptionList,setSubscriptionList] = useState([]);
+    const fetchData = async() =>{
+        const response = await getSubscriptions().then((data)=>{
+            setSubscriptionList(data)
+            return data
+        })
+        console.log("in sub",subscriptionList)
+    }
+
+    useEffect(()=>{
+        fetchData()
+    },[])
     // alert(data)
     const [selectedId, setSelectedId] = useState(null);
     const category = data[0]
     const renderItem = ({ item }) => {
         // const backgroundColor = item.id === selectedId ? colors.white : colors.white;
         // const color = item.id === selectedId ? colors.white : colors.black;
-        
         return(
             <CategoryItem
             item={item}
@@ -28,13 +41,28 @@ export const CategoryList = ({navigation, data }) => {
                 category:item
             })
             }
+         
             />
         )
         }
 
     return(
         <SafeAreaView style={styles.container}>
+            <Text style={styles.subtitle}> You have subscribed to types below!</Text>
+            <ScrollView style={{width:"100%",height:80}}>
+            <TouchableOpacity style={styles.horizontal} onPress={()=>{}}>
+            {subscriptionList!=[]?subscriptionList.map((prop, key) => {
+                        // console.log("subscription",prop.url)   
+                            return (
+                               
+                                    <Text style={styles.subscribed}>{prop.type.name}</Text>
+                                
+                                );
+                        }):<View></View>}
+            </TouchableOpacity>
+            </ScrollView>
             <FlatList
+                numColumns={2}
                 data={data}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
@@ -52,8 +80,25 @@ const styles = StyleSheet.create({
         elevation:2,
         
     },
+    subscribed:{
+        top: 15,
+        color: colors.white,
+        textAlign: 'center',
+        fontSize: 16,
+        fontWeight:'bold',
+        marginBottom:10,
+        marginRight:10,
+        padding:5,
+        borderRadius:8,
+        backgroundColor:colors.grey
+    },
+    horizontal:{
+        flexDirection:'row',
+        alignSelf:'center',
+        height:50
+    },
     item:{
-        flexDirection: "row",
+     
         backgroundColor:colors.white,
         color:colors.white,
        
@@ -88,6 +133,16 @@ const styles = StyleSheet.create({
         marginTop:5,
         fontSize:12
     },
+    subtitle:{
+      
+        top: 15,
+        color: colors.flord,
+        textAlign: 'center',
+        fontSize: 20,
+        fontWeight:'bold',
+        marginBottom:10,
+        padding:10,
+      },
     time:{
         margin:5,
         flex:1,

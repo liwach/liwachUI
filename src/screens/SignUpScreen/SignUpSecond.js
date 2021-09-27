@@ -147,6 +147,23 @@ export const SignUpSecond = ({route, navigation}) => {
         return "added"
       })
     }
+    const signin= async(email,password) => {
+      try{
+          const response = await login(email,password)
+          if(response.id!==null){
+              await saveUserToStorage("logged_user",response)
+              // setShow(true)
+              // setMessage("You've logged in")
+              navigation.navigate('HomeStackScreen', {
+                  user:response
+                })
+            }  
+      }
+      catch(error){
+          setShow(true)
+          setMessage("Username or password is not correct.")
+      } 
+    }
    const signUpUser = async(values) =>{
     const photo_response =   await cloudinaryAddUpload(photoData).then(async(resp)=>{
         
@@ -176,9 +193,10 @@ export const SignUpSecond = ({route, navigation}) => {
           const response =  await postUser(user).then((data)=>{
             if(data.message=="successful"){
               
-              setShowAlert(true)
-              setAlertMessage({msg:'Signed Up Successfully!',title:'Sign Up',color:colors.green,navTitle:"AuthScreen"})
-          
+              // setShowAlert(true)
+              // setAlertMessage({msg:'Signed Up Successfully!',title:'Sign Up',color:colors.green,navTitle:"AuthScreen"})
+              signin(data.data.email,data.data.password)
+              navigation.navigate('Home')
               // navigation.navigate('AuthScreen')
              }
             else{

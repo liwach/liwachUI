@@ -53,6 +53,7 @@ import { ButtonImageSheet } from './components/ButtonImageAction';
 import { AlertModal } from '../../components/UI/AlertModal';
 import { uploadPicture } from '../../routes/utilApi';
 import { addMedia } from '../../routes/mediaApi';
+import { ToastAndroid } from 'react-native';
 
 export const addItemForm = ({navigation}) => {
 
@@ -197,11 +198,102 @@ export const addItemForm = ({navigation}) => {
       onSubmit={
         (values) => 
          {
+           const name = values.title
+           const description = values.description
+           if(place==""){
+              setPlaceError("Please add your location.")
+           }
+           if(category==""){
+            setCategoryError("Please add your category.")
+         }
+            if(swapTypes==""){
+              setSwapTypeError("Please add your swap type.")
+          }
+              if(place!=""){
+                setPlaceError("")
+            }
+            if(category!=""){
+              setCategoryError("")
+          }
+              if(swapTypes!=""){
+                setSwapTypeError("")
+            }
+            if(message=="noimage"){
+                setShowAlert(true)
+                setAlertMessage({msg:"Please add atleast one image.",title:'Featured Image'})
+            }
+            if(place!=""&&category!=""&&swapTypes!=[]&&message!="noimage"&&name!=""&&description!=""){
+              
+      
+              // Upload a picture
+              const addProfilePic = async() => {
+                const user = await fetchuser().then((data)=>{return data.data})
+                setProfilePic("")
+                const photo_response =   await cloudinaryAddUpload(photoData).then(async(resp)=>{
+                  
+                  const item = { 
+                    "name": values.title,
+                    "description":values.description,
+                    "picture": resp,
+                    "media":[],
+                    "swap_type": swapTypes,
+                    "address": {
+                      "country": place,
+                      "city": place,
+                      "latitude": geometry[1],
+                      "longitude": geometry[0],
+                      "type": "item"
+                    },
+                    "type_id": category,
+                    "user_id": user.id,
+                    "status": "open"
+                  }
+                  // console.log(item)
+                  const response = await addItem(item).then((data)=>{
+                    if(data.success){
+                      ToastAndroid.show("Item Added Successfully",ToastAndroid.SHORT)
+                      navigation.navigate("PictureScreen",{
+                        item: data.data.id
+                      })
+                    //   setShowAlert(true)
+                    //   setAlertMessage({msg:"Item is Added Successfully",title:"Item",color:colors.green,navTitle:'Profile'})
+                    TINphotoData.map(async(prop, key) => {
+                      console.log("Multiple Image",prop)
+                      const photo_response =  await cloudinaryAddUpload(prop).then(async(resp)=>{
+                            const media = {
+                              id: data.data.id,
+                              type:'item',
+                              url:resp
+                            }
+                            const response = await addMedia(media,user.data.token)
+                            console.log(response)
+                        })
+                        
+                  })
+                   
+                    // console.log(data)
+                  }
+                  else{
+                    setShowAlert(true)
+                    setAlertMessage({msg:data.error,title:"Item",color:colors.straw,navTitle:''})
+               
+                  }
+                  })
+                  return "added"
+                })
+              }
+            
+              addProfilePic()
+            
+        
+
+            
           
           
-        }
-        }
-          validationSchema={yup.object().shape({
+      }
+    }
+    }
+      validationSchema={yup.object().shape({
         title: yup
           .string()
           .required('Please, provide your title!'),
@@ -230,9 +322,21 @@ export const addItemForm = ({navigation}) => {
         style={styles.formContainer}>
 
         {/* <AutocompletePlace onSelect={place => console.log(place)} /> */}
-       
-         
         <TextInput
+            value={place}
+            style={styles.inputStyle}
+            onChangeText={text =>{displayList(text), setPlace(text)}}
+            onBlur={() => setFieldTouched('address')}
+            placeholder="Address"
+            placeholderTextColor={colors.flord}
+            onEndEditing={clearData}
+            onChange={event => setFieldValue(event.target.value)}
+             />
+             <FlatListData list={location} onItemClick={itemClick} />
+            <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{placeerror}</Text>
+            <TypeSeachBox value={category} setValue={setCategory} type="item"/> 
+          <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{categoryerror}</Text>
+          <TextInput
             value={values.title}
             style={styles.inputStyle}
             onChangeText={handleChange('title')}
@@ -254,17 +358,13 @@ export const addItemForm = ({navigation}) => {
           {touched.title && errors.title &&
             <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.description}</Text>
           } 
-        
-            <TypeSeachBox value={category} setValue={setCategory} type="item"/> 
-          <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{categoryerror}</Text>
-         
-        
-
+        <SwapTypeDropBox value={swapTypes} setValue={setSwapTypes} type="item"/> 
+          <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{swaperror}</Text>
 
           <AlertModal show={showalert} message={alertMsg} setShowAlert={setShowAlert} navigation={navigation}/>
             
           <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-                <Text style={styles.text}>Next</Text>
+                <Text style={styles.text}>Submit</Text>
               </TouchableOpacity>
         </KeyboardAvoidingView>
       )}
@@ -277,154 +377,154 @@ export const addItemForm = ({navigation}) => {
 
 
 const styles = StyleSheet.create({
-  modalContainer:{
-    top: 0,
-    left: 0,
-    width: 100,
-    height: 100,
-    backgroundColor: colors.bottomNav,
-    
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  listItem:{
-    margin: 10,
-    borderBottomWidth:0.5,
-    alignContent:'center',
-    borderBottomColor: colors.flord_secondary,
-    
-},
-  imageBox:{
-    
-    width:"100%",
-    backgroundColor:"transparent",
-  
-    borderBottomEndRadius: 70,
-    borderBottomStartRadius: 70
-  },
-  button: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 4,
-    width:200,
-    backgroundColor:colors.water,
-    alignSelf:"center",
-    marginTop:20
-  },
-  text: {
-    fontSize: 16,
-    lineHeight: 21,
-    fontWeight: 'bold',
-    letterSpacing: 0.25,
-    color: 'white',
-  },
-  formContainer: {
-    paddingLeft:30,
-    paddingRight:30,
-     
-  },
-  inputStyle:{
-    marginTop:10,
-    color:colors.flord_intro,
-    
-    backgroundColor:colors.light_grey,
-    width:"100%",
-  
-    marginRight:4,
-    borderRadius: 20,
-    textAlign:"center",
-  },
-  horizontalInputStyle:{
-    marginBottom: 10,
-    color:colors.black,
-    borderColor: colors.flord,
-    borderBottomWidth: 1,
-    textTransform:"capitalize",
-    textAlign:"center",
-    width:"50%",
-    marginRight:4,
-    borderRadius: 20,
-  },
-  subtitle:{
-    
-    top: 15,
-    color: colors.flord,
-    textAlign: 'center',
-    fontSize: 20,
-    fontWeight:'bold',
-  },
-    postButton: {
-    width: '40%',
-    borderRadius: 30,
-    height:40,
-    backgroundColor:colors.black,
-    color: colors.white,
-    alignSelf: 'center',
-    margin:20,
-    alignItems: 'center',
-    justifyContent: 'center',
+    modalContainer:{
+      top: 0,
+      left: 0,
+      width: 100,
+      height: 100,
+      backgroundColor: colors.bottomNav,
+      
+      alignItems: "center",
+      justifyContent: "center",
     },
-
-    container:{
-        width: '100%',
-        height: "100%",
-        alignContent:'center', 
-        backgroundColor: colors.white
-    },
-
-    imageView:{
-     
-    },
-
-    imageContainer:{
-
-    },
-    dropdown: {
-      backgroundColor: 'white',
-      borderBottomColor: 'gray',
-      borderBottomWidth: 0.5,
-      marginTop: 20,
+    listItem:{
+      margin: 10,
+      borderBottomWidth:0.5,
+      alignContent:'center',
+      borderBottomColor: colors.flord_secondary,
+      
   },
-  icon: {
-      marginRight: 5,
-      width: 18,
-      height: 18,
-  },
-  header:{
+    imageBox:{
+      
+      width:"100%",
+      backgroundColor:"transparent",
     
-    zIndex: 100,
-    top: 45,
-    color: colors.flord,
-    textAlign: 'center',
-    fontSize: 30,
-    fontWeight:'bold',
-    
-  } ,
-  item: {
-      paddingVertical: 17,
-      paddingHorizontal: 4,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
+      borderBottomEndRadius: 70,
+      borderBottomStartRadius: 70
+    },
+    button: {
       alignItems: 'center',
-  },
-  textItem: {
-      flex: 1,
+      justifyContent: 'center',
+      paddingVertical: 12,
+      paddingHorizontal: 32,
+      borderRadius: 4,
+      width:200,
+      backgroundColor:colors.water,
+      alignSelf:"center",
+      marginTop:20
+    },
+    text: {
       fontSize: 16,
-  },
-  shadow: {
-      shadowColor: '#000',
-      shadowOffset: {
-      width: 0,
-      height: 1,
+      lineHeight: 21,
+      fontWeight: 'bold',
+      letterSpacing: 0.25,
+      color: 'white',
+    },
+    formContainer: {
+      paddingLeft:30,
+      paddingRight:30,
+      
+    },
+    inputStyle:{
+      marginTop:10,
+      color:colors.flord_intro,
+      
+      backgroundColor:colors.light_grey,
+      width:"100%",
+    
+      marginRight:4,
+      borderRadius: 20,
+      textAlign:"center",
+    },
+    horizontalInputStyle:{
+      marginBottom: 10,
+      color:colors.black,
+      borderColor: colors.flord,
+      borderBottomWidth: 1,
+      textTransform:"capitalize",
+      textAlign:"center",
+      width:"50%",
+      marginRight:4,
+      borderRadius: 20,
+    },
+    subtitle:{
+      
+      top: 15,
+      color: colors.flord,
+      textAlign: 'center',
+      fontSize: 20,
+      fontWeight:'bold',
+    },
+      postButton: {
+      width: '40%',
+      borderRadius: 30,
+      height:40,
+      backgroundColor:colors.black,
+      color: colors.white,
+      alignSelf: 'center',
+      margin:20,
+      alignItems: 'center',
+      justifyContent: 'center',
       },
-      shadowOpacity: 0.2,
-      shadowRadius: 1.41,
-      elevation: 2,
-  },
 
-}   
+      container:{
+          width: '100%',
+          height: "100%",
+          alignContent:'center', 
+          backgroundColor: colors.white
+      },
+
+      imageView:{
+      
+      },
+
+      imageContainer:{
+
+      },
+      dropdown: {
+        backgroundColor: 'white',
+        borderBottomColor: 'gray',
+        borderBottomWidth: 0.5,
+        marginTop: 20,
+    },
+    icon: {
+        marginRight: 5,
+        width: 18,
+        height: 18,
+    },
+    header:{
+      
+      zIndex: 100,
+      top: 45,
+      color: colors.flord,
+      textAlign: 'center',
+      fontSize: 30,
+      fontWeight:'bold',
+      
+    } ,
+    item: {
+        paddingVertical: 17,
+        paddingHorizontal: 4,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    textItem: {
+        flex: 1,
+        fontSize: 16,
+    },
+    shadow: {
+        shadowColor: '#000',
+        shadowOffset: {
+        width: 0,
+        height: 1,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 1.41,
+        elevation: 2,
+    },
+
+  }   
 );
 
 

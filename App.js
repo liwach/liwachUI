@@ -24,15 +24,16 @@ import { IntroductionScreen } from './src/screens/IntroScreen.js/Introduction';
 import { IntroScreen } from './src/screens/IntroScreen.js/IntroScreen';
 export default function App() {
 
-  const [value, setValue] = useState(false);
-
+  const [firstOpen, setFirstOpen] = useState(true);
+      useEffect(()=>{
+        setFirstOpen(true)
+      },[])
 
   return (
   
     <Provider store={store}>
-     
       <NavigationContainer>
-        {value? <BottomNavigator/>:<IntroductStackScreen/>}
+        {firstOpen? <BottomNavigator/>:<IntroductStackScreen first={firstOpen} setFirst={setFirstOpen}/>}
       <StatusBar style="auto" />
     </NavigationContainer>
     </Provider>

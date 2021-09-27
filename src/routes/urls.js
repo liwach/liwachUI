@@ -39,6 +39,9 @@ export const FIND_USER =  `${API_URL}/user/search`
 
 //Media
 export const ADD_MEDIA = `${API_URL}/media` 
-
+export const GET_MEDIA = `${API_URL}/media/search` 
 //flag
 export const FLAG = `${API_URL}/flag` 
+//subscription
+export const SUBSCRIBE = `${API_URL}/subscription` 
+export const GET_SUBSCRIPTION = `${API_URL}/subscription/search` 

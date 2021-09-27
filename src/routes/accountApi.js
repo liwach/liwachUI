@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from "axios";
 import { API_URL } from '../utils/config';
-import { POST_MESSAGE, GET_MESSAGE_BY_REQUEST,POST_USER, LOGIN, FIND_USER } from './urls';
+import { POST_MESSAGE, GET_MESSAGE_BY_REQUEST,POST_USER, LOGIN, FIND_USER, SUBSCRIBE, GET_SUBSCRIPTION } from './urls';
 import { fetchuser } from '../utils/checkFirstTimeActions';
 
 
@@ -92,8 +92,8 @@ export const login = async (email,password) => {
             "email": email,
             "password": password 
     });
-    console.log(params)
-      try {
+    // console.log(params)
+   
         try {
             const res = await axios.post(LOGIN, params,{
                 "headers": {
@@ -107,6 +107,7 @@ export const login = async (email,password) => {
                         last_name: data.data.data.last_name,
                         phone_number :data.data.data.phone_number,
                         email : data.data.data.email,
+                        picture: data.data.data.profile_picture,
                         token: data.data.data.remember_token
                     }
                     console.log("user",JSON.stringify(data.data.data))
@@ -115,12 +116,9 @@ export const login = async (email,password) => {
           return res
           
         }
-      catch (error) {
-        // Add custom logic to handle errors
-      }
-      } catch (error) {
+     catch (error) {
         console.log(error.message)
-      }
+    }
   }
   
   export const getUserByID = async (id) => {
@@ -157,4 +155,66 @@ export const login = async (email,password) => {
       } catch (error) {
         console.log(error.message)
       }
+  }
+
+  export const subscribeType = async(id) => {
+    const user = await fetchuser().then((data)=>{return data.data})
+ 
+    const params = JSON.stringify({
+      "type_id":id,
+      "user_id":user.id
+      });
+    console.log(params)
+    try {
+     
+    
+        const res = await axios.post(SUBSCRIBE, params,{
+            "headers": {
+            "content-type": "application/json",
+            "Authorization":`Bearer ${user.token}`
+            }
+            }).then((data)=>{
+              // console.log(`Axios Get Item:${JSON.stringify(data)}`)
+              return data.data
+            })
+        
+        return res
+        
+       
+     
+    } catch (error) {
+      console.log(error.message)
+    }
+  
+  
+  }
+
+  export const getSubscriptions = async() => {
+    const user = await fetchuser().then((data)=>{return data.data})
+    const params = JSON.stringify({
+    
+      });
+    // console.log(params)
+    try {
+     
+    
+        const res = await axios.post(GET_SUBSCRIPTION,params,{
+            "headers": {
+            "content-type": "application/json",
+            "Authorization":`Bearer ${user.token}`
+            },
+            }).then((data)=>{
+              console.log("From Item data",JSON.stringify(data.data))
+              return data.data
+            })
+  
+        return res
+      
+      }
+  
+     catch (error) {
+      console.log(error.message)
+    }
+  
+  
   }

@@ -72,11 +72,12 @@ export const getServicesByUserID = async(token) => {
    
   } catch (error) {
     console.log(error.message)
+    return "noitems"
   }
 
 }
-export const getServicesByType = async(type,id) => {
-  
+export const getServicesByType = async(type) => {
+  const user = await fetchuser().then((data)=>{return data.data})
   const params = JSON.stringify({
     "type_id": type
       });
@@ -88,15 +89,12 @@ export const getServicesByType = async(type,id) => {
       const res = await axios.post(GET_ALL_SERVICES_BY_PARAMETER, params,{
           "headers": {
           "content-type": "application/json",
+          "Authorization":`Bearer ${user.token}`
           },
+          }).then((data)=>{
+            return data.data
           })
-      if (res.data) {
-        console.log(`Axios:${JSON.stringify(res.data)}`)
-        // alert(res.data)
-        return res.data
-      } else {
-        console.log('Unable to fetch');
-      }
+        return res
     }
   catch (error) {
     // Add custom logic to handle errors

@@ -26,13 +26,17 @@ const FlatListItem = ({ item, onPress, backgroundColor, textColor }) => (
 
 export const CategoryList = ({filteredData,setFilteredData,type}) => {
     const [selectedId, setSelectedId] = useState(null);
-    const [data, setData] = useState("");
+    const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
-  
+    const [filterFlag,setFilterFlag] = useState(false);
   
     const fetchData = async () => {
-      const items = await getAllTypes()
-      setData(items);
+      console.log(type)
+      const items = await getAllTypes(type).then((data)=>{
+        setData(data.data);
+      })
+     
+      
       setLoading(false);
       
     };
@@ -41,18 +45,22 @@ export const CategoryList = ({filteredData,setFilteredData,type}) => {
       fetchData();
     }, []);
    
-    const filterData = async(filteredData,setFilteredData,item) => {
+    const filterData = async(item) => {
+      
         try{
           if(type=="item"){
-          const response = await getItemsByType(item.id)
-          if(response){
-            setFilteredData(response)
-          }}
+          const response = await getItemsByType(item.id).then((data)=>{
+            console.log("filtered",data.data)
+            setFilteredData(data.data)
+            return data.data
+          })
+         }
           if(type=="service"){
-            const response = await getServicesByType(item.id)
-            if(response){
-              setFilteredData(response)
-            }
+            const response = await getServicesByType(item.id).then((data)=>{
+              console.log("filtered",data)
+              setFilteredData(data.data)
+              return data.data
+            })
           }
           }
         
@@ -73,7 +81,7 @@ export const CategoryList = ({filteredData,setFilteredData,type}) => {
             
             onPress={() => {
               setSelectedId(item.id)
-              filterData(filteredData,setFilteredData,item)
+              filterData(item)
             }}
             backgroundColor={{ backgroundColor }}
             textColor={{ color }}
@@ -104,13 +112,13 @@ const styles = StyleSheet.create({
         alignItems:'center'
     },
     item:{
-        color:colors.white,
+        color:colors.water,
         marginRight:20,
         padding:5,
         minWidth:80,
         borderRadius:10,
         borderWidth:1,
-        borderColor:colors.flord_secondary
+        borderColor:colors.flord_intro2
     },
     title:{
         textAlign:'center'

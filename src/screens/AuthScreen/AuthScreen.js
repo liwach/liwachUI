@@ -53,7 +53,6 @@ import AwesomeAlert from 'react-native-awesome-alerts';
 
 export const AuthenticationPage = ({navigation}) => {
 
-
   const [show,setShow] = useState(false)
   const [message,setMessage] = useState("Something went wrong.")
   const signin= async(values) => {
@@ -61,17 +60,16 @@ export const AuthenticationPage = ({navigation}) => {
         const response = await login(values.email,values.password)
         if(response.id!==null){
             await saveUserToStorage("logged_user",response)
-            setShow(true)
-            setMessage("You have logged in!")
-            navigation.navigate('HomeStackScreen', {
+            // setShow(true)
+            // setMessage("You've logged in")
+            navigation.navigate('HomeAuthScreen', {
                 user:response
               })
-          }
-        
+          }  
     }
     catch(error){
         setShow(true)
-        setMessage("Something went wrong. Check your internet connection.")
+        setMessage("Username or password is not correct.")
     }
    
 
@@ -188,7 +186,7 @@ const image = { uri: "https://res.cloudinary.com/liwach/image/upload/v1630627424
           />
       
          <Text style={styles.subtitle}>Don't have account? </Text>
-          <Text onPress={()=>navigation.navigate("SignUpStack")} style={[styles.subtitle,styles.underlined]}>Sign up</Text>
+          <Text onPress={()=>navigation.navigate("SignupChoiceScreen")} style={[styles.subtitle,styles.underlined]}>Sign up</Text>
         </View>
       )}
     </Formik>

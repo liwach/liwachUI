@@ -85,7 +85,7 @@ export const AllServiceScreen = ({navigation}) => {
       }
     return(
         <SafeAreaView style={styles.container}>
-            <CategoryList filteredData={data} setFilteredData={setData} type={"item"}/>
+            <CategoryList filteredData={data} setFilteredData={setData} type={"service"}/>
             <FlatList
               data={data}
               renderItem={Item}

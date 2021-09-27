@@ -11,10 +11,12 @@ export const ItemPicker = ({value, setValue,type}) => {
     const [items,setItems] = useState([])
 
     const fetchItems = async() => {
-        if(type=="item"){
+        
+      if(type=="item"){
           
-          const items = await getItemsByUserID()
-          .then((data)=>{
+        const items = await getItemsByUserID()
+        .then((data)=>{
+          if(data!="noitems"){
             const listItems = data.map(function(data, idx){
               const name = data.name
               const id = data.id
@@ -28,29 +30,37 @@ export const ItemPicker = ({value, setValue,type}) => {
             });
            
             setItems(listItems)
-          })
-         
+          }
+        else{
+          setItems([])
         }
-        if(type=="service"){
-          
-          const items = await getServicesByUserID()
-          .then((data)=>{
-            const listItems = data.map(function(data, idx){
-              const name = data.name
-              const id = data.id
-             return(
-               {
-                label:name,
-                value:id
-               }
-     
-             )
-            });
-           
-            setItems(listItems)
-          })
+        
+        })
+       
+      }
+      if(type=="service"){
+        if(data!="noitems"){
+        const items = await getServicesByUserID()
+        .then((data)=>{
+          const listItems = data.map(function(data, idx){
+            const name = data.name
+            const id = data.id
+           return(
+             {
+              label:name,
+              value:id
+             }
+   
+           )
+          });
          
-        }
+          setItems(listItems)
+        })
+       
+      }}
+      else{
+        setItems([])
+      }
         
     }
 

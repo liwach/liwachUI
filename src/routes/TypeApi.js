@@ -131,7 +131,7 @@ export const getAllTypes = async (type) => {
             "Authorization":`Bearer ${token}`
             }})
             .then((data)=>{
-              console.log(`Axios type:${JSON.stringify(data.data)}`)
+              // console.log(`Axios type:${JSON.stringify(data.data)}`)
               return {
                 message:"successful",
                 data: data.data.data

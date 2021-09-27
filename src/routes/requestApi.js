@@ -91,8 +91,8 @@ export const getAllRequestsBySenderID = async () => {
     
   });
   try {
-   
-      const res = await axios.post(GET_REQUEST_BY_STATUS,body,{
+      if(user.token!=""){
+        const res = await axios.post(GET_REQUEST_BY_STATUS,body,{
           "headers": {
           "content-type": "application/json",
           "Authorization":`Bearer ${user.token}`
@@ -104,9 +104,14 @@ export const getAllRequestsBySenderID = async () => {
           })
 
       return res
-
+      }
+      else{
+        return "norequest"
+      }
+      
   } catch (error) {
-    console.log(error.message)
+    console.log("Request",error.message)
+    return "norequest"
   }
 }
 

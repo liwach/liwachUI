@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { StyleSheet,View,Text,Image } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { colors } from '../../utils/colors';
@@ -27,9 +27,10 @@ const slides = [
     }
   ];
  
-export const IntroductionScreen = ({navigation}) => {
+export const IntroductionScreen = ({navigation,first,setFirstOpen}) => {
+
    const _renderItem = ({ item }) => {
-    return (
+    return (  
       <View style={styles.slide}>
         <Text style={styles.title}>{item.title}</Text>
         <Image style={styles.image} source={item.image} />
@@ -41,9 +42,14 @@ export const IntroductionScreen = ({navigation}) => {
     // User finished the introduction. Show real app through
     // navigation or simply by controlling state
     ()=>navigation.navigate("AuthScreen")
+    
   }
   return(
-    <AppIntroSlider renderItem={_renderItem} data={slides} onDone={()=>navigation.navigate("AuthScreen")}/>
+    <AppIntroSlider renderItem={_renderItem} data={slides} onDone={
+      ()=>{
+        navigation.navigate("AuthScreen")
+      // setFirstOpen(false)
+      }}/>
   )
   
     

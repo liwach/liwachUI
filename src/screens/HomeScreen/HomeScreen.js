@@ -33,8 +33,10 @@ export const HomeScreen = ({route,navigation}) => {
    
    useEffect(async()=>{
     removeFirstOpen("isFirst",false)
-    const userData = await fetchuser()
-    setUser(userData)
+    const userData = await fetchuser().then((data)=>{
+        setUser(data.data)
+    })
+    // setUser(userData)
     setMenuOpen(false)
    },[])
 
@@ -91,22 +93,25 @@ export const HomeScreen = ({route,navigation}) => {
             
             {/* </View> */}
         </ScrollView>
-            <FloatingMenu
-                items={items}
-                isOpen={isMenuOpen}
-                onMenuToggle={handleMenuToggle}
-                onItemPress={handleItemPress}
-                backgroundDownColor={colors.water}
-                backgroundUpColor={colors.water}
-                primaryColor={colors.straw}
-            
-                borderColor={colors.water}
-                renderMenuIcon={renderMenuIcon}
-                renderItemIcon ={renderItemIcon}
-                buttonWidth={45}
-                position= {"bottom-right"}
-                
-                />
+          {user.length!=0 ?
+             <FloatingMenu
+             items={items}
+             isOpen={isMenuOpen}
+             onMenuToggle={handleMenuToggle}
+             onItemPress={handleItemPress}
+             backgroundDownColor={colors.water}
+             backgroundUpColor={colors.water}
+             primaryColor={colors.straw}
+         
+             borderColor={colors.water}
+             renderMenuIcon={renderMenuIcon}
+             renderItemIcon ={renderItemIcon}
+             buttonWidth={45}
+             position= {"bottom-right"}
+             
+             />:<View></View>
+          }
+           
         </View>
       
     )

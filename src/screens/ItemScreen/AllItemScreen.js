@@ -21,7 +21,7 @@ export const AllItemScreen = ({navigation}) => {
         setUser(user)
         const items = await getAllItem()
         setData(items)
-        console.log(items)
+        // console.log(items)
     }
    
 

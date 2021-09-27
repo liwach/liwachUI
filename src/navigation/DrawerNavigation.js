@@ -50,6 +50,7 @@ import { deleteItem, flagItem } from '../routes/itemsApi';
 import { AlertModal } from '../components/UI/AlertModal';
 import { deleteService, flagService } from '../routes/serviceApi';
 import { BottomNavigator } from './BottomNavigator';
+import { addMultipleImages } from '../screens/ItemScreen/components/PictureCard';
 
 
 const ProductStack = createStackNavigator();
@@ -64,6 +65,7 @@ const IntroStack = createStackNavigator();
 const SignupStack = createStackNavigator();
 const RequestStack = createStackNavigator();
 const IntroductionStack = createStackNavigator();
+
 
 export const IntroductStackScreen = () => {
   return (
@@ -114,7 +116,6 @@ export const RequestScreenStack = () => {
   return(
     <RequestStack.Navigator>
         <RequestStack.Screen
-        
         options={({route, navigation}) => ({
           title:"Requests",
           headerShown: true,
@@ -173,8 +174,8 @@ export const SignupStackScreen = () => {
           options={({route, navigation}) => ({
             headerShown:false
            })}
-           name="SignupScreen"
-           component={SignUpForm}
+           name="SignupChoice"
+           component={SignupStack}
           
           />
            <SignupStack.Screen
@@ -370,6 +371,36 @@ export const AccountStackScreen = () => {
         name="EditAccountScreen"
         component={EditAccountScreen}
       />
+    
+
+    <SignupStack.Screen
+          
+          options={({route, navigation}) => ({
+            headerShown:false
+           })}
+           name="SignupChoiceScreen"
+           component={SignUpChoiceScreen}
+          
+          />
+    <SignupStack.Screen
+          
+          options={({route, navigation}) => ({
+            headerShown:false
+           })}
+           name="SignupScreen"
+           component={SignUpForm}
+          
+          />
+
+     <SignupStack.Screen
+          
+          options={({route, navigation}) => ({
+            headerShown:false
+           })}
+           name="OrganizationScreen"
+           component={OrganizationForm}
+          
+          />
       <AccountStack.Screen
         options={({route, navigation}) => ({
           headerShown: false,
@@ -400,15 +431,7 @@ export const AccountStackScreen = () => {
         name="HomeAuthScreen"
         component={HomeStackScreen}
       />
-       <SignupStack.Screen
-          
-          options={({route, navigation}) => ({
-            headerShown:false
-           })}
-           name="SignupScreen"
-           component={SignUpForm}
-          
-          />
+    
 
 <SignupStack.Screen
           
@@ -715,7 +738,7 @@ export const HomeStackScreen = () => {
                    setAlertMessage({
                      title:"Item Deleted",
                      msg:`${route.params.item.name} is deleted`,
-                     color:colors.green,
+                     color:colors.straw,
                      navTitle:"Profile"
                    })
                   }
@@ -741,7 +764,7 @@ export const HomeStackScreen = () => {
                    setAlertMessage({
                      title:"Item Deleted",
                      msg:`${route.params.item.name} is deleted`,
-                     color:colors.green,
+                     color:colors.straw,
                      navTitle:"Profile"
                    })
                   }
@@ -877,6 +900,33 @@ export const HomeStackScreen = () => {
       
       component={openEdit==false?ItemDetailScreen:editItemForm}
     />
+      <ProfileStack.Screen
+       options={({route, navigation}) => ({
+        title:"Add More Images",
+        headerShown:true,
+        headerStyle:{
+          elevation:0,
+          backgroundColor:colors.water
+        },
+        headerTitleStyle:{
+          color: colors.white
+        },
+       
+        headerRight: () => {
+         
+        },
+        headerLeft: () => {
+          return (
+            <HeaderBackButton
+              tintColor={colors.white}
+              onPress={() => navigation.goBack()}
+            />
+          );
+        },
+      })}
+        name="PictureScreen"
+        component={addMultipleImages}
+      />
        <HomeStack.Screen
        options={({route, navigation}) => ({
          title:"Services",
@@ -1168,7 +1218,7 @@ export const ProfileStackScreen = () => {
       <MessageStack.Screen
         name="ProfileInbox"
         options={({route, navigation}) => ({
-          title: route.params.item.requester_item_id,
+          title: route.params.item.requester_item.name,
           headerTitleStyle: { color: colors.white},
           headerRight: () => {},
           headerLeft: () => {

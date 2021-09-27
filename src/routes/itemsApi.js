@@ -122,19 +122,20 @@ export const getItemsByUserID = async() => {
      
    
   } catch (error) {
-    console.log(error.message)
+    console.log("Items API",error.message)
+    return "noitems"
   }
 
 
 }
 
-export const getItemsByType = async(type,id) => {
+export const getItemsByType = async(type) => {
   const user = await fetchuser().then((data)=>{return data.data})
   const params = JSON.stringify({
     "type_id": type
       });
     
-   console.log(type)   
+  //  console.log("type",type)   
   try {
     try {
   
@@ -144,8 +145,9 @@ export const getItemsByType = async(type,id) => {
           "Authorization":`Bearer ${user.token}`
           },
           }).then((data)=>{
-            //  console.log(JSON.stringify(data.data))
+            return data.data
           })
+        return res
      
     }
   catch (error) {

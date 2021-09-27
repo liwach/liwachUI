@@ -13,12 +13,12 @@ export const AccountMenuItem = ({iconName,Title,navigation,onPress}) => {
     return(
         <View style={styles.container}>
             <View style={[styles.icon,styles.textWithIcon,styles.container]}>
-                <Icon color={colors.flord_intro2} size={20} name={iconName} />
+                <Icon color={colors.water} size={20} name={iconName} />
                 <Text style={styles.text}>{Title}</Text>
             </View>
            
             <View  style={styles.icon}>
-                <Icon size={20} color={colors.flord_intro2} name='ios-arrow-forward-circle' onPress={onPress} />
+                <Icon size={20} color={colors.water} name='ios-arrow-forward-circle' onPress={onPress} />
             </View>
         </View>
     )

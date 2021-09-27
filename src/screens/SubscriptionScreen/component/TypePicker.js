@@ -11,27 +11,28 @@ export const TypePicker = ({navigation,data,value, setValue}) => {
     const [items,setItems] = useState([])
     
     const fetchItems = async() => {
-        const user = await fetchuser()
-        const items = await getAllTypesByCategoryID(data.id).then((response)=>{
-          const listItems = response.map(function(data, idx){
-            const name = data.name
-           return(
-             {
-              label:name,
-              value:id
-             }
-   
-           )
-          });
-          return listItems
-        })
-       
-        setItems(items)
+        // const user = await fetchuser()
+        
+         
        
     }
 
     useEffect(()=>{
-      fetchItems()
+      const listItems = data.type.map(function(data, idx){
+        const name = data.name
+        const id = data.id
+        // console.log(id)
+       return(
+         {
+          label:name,
+          value:id
+         }
+
+       )
+      });
+   
+   
+    setItems(listItems)
     },[])
     // const [items, setItems] = useState([
     //   {label: 'Tshirt', value: 'normal'},
@@ -55,8 +56,8 @@ export const TypePicker = ({navigation,data,value, setValue}) => {
           elevation:3
         }}
         badgeTextStyle={{color:colors.white,  fontStyle: "italic"}}
-        badgeColors={[colors.flord_intro2,colors.flord_intro2]}
-        badgeDotColors={[colors.flord_intro]}
+        badgeColors={[colors.water,colors.water]}
+        badgeDotColors={[colors.white]}
         badgeStyle={{width:100}}
         setOpen={setOpen}
         setValue={setValue}
@@ -67,7 +68,7 @@ export const TypePicker = ({navigation,data,value, setValue}) => {
         dropDownContainerStyle={
             {
                marginRight:20,
-               backgroundColor:colors.bottomNav,
+               backgroundColor:colors.light_grey,
                borderWidth:0.5,
                borderColor:colors.flord_intro2,
                elevation:3
@@ -76,7 +77,7 @@ export const TypePicker = ({navigation,data,value, setValue}) => {
         }
         listItemContainer={{
           height: 40,
-          backgroundColor:colors.background
+          backgroundColor:colors.light_grey
 
         }}
         listParentLabelStyle={{
@@ -87,7 +88,7 @@ export const TypePicker = ({navigation,data,value, setValue}) => {
         customItemContainerStyle={{
             width: 10,
             marginRight:20,
-            backgroundColor:colors.background,
+            backgroundColor:colors.light_grey,
             elevation:3
         }}
         scrollViewProps={{

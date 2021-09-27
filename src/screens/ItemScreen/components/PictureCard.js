@@ -22,41 +22,25 @@ import {
 
   
 } from "react-native";
-import { CustomTextInput } from './components/CustomTextInput';
-import { colors } from '../../utils/colors';
-import CustomText from '../../components/UI/CustomText';
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import {CameraButton} from "./components/UploadButton"
-import { useDispatch, useSelector } from "react-redux";
+import { colors } from '../../../utils/colors';
+
 import * as yup from 'yup'
 import { Formik } from 'formik'
-import {launchImageLibrary} from 'react-native-image-picker';
-//Action
-//import { addItem, fetchItem,requestItem,addUser,fetchRequests } from "../../reducers";
-//PropTypes check
-import PropTypes from "prop-types";
-
-import { Dropdown } from 'react-native-material-dropdown-v2-fixed';
-
-import { addItem } from '../../routes/itemsApi';
-import { MAPBOX_KEY } from '../../utils/config';
-import AutocompletePlace from './components/SearchBox';
-import { CustomPicker } from '../../components/UI/CustomPicker';
-import { TypeSeachBox } from './components/TypeSearchBox';
-import { cloudinaryAddUpload, cloudinaryUpload, ImageActionSheet } from './components/ImageActionSheet';
-import { SwapTypeDropBox } from './components/SwapTypeDropBox';
-import { getLocation } from '../../routes/requestApi';
-import { getOneTypeByName } from '../../routes/TypeApi';
-import { fetchuser } from '../../utils/checkFirstTimeActions'
-import { addService } from '../../routes/serviceApi';
-import { ButtonImageSheet } from './components/ButtonImageAction';
-import { AlertModal } from '../../components/UI/AlertModal';
-import { uploadPicture } from '../../routes/utilApi';
-import { addMedia } from '../../routes/mediaApi';
-
-export const addItemForm = ({navigation}) => {
 
 
+import { addItem } from '../../../routes/itemsApi';
+import { TypeSeachBox } from './TypeSearchBox';
+import { cloudinaryAddUpload, cloudinaryUpload, ImageActionSheet } from './ImageActionSheet';
+import { SwapTypeDropBox } from './SwapTypeDropBox';
+import { getLocation } from '../../../routes/requestApi';
+import { fetchuser } from '../../../utils/checkFirstTimeActions'
+import { ButtonImageSheet } from './ButtonImageAction';
+import { AlertModal } from '../../../components/UI/AlertModal';
+import { addMedia } from '../../../routes/mediaApi';
+
+export const addMultipleImages = ({route,navigation}) => {
+
+  const { item} = route.params;
   const [place,setPlace] = useState([])
   const [location,setLocation] = useState([])
   const [photo,setPhoto] = useState("https://res.cloudinary.com/liwach/image/upload/v1630910024/add_ujcczf.png");
@@ -177,193 +161,42 @@ export const addItemForm = ({navigation}) => {
         />
       )
     }
+
+  const addImages = async() =>{
+    const user = await fetchuser().then((data)=>{return data.data})
+    TINphotoData.map(async(prop, key) => {
+        console.log("Multiple Image",prop)
+        const photo_response =  await cloudinaryAddUpload(prop).then(async(resp)=>{
+              const media = {
+                id:item,
+                type:'item',
+                url:resp
+              }
+              console.log(media)
+              const response = await addMedia(media,user.token).then((res)=>{
+                  if(res.success){
+                      navigation.navigate("Profile")
+                  }
+              })
+              
+          })
+          
+    })
+
+  }
  
   return (
     <View style={styles.container}>
       
     <View style={styles.imageBox}>
-    <Text style={styles.subtitle}> Add items to swap with the ones you need!</Text>
+    <Text style={styles.subtitle}>Add more pictures for your item!</Text>
     </View>
-    <ImageActionSheet message={message} setMessage={setMessage} photoData={photoData} setPhotoData={setPhotoData} photo={photo} setPhoto={setPhoto} actionSheetRef={imageActionRef} />
+    {/* <ImageActionSheet message={message} setMessage={setMessage} photoData={photoData} setPhotoData={setPhotoData} photo={photo} setPhoto={setPhoto} actionSheetRef={imageActionRef} /> */}
     <ButtonImageSheet imageList={imageList} photoData={TINphotoData} setPhotoData={setTINPhotoData} photo={TINphoto} setPhoto={setTINPhoto} actionSheetRef={multipleImageRef}/>
-    <Formik
-      initialValues={{ 
-        title: '',
-        category: '', 
-        description: '',
-        location: '',
-        swap: '',  
-      }}
-      onSubmit={
-        (values) => 
-         {
-           const name = values.title
-           const description = values.description
-           if(place==""){
-              setPlaceError("Please add your location.")
-           }
-           if(category==""){
-            setCategoryError("Please add your category.")
-         }
-            if(swapTypes==""){
-              setSwapTypeError("Please add your swap type.")
-          }
-              if(place!=""){
-                setPlaceError("")
-            }
-            if(category!=""){
-              setCategoryError("")
-          }
-              if(swapTypes!=""){
-                setSwapTypeError("")
-            }
-            if(message=="noimage"){
-                setShowAlert(true)
-                setAlertMessage({msg:"Please add atleast one image.",title:'Featured Image'})
-            }
-            if(place!=""&&category!=""&&swapTypes!=[]&&message!="noimage"&&name!=""&&description!=""){
-              
       
-              // Upload a picture
-              const addProfilePic = async() => {
-                const user = await fetchuser().then((data)=>{return data.data})
-                setProfilePic("")
-                const photo_response =   await cloudinaryAddUpload(photoData).then(async(resp)=>{
-                  
-                  const item = { 
-                    "name": values.title,
-                    "description":values.description,
-                    "picture": resp,
-                    "media":[],
-                    "swap_type": swapTypes,
-                    "address": {
-                      "country": place,
-                      "city": place,
-                      "latitude": geometry[1],
-                      "longitude": geometry[0],
-                      "type": "item"
-                    },
-                    "type_id": category,
-                    "user_id": user.id,
-                    "status": "open"
-                  }
-                  // console.log(item)
-                  const response = await addItem(item).then((data)=>{
-                    if(data.success){
-                      setShowAlert(true)
-                      setAlertMessage({msg:"Item is Added Successfully",title:"Item",color:colors.green,navTitle:'Profile'})
-                    TINphotoData.map(async(prop, key) => {
-                      console.log("Multiple Image",prop)
-                      const photo_response =  await cloudinaryAddUpload(prop).then(async(resp)=>{
-                            const media = {
-                              id: data.data.id,
-                              type:'item',
-                              url:resp
-                            }
-                            const response = await addMedia(media,user.data.token)
-                            console.log(response)
-                        })
-                        
-                  })
-                   
-                    // console.log(data)
-                  }
-                  else{
-                    setShowAlert(true)
-                    setAlertMessage({msg:data.error,title:"Item",color:colors.straw,navTitle:''})
-               
-                  }
-                  })
-                  return "added"
-                })
-              }
-            
-              addProfilePic()
-            
-        
-
-            
-          
-          
-      }
-    }
-    }
-      validationSchema={yup.object().shape({
-        title: yup
-          .string()
-          .required('Please, provide your title!'),
-        category: yup
-          .string()
-         ,
-        description: yup
-          .string()
-          .required('Please, provide your description!'),
-        location: yup
-          .string()
-          ,
-        swap: yup
-          .string()
-          
-      })}
-     >
-      {({ values, handleChange, errors, setFieldTouched, setFieldValue, touched, isValid, handleSubmit }) => (
-        <KeyboardAvoidingView 
-        keyboardVerticalOffset={
-          Platform.select({
-             ios: () => 0,
-             android: () => -500
-          })()}
-        behavior={'padding'} 
-        style={styles.formContainer}>
-
-        {/* <AutocompletePlace onSelect={place => console.log(place)} /> */}
-        <TextInput
-            value={place}
-            style={styles.inputStyle}
-            onChangeText={text =>{displayList(text), setPlace(text)}}
-            onBlur={() => setFieldTouched('address')}
-            placeholder="Address"
-            placeholderTextColor={colors.flord}
-            onEndEditing={clearData}
-            onChange={event => setFieldValue(event.target.value)}
-             />
-             <FlatListData list={location} onItemClick={itemClick} />
-            <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{placeerror}</Text>
-            <TypeSeachBox value={category} setValue={setCategory} type="item"/> 
-          <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{categoryerror}</Text>
-          <TextInput
-            value={values.title}
-            style={styles.inputStyle}
-            onChangeText={handleChange('title')}
-            onBlur={() => setFieldTouched('title')}
-            placeholder="Title"
-            placeholderTextColor={colors.flord_intro}
-          />
-          {touched.title && errors.title &&
-            <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.title}</Text>
-          } 
-           <TextInput
-            value={values.description}
-            style={styles.inputStyle}
-            onChangeText={handleChange('description')}
-            onBlur={() => setFieldTouched('description')}
-            placeholder="Description"
-            placeholderTextColor={colors.flord_intro}
-          />
-          {touched.title && errors.title &&
-            <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.description}</Text>
-          } 
-        <SwapTypeDropBox value={swapTypes} setValue={setSwapTypes} type="item"/> 
-          <Text style={{ fontSize: 12, color: colors.flord_secondary  }}>{swaperror}</Text>
-
-          <AlertModal show={showalert} message={alertMsg} setShowAlert={setShowAlert} navigation={navigation}/>
-            
-          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+    <TouchableOpacity style={styles.button} onPress={()=>{addImages()}}>
                 <Text style={styles.text}>Submit</Text>
               </TouchableOpacity>
-        </KeyboardAvoidingView>
-      )}
-    </Formik>
     </View>
   );
 

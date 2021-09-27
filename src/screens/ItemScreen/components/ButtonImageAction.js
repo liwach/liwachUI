@@ -144,7 +144,7 @@ export const ButtonImageSheet = ({imageList,actionSheetRef,photo,setPhoto,photoD
   }
   return (
     <View>
-        <View style={styles.horizontal}>
+        <View >
       <TouchableOpacity
         onPress={() => {
           actionSheetRef.current?.setModalVisible();
@@ -159,19 +159,23 @@ export const ButtonImageSheet = ({imageList,actionSheetRef,photo,setPhoto,photoD
             
           
             borderRadius:10,
-            marginLeft:40
+            
+            marginTop:40,
+            alignSelf:'center',
+            
         }}
       >
-          <Ionicons name={"images-outline"} size={30} color={colors.water}/>
+          <Ionicons name={"images-outline"} size={80} color={colors.water}/>
       </TouchableOpacity>
       {console.log(photo.k)}
-
+      <View style={styles.horizontal}>
       {photo.map((prop, key) => {
                  console.log("Image",prop)   
                     return (
-                        <Image style={{borderRadius:10,width:40, height:40,marginBottom:10,marginLeft:20}} source={prop}  />
+                        <Image style={{borderRadius:10,width:50, height:50,marginBottom:10,marginLeft:20}} source={prop}  />
                         );
                   })}
+      </View>
       </View>
       <ActionSheet ref={actionSheetRef} containerStyle={styles.actionsheet}>
         <View style={styles.horizontal}>

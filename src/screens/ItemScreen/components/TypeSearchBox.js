@@ -116,16 +116,16 @@ export const TypeSeachBox = ({value, setValue,type}) => {
         dropDownContainerStyle={
             {
                marginRight:20,
-               backgroundColor:colors.bottomNav,
+               backgroundColor:colors.light_grey,
                borderWidth:0.5,
-               borderColor:colors.bottomNav,
-               elevation:3
+               borderColor:colors.light_grey,
+               
                
             }
         }
         listItemContainer={{
           height: 40,
-          backgroundColor:colors.bottomNav
+          backgroundColor:colors.light_grey
 
         }}
         listParentLabelStyle={{
@@ -136,7 +136,7 @@ export const TypeSeachBox = ({value, setValue,type}) => {
         customItemContainerStyle={{
             width: 10,
             marginRight:20,
-            backgroundColor:colors.bottomNav
+            backgroundColor:colors.light_grey
         }}
         
         

@@ -4,19 +4,21 @@ import { Button } from 'react-native-paper';
 import { colors } from '../../utils/colors';
 import { AccountMenuItem } from './components/AccountMenuItem';
 import UserAvatar from '@muhzi/react-native-user-avatar';
-import { fetchuser } from '../../utils/checkFirstTimeActions';
+import { fetchuser, saveUserToStorage } from '../../utils/checkFirstTimeActions';
 import { getUserByID } from '../../routes/accountApi';
 export const AccountScreen = ({navigation}) => {
     const [user, setUser] = useState([])
     const [url,setUrl] = useState("")
 
     const fetchData=async()=>{
-        const user = await fetchuser().then((data)=>{return data.data})
-        const userData = await getUserByID(user.id).then((data)=>{
-            setUser(data)
-        })
-      
-        setUrl(user.pic)
+        const userDetail = await fetchuser().then((data)=>{return data.data})
+        // const userData = await getUserByID(user.id).then((data)=>{
+        //     setUserDetail(data)
+        //     return data
+        // })
+        setUser(userDetail)
+        setUrl(userDetail.picture)
+        console.log("User in account",userDetail)
     }
     useEffect(()=>{
         fetchData()
@@ -24,9 +26,9 @@ export const AccountScreen = ({navigation}) => {
     return(
         <View>
             <View style={styles.backgroundContainer}></View>
+            {user.length!=0?
+            <View>
             <TouchableOpacity
-              
-
                 style={styles.imageBox}
             >
                 <UserAvatar
@@ -38,18 +40,26 @@ export const AccountScreen = ({navigation}) => {
                 />
             </TouchableOpacity>         
             <Text style={styles.textContainer}>Ola, {user.first_name} {user.last_name} </Text> 
-            {/* <AccountMenuItem iconName={"md-pencil"} Title={"Edit Profile"} navigation={navigation}
-                onPress={()=>navigation.navigate('EditAccountScreen'
-                ,{
-                    user:user
+            </View>:<View></View>
                 }
-                )}
-            /> */}
+            
+            {user.length==0?
+                <AccountMenuItem iconName={"add-circle-outline"} Title={"Log in"} navigation={navigation}
+                onPress={()=>navigation.navigate('AuthScreen')}
+            />:<View></View>
+            }
+              {user.length!=0?
+              <View>
             <AccountMenuItem iconName={"add-circle-outline"} Title={"Subscribe"} navigation={navigation}
                 onPress={()=>navigation.navigate('SubscribeScreen')}
             />
-           <Button color={colors.white} style={styles.button} onPress={()=>navigation.navigate("AuthScreen")}>Log out</Button>
-
+           <Button color={colors.white} style={styles.button} onPress={()=>{
+               navigation.navigate("Home")
+               saveUserToStorage("logged_user",[])
+               }}>Log out</Button>
+           </View>
+        : <View></View>   
+        }
             
 
         </View>
@@ -68,7 +78,7 @@ const styles = StyleSheet.create({
     },
 
     imageBox:{
-        position:'absolute',
+      
         width: 90,
         height:90,
         borderRadius:50,

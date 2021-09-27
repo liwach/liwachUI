@@ -133,6 +133,7 @@ export const RequestCardList = ({navigation}) => {
     const [refreshing, setRefreshing] = React.useState(false);
     const  [userData,setUserData] = useState([]) 
     const [req,setReq] = useState([])
+    const [requestFlag,setRequestFlag] = useState([])
  
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
@@ -157,15 +158,25 @@ export const RequestCardList = ({navigation}) => {
   }  
 
   const fetchData = async () => {
-    const user = await fetchuser().then((data)=>{return data.data})
+    const user = await fetchuser().then((data)=>{
+      setUser(data)
+      return data.data
+    
+    })
     // const myItems = await getItemsByUserID().then((data)=>{
     //    return data.data
     // })
-   
+    
     const otherRequests = await getAllRequestsBySenderID().then((data)=>{
-      return data
+      if(data!="norequest"){
+        setOneFinal(data)
+        return data
+      }
+      else{
+        setRequestFlag("norequests")
+      }
     })
-    setOneFinal(otherRequests)
+   
     // console.log("Requests: ",otherRequests)
     setUser(user)
     
@@ -205,12 +216,22 @@ export const RequestCardList = ({navigation}) => {
                   onRefresh={onRefresh}
                 />}
             >
+             { 
+             requestFlag!="norequests"?
             <FlatList
               data={oneFinal}
               renderItem={renderItem}
               keyExtractor={(item) => item.id}
               
-            />
+            />: <View>
+            <Text style={styles.subtitle}>You haven't sent any requests! Start sending now!</Text>
+        </View>}
+        {user.length==0?
+        <View>
+        <Text style={styles.subtitle}>You must be signed in to send requests!</Text>
+    </View>:<View></View>
+        }
+            
             </ScrollView>
       
     )
@@ -300,6 +321,15 @@ const styles = StyleSheet.create({
     req:{
         fontWeight:'bold',
         color: colors.flord_intro2,
-    }
+    },
+    subtitle:{
+      
+      top: 15,
+      color: colors.flord,
+      textAlign: 'center',
+      fontSize: 20,
+      height:35,
+      fontWeight:'bold',
+    },
 
 })

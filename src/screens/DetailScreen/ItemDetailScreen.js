@@ -13,12 +13,14 @@ import { fetchuser } from '../../utils/checkFirstTimeActions'
 import UserAvatar from '@muhzi/react-native-user-avatar'
 import { VerticalFlatList } from './components/VerticalFlatList'
 import { SwapActionSheet } from '../HomeScreen/component/SwapActionSheet'
+import { getMediasByItem } from '../../routes/mediaApi'
 
 
 export const ItemDetailScreen = ({route, navigation}) => {
     const { item} = route.params;
     console.log("url",item.type)
     const [data, setData] = useState([]);
+    const [photo, setPhoto] = useState([]);
     const [swapType, setSwapType] = useState([]);
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState([])
@@ -28,9 +30,16 @@ export const ItemDetailScreen = ({route, navigation}) => {
      const pic = item.picture
     const fetchData = async () => {
     //   const items = await getAllItems()
+    console.log("indetail",item.requests)
      const user = await fetchuser().then((data)=>{return data.data})
-    
-      const swapTypes = []
+     const medias = await getMediasByItem(item.id).then((data)=>{
+         if(data.success){
+            setPhoto(data.data)
+            return data.data
+         }
+     })
+     
+     const swapTypes = []
       
       setData(item[0]);
 
@@ -68,7 +77,17 @@ export const ItemDetailScreen = ({route, navigation}) => {
     return(
         <ScrollView>
             <ProfileDetail src={pic} user={item.user} barter={item.number_of_request} time={item.time}/>
-
+            <View style={styles.horizontal}>
+            
+            {photo!=[]?photo.map((prop, key) => {
+                        console.log("Image",prop.url)   
+                            return (
+                                <TouchableOpacity onPress={()=>{}}>
+                                <Image style={{borderRadius:10,width:100, height:100, marginRight:10}} source={{uri:prop.url}}  />
+                                </TouchableOpacity>
+                                );
+                        }):<View></View>}
+            </View>
              <View>
                  <View style={styles.horizontal}>
                      <Text style={styles.header}>{item.name}</Text>

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { StyleSheet, TouchableOpacity,Text } from "react-native"
 import { colors } from "../../../utils/colors"
 
@@ -15,9 +15,9 @@ export const CategoryItem = ({item,onPress}) => {
 const styles = StyleSheet.create({
 
     container:{
-        backgroundColor:colors.flord_intro2,
+        backgroundColor:colors.water,
         margin:20,
-        width: "70%",
+        width: "40%",
         padding:20,
         color:colors.white,
         textAlign:'center',
