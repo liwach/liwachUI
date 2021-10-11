@@ -1,0 +1,170 @@
+import ActionSheet from "react-native-actions-sheet";
+import React, { createRef,useState,useEffect } from "react";
+import { View,Text,TouchableOpacity,ScrollView,Image } from "react-native";
+import UserAvatar from "@muhzi/react-native-user-avatar"
+import { colors } from "../../../utils/colors";
+import { StyleSheet } from "react-native";
+import {launchCamera,launchImageLibrary} from "react-native-image-picker"
+import { ToastAndroid } from "react-native";
+import Ionicons from "react-native-vector-icons/Ionicons"
+import { ItemPicker } from "./ItemPicker"
+import { SendButton } from "./BottomSheet";
+import { fetchuser } from "../../../utils/checkFirstTimeActions";
+
+
+export const FlagSwapSheet = ({actionSheetRef,type}) => {
+    const [value, setValue] = useState(null);
+   
+    const type_value = type
+    // console.log("Selected value: ",type)
+   return( 
+    <ScrollView style={styles.actionSheetContainer} >
+   <ActionSheet ref={actionSheetRef} containerStyle={styles.actionsheet}>
+    
+   
+      {/* <ScrollView>
+        <Dropdown
+        data={data}
+        label="Swap With"
+        icon="arrow"
+        onChangeText={value=>onChangeHandler(value)}
+        /> 
+    </ScrollView> */}
+    <View style={[styles.horizontal]}>
+        
+    </View>
+    <View style={[styles.descBox]}>
+        <View style={styles.horizontal}>
+            
+        </View>
+        
+       
+
+    </View>
+   
+      </ActionSheet>
+      </ScrollView>
+    );
+} 
+
+
+export const SwapActionSheet = ({actionSheetRef,item,onPress,type,navigation}) => {
+  let actionSheet;
+  const [isVisible,setVisible] = useState(false)
+  const fetchData = async() => {
+    const user = await fetchuser().then((data)=>{return data.data})
+    //   console.log("itemmmmmm",JSON.stringify(item))
+      if(user.id !== item.user_id){
+          setVisible(true)
+      }
+  }
+  useEffect(()=>{
+      fetchData()
+  },[])
+  const onChangeHandler = (value) => {
+    selectedId(value);
+    
+    // console.log(`Selected value: ${id}`);
+  }
+
+//   console.log("Swap Action",item.name)
+
+
+const [id,selectedId] = useState("");
+
+    return (
+        <View>
+            {isVisible?
+        <View>
+          <TouchableOpacity
+            onPress={onPress}
+    
+            style={styles.container}
+          >
+       <Text  style={styles.textContainer} >Swap</Text>
+          <Ionicons style={styles.iconContainer}  name={'swap-horizontal'} size={20}/>
+          </TouchableOpacity>
+          <SwapSheet actionSheetRef={actionSheetRef} item={item} type={type} navigation={navigation}/>
+          </View>:<View/>}
+          </View>
+      )
+
+ 
+}
+
+const styles = StyleSheet.create({
+    actionsheet:{
+        height: 300,
+        backgroundColor:colors.background
+
+    },
+    imageBox:{
+        width:100,
+        height:100,
+        margin:20
+    },
+    header:{
+        textTransform:"uppercase",
+        fontWeight:'bold',
+        color: colors.flord_intro,
+        marginLeft:20
+    },
+    desc:{
+        textTransform:"uppercase",
+        fontSize:12,
+        fontWeight:'bold',
+        color: colors.flord_intro2,
+        marginLeft:20,
+        
+    
+
+    },
+    horizontal:{
+        flexDirection:'row',
+        alignContent:'center',
+        
+    },
+    icon:{},
+    text:{
+        fontWeight:'bold',
+        color:colors.flord_intro
+    },
+    component:{
+        marginTop:20,
+        flex:1,
+        alignItems:'center',
+        justifyContent:'center'
+    },
+    container:{
+        flexDirection:'row',
+        
+        margin: 6,
+        paddingLeft:7,
+        paddingRight:7,
+        borderRadius: 10,
+        height:25,
+        backgroundColor:colors.bottomNav,
+        alignItems:'center',
+        alignContent:'center',
+        justifyContent:'center',
+        width: "60%"
+    },
+
+    textContainer:{
+        color: colors.flord_intro2,
+        marginRight:25,
+        textAlign:'center',
+        fontSize:17
+    },
+    iconContainer:{
+        color:colors.flord_intro2
+    },
+    actionSheetContainer:{
+            marginBottom: 2,
+            
+        
+    },
+    horizontalItems:{
+        flex:1,
+    }
+})
