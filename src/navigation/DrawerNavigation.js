@@ -51,6 +51,7 @@ import { AlertModal } from '../components/UI/AlertModal';
 import { deleteService, flagService } from '../routes/serviceApi';
 import { BottomNavigator } from './BottomNavigator';
 import { addMultipleImages } from '../screens/ItemScreen/components/PictureCard';
+import { FlagSwapSheet } from '../screens/ItemScreen/components/FlagActionSheet';
 
 
 const ProductStack = createStackNavigator();
@@ -353,19 +354,11 @@ export const AccountStackScreen = () => {
       <AccountStack.Screen
         options={({route, navigation}) => ({
           title: 'Edit Account',
-           headerShown:false,
+           headerShown:true,
           headerStyle: {backgroundColor: colors.water},
-          headerTitleStyle: {color: 'white'},
+          headerTitleStyle: {color:colors.white, textAlign:'center'},
           headerRight: () => {
-            return (
-              <AntDesign
-                onPress={() => alert(route.params.user.full_name)}
-                style={styles.drawerButton}
-                name="delete"
-                size={25}
-                color={colors.black}
-              />
-            );
+           
           },
         })}
         name="EditAccountScreen"
@@ -507,6 +500,8 @@ export const HomeStackScreen = () => {
   const [openAlert,setOpenAlert] = useState(false)
   const [showalert,setShowAlert] = useState(false)
   const [alertMsg,setAlertMessage] = useState({msg:"",title:"",color:'',navTitle:''})
+  const SwapActionRef = createRef()
+
   return (
     <HomeStack.Navigator
       screenOptions={({route,navigation}) => ({
@@ -822,29 +817,31 @@ export const HomeStackScreen = () => {
               async()=>
               {
                if(route.params.item.post_type=="item"){
-                const resp = await flagItem(route.params.item.id).then((data)=>{
-                  console.log("in resp",data)
-                  return data
-                })
-                if(resp){
-                 setShowAlert(true)
-                 setAlertMessage({
-                   title:"Item Flagged",
-                   msg:`${route.params.item.name} is flagged`,
-                   color:colors.green,
-                   navTitle:""
-                 })
-                }
-                else{
-                 setShowAlert(true)
-                 setAlertMessage({
-                   title:"Item is not Flagged",
-                   msg:`${route.params.item.name} is Flagged`,
-                   color:colors.straw,
-                   navTitle:""
-                 })
+                
+
+                // // const resp = await flagItem(route.params.item.id).then((data)=>{
+                // //   console.log("in resp",data)
+                // //   return data
+                // // })
+                // if(resp){
+                //  setShowAlert(true)
+                //  setAlertMessage({
+                //    title:"Item Flagged",
+                //    msg:`${route.params.item.name} is flagged`,
+                //    color:colors.green,
+                //    navTitle:""
+                //  })
+                // }
+                // else{
+                //  setShowAlert(true)
+                //  setAlertMessage({
+                //    title:"Item is not Flagged",
+                //    msg:`${route.params.item.name} is Flagged`,
+                //    color:colors.straw,
+                //    navTitle:""
+                //  })
               
-                }
+                // }
                }
                
                if(route.params.item.post_type=="service"){
@@ -878,6 +875,7 @@ export const HomeStackScreen = () => {
             <Ionicons name={"flag-outline"} size={25} color={colors.white} style={styles.drawerButton}/>
             </TouchableOpacity>
               <AlertModal show={showalert} setShowAlert={setShowAlert} message={alertMsg} navigation={navigation}/>
+              <FlagSwapSheet type="item" actionSheetRef={SwapActionRef}/>
               </View>
           )
        }

@@ -53,6 +53,9 @@ export const AccountScreen = ({navigation}) => {
             <AccountMenuItem iconName={"add-circle-outline"} Title={"Subscribe"} navigation={navigation}
                 onPress={()=>navigation.navigate('SubscribeScreen')}
             />
+            <AccountMenuItem iconName={"add-circle-outline"} Title={"Edit account"} navigation={navigation}
+                onPress={()=>navigation.navigate('EditAccountScreen')}
+            />
            <Button color={colors.white} style={styles.button} onPress={()=>{
                navigation.navigate("Home")
                saveUserToStorage("logged_user",[])

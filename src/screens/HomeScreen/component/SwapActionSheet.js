@@ -103,7 +103,7 @@ const [id,selectedId] = useState("");
 
 const styles = StyleSheet.create({
     actionsheet:{
-        height: 250,
+        height: 300,
         backgroundColor:colors.background
 
     },

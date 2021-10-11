@@ -16,6 +16,7 @@ import * as yup from 'yup'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { KeyboardAvoidingView } from "react-native"
 import { TouchableOpacity } from "react-native"
+import RNRestart from 'react-native-restart';
 
 export const MessageDetailScreen = ({route,navigation}) => {
     const { item} = route.params;
@@ -57,6 +58,7 @@ export const MessageDetailScreen = ({route,navigation}) => {
   useEffect(() => {
     fetchData();
     
+    
   }, []);
   const list = () => {
     if(data!==undefined){
@@ -70,12 +72,12 @@ export const MessageDetailScreen = ({route,navigation}) => {
   };
     return(
         <View  style={styles.container}>
-          <View
+          <ScrollView
           style={styles.chatContainer}
-          
+          onScroll={fetchData}
           >
               {list()}
-          </View>
+          </ScrollView>
            
            <Formik
            
@@ -92,7 +94,7 @@ export const MessageDetailScreen = ({route,navigation}) => {
                 keyboardVerticalOffset={
                   Platform.select({
                      ios: () => 0,
-                     android: () => -160
+                     android: () => -100
                   })()
                 } style={styles.secondContainer}>
                   <TextInput
@@ -107,6 +109,9 @@ export const MessageDetailScreen = ({route,navigation}) => {
                   <TouchableOpacity style={styles.icon} onPress={()=>{
                     sendMsg(values.message,item,user)
                     values.message = ""
+                    fetchData()
+                    navigation.navigate("ProfileInbox")
+                    // RNRestart.Restart();
                     }}>
                   <Ionicons
                     name={"send-outline"}
@@ -135,8 +140,8 @@ const styles = StyleSheet.create({
 
   chatContainer:{
     width:'100%',
-    flex: 3,
-    height: 700
+    
+    height: 400
   },
   secondContainer:{
     width:'100%',
@@ -149,7 +154,7 @@ const styles = StyleSheet.create({
     backgroundColor:colors.white,
     width:"80%",
     alignSelf:'center',
-    top:"70%",
+    top:"30%",
     color: colors.flord_intro,
     padding: 10,
     elevation:1,
@@ -162,7 +167,7 @@ const styles = StyleSheet.create({
     alignSelf:'flex-end',
     right:"9%",
     justifyContent:'center',
-    top:"70.5%",
+    top:"30.5%",
     color: colors.flord_intro,
     padding: 10,
     elevation:2,

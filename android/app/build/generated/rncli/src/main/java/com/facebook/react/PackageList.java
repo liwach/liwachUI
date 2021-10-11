@@ -37,6 +37,8 @@ import com.imagepicker.ImagePickerPackage;
 import com.reactnativecommunity.viewpager.RNCViewPagerPackage;
 // react-native-reanimated
 import com.swmansion.reanimated.ReanimatedPackage;
+// react-native-restart
+import com.reactnativerestart.RestartPackage;
 // react-native-safe-area-context
 import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
 // react-native-screens
@@ -101,6 +103,7 @@ public class PackageList {
       new ImagePickerPackage(),
       new RNCViewPagerPackage(),
       new ReanimatedPackage(),
+      new RestartPackage(),
       new SafeAreaContextPackage(),
       new RNScreensPackage(),
       new VectorIconsPackage()

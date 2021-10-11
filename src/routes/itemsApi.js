@@ -110,7 +110,7 @@ export const getItemsByUserID = async() => {
           "Authorization":`Bearer ${user.token}`
           }
           }).then((data)=>{
-            // console.log("From Item data",JSON.stringify(data))
+            console.log(data.data.data)
             return data.data.data
           })
 
@@ -283,11 +283,12 @@ export const flagItem = async(id) => {
       console.log("in delete",id)
       const user = await fetchuser().then((data)=>{return data.data})
       const params = JSON.stringify({
-        "reason_id": 13,
+        "reason_id": 15,
         "flagged_item_id": id,
         "flagged_by_id": user.id,
         "type": "item"
       })
+      console.log(user.token)
       try {
       
       
@@ -297,7 +298,7 @@ export const flagItem = async(id) => {
           "Authorization":`Bearer ${user.token}`
           },
           }).then((data)=>{
-              console.log("Deleted Item",JSON.stringify(data.data))
+              console.log("Flagged Item",JSON.stringify(data))
               return data.data.success
           })
     return res

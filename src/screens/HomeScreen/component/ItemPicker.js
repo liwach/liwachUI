@@ -9,14 +9,16 @@ import { colors } from "../../../utils/colors";
 export const ItemPicker = ({value, setValue,type}) => {
     const [open, setOpen] = useState(false);
     const [items,setItems] = useState([])
-
+   
     const fetchItems = async() => {
         
       if(type=="item"){
           
         const items = await getItemsByUserID()
         .then((data)=>{
+          
           if(data!="noitems"){
+            
             const listItems = data.map(function(data, idx){
               const name = data.name
               const id = data.id
@@ -28,13 +30,10 @@ export const ItemPicker = ({value, setValue,type}) => {
      
              )
             });
-           
+            
             setItems(listItems)
           }
-        else{
-          setItems([])
-        }
-        
+     
         })
        
       }
@@ -58,9 +57,7 @@ export const ItemPicker = ({value, setValue,type}) => {
         })
        
       }}
-      else{
-        setItems([])
-      }
+    
         
     }
 
@@ -80,6 +77,7 @@ export const ItemPicker = ({value, setValue,type}) => {
         value={value}
         items={items}
         multiple={false}
+        listMode="SCROLLVIEW"
         style={{ 
           backgroundColor:colors.background,
           borderBottomWidth:0,
@@ -101,11 +99,11 @@ export const ItemPicker = ({value, setValue,type}) => {
         dropDownContainerStyle={
             {
                marginRight:20,
-               backgroundColor:colors.bottomNav,
+               backgroundColor:colors.light_grey,
                borderWidth:0.5,
                borderColor:colors.flord_intro2,
-               elevation:3
-              
+               elevation:3,
+               padding:5
             }
         }
         listItemContainer={{

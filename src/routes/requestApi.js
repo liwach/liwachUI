@@ -215,7 +215,6 @@ export const addRequest = async(item) => {
   const user = await fetchuser().then((data)=>{return data.data})
   const params = JSON.stringify({
     "status": item.status,
-    "requester_id": item.requester_id,
     "requested_item_id": item.requested_item_id.id,
     "requester_item_id": item.requester_item_id,
     "rating": item.rating,

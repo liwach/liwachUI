@@ -215,6 +215,41 @@ export const login = async (email,password) => {
      catch (error) {
       console.log(error.message)
     }
-  
-  
   }
+
+  export const editAccount = async(item) => {
+    // console.log("IDDD item",item.id)
+    const user = await fetchuser().then((data)=>{return data.data})
+    const body = JSON.stringify({
+      "first_name": item.first_name,
+      "last_name": item.last_name,
+      "email": item.email,
+      
+      "profile_picture": item.profile_picture,
+      "phone_number": item.phone_number
+      
+    });
+       console.log(body) 
+   
+      try {
+        
+        const res = await axios.put(`${POST_USER}/${item.id}`,
+        body,{
+          "headers": {
+          "content-type": "application/json",
+          "Authorization":`Bearer ${user.token}`
+          },
+        }).then((data)=>{
+         
+            // console.log(`Axios:${JSON.stringify(data.data.data.item_swap_type)}`)
+            return data.data.success
+            
+        })
+       return res
+      }
+   
+   catch (error) {
+      console.log(error.message)
+    }
+  }
+  

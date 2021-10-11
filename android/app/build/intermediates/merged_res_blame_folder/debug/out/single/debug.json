@@ -52,24 +52,24 @@
         "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_evilicons.json"
     },
     {
-        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.png"
-    },
-    {
         "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontawesome5_brands.ttf.flat",
         "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontawesome5_brands.ttf"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.png"
     },
     {
         "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_ionicons.json.flat",
         "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_ionicons.json"
     },
     {
-        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher_round.png.flat",
-        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_round.png"
-    },
-    {
         "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_feather.json.flat",
         "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\raw\\node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_glyphmaps_feather.json"
+    },
+    {
+        "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher_round.png.flat",
+        "source": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_round.png"
     },
     {
         "merged": "C:\\Users\\Delilah Dessalegn\\Documents\\Final Year\\Final Project\\LiwachMobile\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_ic_launcher.png.flat",

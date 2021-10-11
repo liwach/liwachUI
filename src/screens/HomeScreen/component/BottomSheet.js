@@ -38,7 +38,6 @@ export const SendButton = (value,id,item,type,navigation) => {
         if(singleItem!==undefined){
             const request = {
                 "status": "open",
-                "requester_id": user.id,
                 "requested_item_id": value.item,
                 "requester_item_id": singleItem.id,
                 "rating": 0,
@@ -47,13 +46,14 @@ export const SendButton = (value,id,item,type,navigation) => {
             }
             try{
                 const response = await addRequest(request).then((data)=>{
+                    console.log(data)
                     if(data){
                       setShowAlert(true)
                       setAlertMessage({msg:"Request sent",title:"Request",color:colors.green,navTitle:''})
                   }
                   else{
                     setShowAlert(true)
-                    setAlertMessage({msg:"Request is not sent",title:"Service",color:colors.straw,navTitle:''})
+                    setAlertMessage({msg:"Request is not sent",title:"Request",color:colors.straw,navTitle:''})
                
                   }
                   })

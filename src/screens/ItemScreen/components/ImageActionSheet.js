@@ -129,7 +129,7 @@ export const ImageActionSheet = ({message,setMessage,photo,setPhoto,photoData,se
             }
             console.log('source', source);
             setPhoto(source.uri)
-            
+            setMessage("image")
             setPhotoData(source)
             // cloudinaryUpload(source)
            });

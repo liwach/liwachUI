@@ -62,8 +62,9 @@ const FlatListItem = ({user,navigation, item, onPress, onMessagePress, backgroun
         
     
         <TouchableOpacity style={[styles.item, backgroundColor]} >
-            <View>           
-                 <UserAvatar src={"https://res.cloudinary.com/liwach/image/upload/v1630498342/gcopiey4x4uk65uvujp2.jpg"} style={styles.imageBox}/>
+            <View>      
+              {/* {console.log(JSON.stringify(item.requested_item.picture))}      */}
+                 <UserAvatar src={item.requested_item.picture} style={styles.imageBox}/>
                  <Text style={[styles.status]}>{item.status}</Text>
             </View>
             <View>
